@@ -4,27 +4,15 @@
 
 ## Build Setup
 
-``` bash
-# install dependencies
-npm install
+第一步：安装vue
+$ npm install -g vue-cli     //npm下载vue的资源
+第二步：创建webos项目
+$ vue init webpack webos  // 通过npm下载webpack + vue框架
+第三步：cd webos
+$ npm install  //下载依赖包(一般启动前都需要的) 
+$ npm run dev //启动npm
+第四步：安装layui
+$ npm install  layui-src
+第五步：在main.js中import layui
+import layui from 'layui-src'
 
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
