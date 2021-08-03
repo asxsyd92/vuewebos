@@ -134,6 +134,16 @@
       contentSelectChange: this.contentSelectChange
     }
   
+  },  watch: {
+     list2(val, oldVal){//普通的watch监听
+         console.log("a: "+val, oldVal);
+     },
+    list2: {
+      handler(v) {
+        this.$emit('change', v);
+      },
+      deep: true
+    }
   },
     methods: {
         clickComponent:function(item) {

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 
 import layui from 'layui-src'
-import init from '../static/js/init.js';
+import init from './assets/js/init.js';
 import VueTaber from '@/components/tabs/index.js'
 import tabs from '@/tabs.js'
 import router from './router'

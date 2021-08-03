@@ -38,6 +38,6 @@ export default {
 // }
 </script>
 <style>
- @import '../../../static/css/vue-tabs.css';
+ @import './../../assets/css/vue-tabs.css';
  </style>
 

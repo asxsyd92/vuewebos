@@ -72,22 +72,27 @@
             </ul>
         </div>
         <!-- 顶部结束 -->
-
+        <div id="password" style="display:none">
+            <password></password>
+        </div>
     </div>
-    
+
 </template>
 <script>
+    import password from "@/pages/users/password.vue"
     export default {
         name: 'sysheader', data() {
             return {
                 users: []
             }
 
-        }, mounted: function () {
+        }, 
+        components: { password },
+      mounted: function () {
             var m = this;
             m.getuser();
             m.showtime();
-        let form = layui.form,element=layui.element;
+            let form = layui.form, element = layui.element;
             form.render();
             element.render();
         }, methods: {
@@ -102,38 +107,41 @@
                 us.picture = window.localStorage["picture"];
                 m.users = us;
             },
-        setpassword:function(){
-            console.log("xiugai")
-       this.$taber.open({
-                name:"password",
-                params: {
-                    title: "修改密码"
-                }
-            })
-
-        }, exit:function() {
+            setpassword: function () {
+             
+                layui.layer.open({
+                    type: 1,
+                    title: '修改密码',
+                    shadeClose: true,
+                    shade: 0.8,
+            
+                    area: ['35%', '55%'],
+                    content: document.getElementById("password").innerHTML
+                });
+                console.log(this)
+            }, exit: function () {
                 var m = this;
 
                 layui.layer.confirm('你确定要退出系统吗？', {
                     btn: ['确定', '取消'] //按钮
                 }, function (index) {
-                     layui.layer.close(index);
+                    layui.layer.close(index);
                     window.localStorage.clear();
                     window.sessionStorage.clear()
                     m.$router.push('/login');
                 }, function () {
 
                 });
-            },showtime:function(){
-                        try {
+            }, showtime: function () {
+                try {
                     setInterval(function () {
                         var time = document.getElementById("datatime");
                         var show_time = document.getElementById("show_time");
 
                         var da = new Date();
-                        if(time!=null&time!=undefined){
-                        time.innerHTML = da.getFullYear() + "-" + (da.getMonth() + 1) + "-" + da.getDate();
-                        show_time.innerHTML = da.getHours() + ":" + da.getMinutes() + ":" + da.getSeconds() + ' 星期' + '日一二三四五六'.charAt(da.getDay());
+                        if (time != null & time != undefined) {
+                            time.innerHTML = da.getFullYear() + "-" + (da.getMonth() + 1) + "-" + da.getDate();
+                            show_time.innerHTML = da.getHours() + ":" + da.getMinutes() + ":" + da.getSeconds() + ' 星期' + '日一二三四五六'.charAt(da.getDay());
                         }
                     }, 100);
                 } catch (e) { console.log(e); }

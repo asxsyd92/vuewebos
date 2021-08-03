@@ -30,8 +30,7 @@
     </div>
 </template>
 <script>
-    //   import  '../../../static/login/js/fun.base.js';
-        // import {store} from '@/store/index';
+
     export default {
         name: 'login',
         data() {
@@ -159,5 +158,5 @@
     }
 </script>
 <style>
-    @import '../../../static/login/css/main.css';
+    @import './../../assets/login/css/main.css';
 </style>

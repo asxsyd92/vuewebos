@@ -42,11 +42,17 @@ export default {
     },
     methods: {
         appendContent (tab) {
+            if(tab!=null&&tab!=undefined&& tab.params.title!=null&&tab.params.title!=undefined){
+               tab. meta.title=tab.params.title;
+            }
+         
             let Component = cached[tab.name]
             const _this = this
+                console.log(_this);
             let promise
             if (!Component) {
                 if (isFunction(tab.meta.component)) {
+                    console.log(tab);
                     const asyncFn = tab.meta.component
                     this.$set(tab, 'loading', true)
                     promise = new Promise(asyncFn).then((Component) => {

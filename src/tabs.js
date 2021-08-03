@@ -25,16 +25,21 @@ export default [{
         next()
     }
 }, {
-    name: 'test2',
-    title: '测试2',
+    name: 'querylist',
+    title: '列表',
     component: resolve => {
-        setTimeout(() => {
-            resolve({
-                template: '<p>测试2</p>'
-            })
-        }, 1000)
-    }
-}, {
+        require.ensure(['./pages/common/querylist.vue'], () => {
+            resolve(require('./pages/common/querylist.vue'))
+        })
+    // resolve => {
+    //     setTimeout(() => {
+    //         resolve({
+    //             template: '<p>测试2</p>'
+    //         })
+    //     }, 1000)
+     }
+},
+ {
     name: 'async',
     title: '异步组件',
     component: resolve => {
