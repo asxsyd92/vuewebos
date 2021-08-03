@@ -21,6 +21,13 @@ npm install  layui-src
 
 # 第五步：在main.js中import layui
  import layui from 'layui-src'
+# 第6步：安装vuedraggable用于拖拽实现拖拽表单
+ npm i vuedraggable
+
+ # 喜欢使用jquery可用安装
+npm install jquery    
+ # 安装请求
+npm install --save axios
 ```
 
 
