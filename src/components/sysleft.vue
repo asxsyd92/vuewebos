@@ -83,13 +83,18 @@ export default {
          
 
                 }).catch(res=>{
+                    if(res.success){
                      var mydata = res.data;
                     m.menus = mydata;
             setTimeout(function () {
                         m.init();
                     }, 1000);
                     console.log(res);
+                    }else{
+                          console.log(res);
+                    }
                 });
+                
             },
                Color: function (_this) {
                 console.log(_this);

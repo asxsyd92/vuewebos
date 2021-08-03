@@ -14,11 +14,12 @@ export default [{
         next()
     }
 }, {
-    name: 'test1',
-    title: '测试1',
-    component: {
-        template: '<h2>测试1</h2>'
-    },
+    name: 'formdesign',
+    title: '表单设计',
+    component:  resolve => {
+        require.ensure(['./pages/formdesign/formdesign.vue'], () => {
+            resolve(require('./pages/formdesign/formdesign.vue'))
+        })},
     beforeCreate (tab, next) {
         console.log('before create:', tab)
         next()
