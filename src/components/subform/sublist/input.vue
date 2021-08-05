@@ -16,13 +16,15 @@ export default {
 //       contentSelectChange: this.contentSelectChange
 //     }
 //   },
+
+    inject: ['data'],  
   name: 'subinput',
-  props: {
-    data: {
-      type: Object,
-      required: true
-    },
-    model: Object
-  }
+  // props: {
+  //   fromData: {
+  //     type: Object,
+  //     required: true
+  //   },
+  //   model: Object
+  // }
 }
 </script>

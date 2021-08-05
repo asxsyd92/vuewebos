@@ -78,7 +78,7 @@ export default {
          getmenu: function () {
                 var m = this;
                 console.log(m);
-                m.$post('http://asxsyd92.com/api/users/GetAppList', {}).then(res => {
+                m.$post(m.host+'/api/users/GetAppList', {}).then(res => {
                  console.log(res);
          
 
@@ -91,7 +91,7 @@ export default {
                     }, 1000);
                     console.log(res);
                     }else{
-                          console.log(res);
+                           layer.msg(res.msg, { icon: 2 });
                     }
                 });
                 

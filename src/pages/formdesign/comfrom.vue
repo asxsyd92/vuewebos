@@ -1,11 +1,11 @@
 <template>
-    <subinput :data="data"></subinput>
+    <submitfrom :data="fromData"></submitfrom>
 </template>
 <script>
-  import subinput from "@/components/subform/input";
+  import submitfrom from "@/components/subform/submitfrom";
 export default {
         components: {
-      subinput
+      submitfrom
     },inject: ['fromData'],  watch: {
     'fromData': {
       handler(v) {

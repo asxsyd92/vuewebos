@@ -14,7 +14,7 @@
                 :group="{ name: 'people', pull: 'clone', put: false }" :clone="clone" @change="log"   animation="300" >
            
 
-               <subinput v-for="li in fromdata" :key="li.name" :data="li" ></subinput>
+               <submitfrom v-for="li in fromdata" :key="li.name" :data="li" ></submitfrom>
               </draggable>
             </div>
           </div>
@@ -77,7 +77,7 @@
 <script>
   import draggable from "vuedraggable";
   import _ from 'lodash';
-  import subinput from "@/components/subform/input";
+  import submitfrom from "@/components/subform/submitfrom";
   import comfrom from "@/pages/formdesign/comfrom";
   let idGlobal = 8;
   export default {
@@ -85,7 +85,7 @@
     display: "Custom Clone",
     order: 3,
     components: {
-      draggable,subinput,comfrom
+      draggable,submitfrom,comfrom
     },
     data() {
       return {

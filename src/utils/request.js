@@ -116,7 +116,7 @@ axios.interceptors.response.use(
  obj.message=errMsg;
  obj.msg=obj.message;
  obj.success=false;
- obj.data=null;
+ obj.data=obj;
     return Promise.reject(obj)
   }
 )
