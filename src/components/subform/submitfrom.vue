@@ -1,27 +1,36 @@
 <template>
-    <subinput  :data="fromData"></subinput>
+<div>
+  <osinput v-if="data.type=='input'" :data="data"></osinput>
+  <osradio v-if="data.type=='radio'" :data="data.data"></osradio>
+</div>
+
 </template>
 <script>
-  import subinput from "@/components/subform/sublist/input";
+import webfrom from '@/components/subform/webfrom.js';
+
 export default {
-    data(){
-        return {
-            data:this.fromData[0]
-        }
+   
+    components:{  ...webfrom},
+   // inject: ['formjson'],   
+   props: {
+    data: {
+      type: Object,
+      required: true
     },
-    components:{subinput},
-    inject: ['fromData'],   provide() {
-    return {
-      data:this.data,
-      contentSelectChange: this.contentSelectChange
-    }}, 
-    watch: {
-    'fromData': {
-      handler(v) {
-        this.$emit('change', v);
-      },
-      deep: true
-    }},mounted(){}
+    model: Object
+  },
+    // watch: {
+    // 'formjson': {
+    //   handler(v) {
+    //     this.$emit('change', v);
+    //   },
+    //   deep: true
+    // }},
+    mounted(){
+      debugger;
+      console.log(this.data);
+      
+    }
 
 }
 </script>
