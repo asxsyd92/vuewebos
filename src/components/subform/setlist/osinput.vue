@@ -4,7 +4,7 @@
   <div class="layui-form-item">
       <label class="layui-form-label">中文名称</label>
       <div class="layui-input-block">
-
+      
         <input type="text" name="label" :value="data.label" class="layui-input">
       </div>
     </div>
@@ -74,9 +74,20 @@
   export default {
     data(){
       return {
-     ids:this.data.id
       }
-    },
+    },  
+    //  watch: {
+    // 'data': {
+    //   handler(v) {
+    //     console.log(v);
+    //     this.data=v;
+    //     this.$emit('change', v);
+    //     layui.form.render(); //更新全部
+    //   console.log(this.data.data);
+    //  layui.form.val('setings',this.data.data );
+    //   },
+    //   deep: true
+    // }},
     props: {
       data: {
         type: Object,
@@ -84,9 +95,10 @@
       },
       model: Object
     }, mounted() {
-      this.ids=this.data.id;
-      layui.form.render(); //更新全部
-     layui.form.val('setings',this.data.data );
+      //this.ids=this.data.id;
+    //   layui.form.render(); //更新全部
+    //   console.log(this.data.data);
+    //  layui.form.val('setings',this.data.data );
     }
   }
 </script>

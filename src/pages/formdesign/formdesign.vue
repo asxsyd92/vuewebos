@@ -16,8 +16,8 @@
               <div class="layui-row">
                 <div class="layui-col-xs6 ">
                   <ul class="layui-row layui-col-space10 fly-shortcut">
-                    <draggable class="dragArea list-group" :list="fromdata"
-                      :group="{ name: 'people', pull: 'clone', put: false }" @change="log">
+                    <draggable class="dragArea list-group" :list="fromdata"          :clone="clone"        animation="300"
+                      :group="{ name: 'people', pull: 'clone', put: false,sort: true, }" @change="log">
                       <li v-for="li in fromdata" :key="li.id" :data="li" class="layui-col-sm6 layui-col-xs6"> <span><i
                             :class=" 'fa '+ li.icon"></i><cite>{{li.name}}</cite></span> </li>
                     </draggable>
@@ -57,7 +57,7 @@
             <div class="layui-card-header">表单生成器</div>
             <div class="layui-card-body">
               <form class="layui-form" :fromData="list2">
-                <draggable class="dragArea list-group" :list="list2" group="people" @change="log">
+                <draggable class="dragArea list-group" :list="list2" group="people" @change="log"         animation="300">
                   <comfrom @click.native="clickComponent(li)" class="list-group-item" v-for="li in list2" :key="li.id"
                     :data="li" @change="contentChange" @select-change="contentSelectChange"></comfrom>
                 </draggable>
@@ -92,6 +92,7 @@
 <script>
   import draggable from "vuedraggable";
   import _ from 'lodash';
+   import Enumerable from 'linq'
   import submitfrom from "@/components/subform/submitfrom";
   import comfrom from "@/pages/formdesign/comfrom";
   import setting from "@/components/subform/setting";
@@ -106,13 +107,16 @@
     data() {
       return {
        sets: null,
+       seleid:"",
         list2: [
 
         ], fromdata: [{
           icon: "fa fa-edit",
           name: "输入框",
-          id: "1",type:"input",
+          id: "1",
+          type:"input",
           data: {
+                id: "1",
             "col": "layui-col-md12",
             "label": "标题2",
             "type": "text",
@@ -130,6 +134,7 @@
           id: "2",
           type:"radio",
           data: {
+                id: "2",
             "col": "layui-col-md12",
             "label": "单选框",
             "type": "radio",
@@ -159,6 +164,7 @@
           name: "复选框",
           id: "3",type:"checkbox",
           data: {
+                id: "3",
             "col": "layui-col-md12",
             "label": "复选框",
             "type": "text",
@@ -176,6 +182,7 @@
           name: "原始复选框",
           id: "4",type:"checkbox",
           data: {
+                id: "4",
             "col": "layui-col-md12",
             "label": "原始复选框",
             "type": "text",
@@ -191,10 +198,37 @@
         ]
       };
     }, mounted() {
+      var m=this;
       console.log('3')
   //监听提交
- layui. form.on('submit(setsubmit)', function(data){
-   layui. layer.alert(JSON.stringify(data.field), {
+     layui. form.on('submit(setsubmit)', function(data){
+          var id=    m.sets.id;
+   let temp = Enumerable.from(m.list2).firstOrDefault(i =>i.id ==id);
+
+   temp.data=data.field;
+    var newArr = m.list2.filter(item => {
+      if(item.id==id){
+        item.data=data.field;
+      }
+        console.log(item);
+	          // if (tag.id !== item.id) {
+	          //   return true
+	          // }
+	        })
+//     Enumerable.from(m.list2).forEach(function(value, index){
+//          layui. layer.alert(JSON.stringify(value), {
+//       title: '最终的提交信息'
+//     })
+//       console.log("值="+value+",索引="+index);
+//        //  document.write("值="+value+",索引="+index);   
+//  });
+
+   //m.list2[0].data=data.field;
+        layui. layer.alert(JSON.stringify(newArr), {
+      title: '最终的提交信息'
+    })
+   console.log(m.list2);
+   layui. layer.alert(JSON.stringify(m.list2), {
       title: '最终的提交信息'
     })
     return false;
@@ -202,18 +236,17 @@
     },
     provide() {
       return {
-        formjson: this.list2,settinglist:this.sets,
+        formjson: this.list2,
+        settinglist:this.sets,
         contentSelectChange: this.contentSelectChange
       }
 
     },
     watch: {
-      list2(val, oldVal) {//普通的watch监听
-        console.log("a: " + val, oldVal);
-      },
+
       list2: {
         handler(v) {
-          this.$emit('change', v);
+          this.$emit('click.native', v);
         },
         deep: true
       }
@@ -221,12 +254,23 @@
     methods: {
       add(obj) {
         console.log(obj)
-        const newObj = Object.assign(_.cloneDeep(obj.data), list2);
-        return newObj;
+       // const newObj = Object.assign(_.cloneDeep(obj.data), list2);
+      // const newObj = Object.assign(_.cloneDeep(obj), {id: `${obj.name}_${new Date().getTime()}`});
+      return newObj;
+
       },
       clickComponent: function (item) {
 
        this.sets=item;
+       this.$emit('change', item);
+         layui.form.render(); //更新全部
+         setTimeout(function(){
+           console.log(1);
+        layui.form.val('setings',item.data );
+         },100);
+        console.log(2);
+           layui.form.render(); //更新全部
+             console.log(3);
        // layer.msg(JSON.stringify(item));
 
         // this.formData.formDataList.forEach(f => {
@@ -253,9 +297,12 @@
       },
 
       clone(obj) {
-        console.log(obj)
-        const newObj = Object.assign(_.cloneDeep(obj), list2);
-        return newObj;
+            const newObj = Object.assign(_.cloneDeep(obj), {id: `${obj.id}_${new Date().getTime()}`});
+      return newObj;
+      //  var m= this;
+      //   console.log(obj)
+      //   const newObj = Object.assign(_.cloneDeep(obj), m.list2);
+      //   return newObj;
       },
     }
   };
