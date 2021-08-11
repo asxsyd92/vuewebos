@@ -24,7 +24,18 @@ export default [{
         console.log('before create:', tab)
         next()
     }
-}, {
+}, , {
+    name: 'showfrom',
+    title: '表单',
+    component:  resolve => {
+        require.ensure(['./pages/formdesign/showfrom.vue'], () => {
+            resolve(require('./pages/formdesign/showfrom.vue'))
+        })},
+    beforeCreate (tab, next) {
+        console.log('before create:', tab)
+        next()
+    }
+},{
     name: 'querylist',
     title: '列表',
     component: resolve => {

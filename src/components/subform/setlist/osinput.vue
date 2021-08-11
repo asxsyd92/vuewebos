@@ -63,7 +63,10 @@
     </div>
   <div class="layui-form-item">
     <div class="layui-input-block">
-      <button type="submit" class="layui-btn" lay-submit="" lay-filter="setsubmit">保存</button>
+      <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="setsubmit">保存</button>
+
+ <button type="submit" class="layui-btn layui-btn-danger layui-btn-sm" lay-submit="" lay-filter="delsubmit">移除</button>
+
 
     </div>
   </div>

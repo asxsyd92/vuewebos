@@ -56,6 +56,12 @@
           <div class="layui-card">
             <div class="layui-card-header">表单生成器</div>
             <div class="layui-card-body">
+              <header class="el-header _fc-m-tools">
+                <button @click="show()" type="button" class="layui-btn layui-btn-normal layui-btn-sm">
+               
+                    预 览 
+                    </button>
+              </header>
               <form class="layui-form" :fromData="list2">
                 <draggable class="dragArea list-group" :list="list2" group="people" @change="log"         animation="300">
                   <comfrom @click.native="clickComponent(li)" class="list-group-item" v-for="li in list2" :key="li.id"
@@ -198,8 +204,22 @@
         ]
       };
     }, mounted() {
-      var m=this;
+         var m=this;
+if(window.localStorage.data!=undefined){
+m.list2= JSON.parse( window.localStorage.data)
+
+}
+
+
+   
       console.log('3')
+
+      //window.localStorage.data
+           layui. form.on('submit(delsubmit)', function(data){
+  var id=    m.sets.id;
+          let temp = Enumerable.from(m.list2).where(i =>i.id !=id).toArray();
+          m.list2=temp;
+           });
   //监听提交
      layui. form.on('submit(setsubmit)', function(data){
           var id=    m.sets.id;
@@ -304,6 +324,10 @@
       //   const newObj = Object.assign(_.cloneDeep(obj), m.list2);
       //   return newObj;
       },
+      show(){
+        var m=this;
+      window.localStorage["data"]=JSON.stringify(  m.list2);
+      }
     }
   };
 </script>
@@ -359,4 +383,34 @@
   .fly-shortcut li .layui-icon {
     background-color: #2F9688;
   }
+
+._fc-m-tools {
+    height: 40px;
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    border: 1px solid #ECECEC;
+    border-top: 0 none;
+}
+
+.el-header {
+    padding: 0 20px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+
+
+header {
+    display: block;
+}
+
+._fc-designer {
+    height: 100%;
+    min-height: 500px;
+    overflow: hidden;
+    cursor: default;
+    position: relative;
+}
+
 </style>
