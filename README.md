@@ -17,7 +17,7 @@ $ npm install  //下载依赖包(一般启动前都需要的)
 
 # 安装layui
 npm install  layui-src 
-
+npm install layui-src@1.2.0
 
 # 第五步：在main.js中import layui
  import layui from 'layui-src'

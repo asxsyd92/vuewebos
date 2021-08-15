@@ -1,5 +1,5 @@
 <template>
-  <div :v-if="data!=null">
+  <div :v-if="data!=null&&data!=undefined">
 
   <div class="layui-form-item">
       <label class="layui-form-label">中文名称</label>
@@ -20,7 +20,13 @@
         <input type="text" name="placeholder" :value="data.placeholder" class="layui-input">
       </div>
     </div>
-     
+       <div class="layui-form-item">
+      <label class="layui-form-label">值</label>
+      <div class="layui-input-block">
+      
+        <input type="text" name="value" :value="data.value" class="layui-input">
+      </div>
+    </div>
       
       <div class="layui-form-item">
       <label class="layui-form-label">类型</label>
@@ -61,6 +67,35 @@
         </select>
       </div>
     </div>
+
+<!-- <div class="layui-form-item">
+    <label class="layui-form-label">是否只读</label>
+    <div class="layui-input-block">
+      <input type="radio" name="readonly" value="false" title="否" checked="">
+      <input type="radio" name="readonly" value="true" title="是">
+    </div>
+  </div> -->
+  <div class="layui-form-item">
+    <label class="layui-form-label">是否可编辑</label>
+    <div class="layui-input-block">
+      <input type="radio" name="disabled" value="false" title="否" checked="">
+      <input type="radio" name="disabled" value="true" title="是">
+    </div>
+  </div>
+    <div class="layui-form-item">
+    <label class="layui-form-label">文本显示</label>
+    <div class="layui-input-block">
+      <input type="radio" name="showtext" value="false" title="否" checked="">
+      <input type="radio" name="showtext" value="true" title="是">
+    </div>
+  </div>
+    <div class="layui-form-item">
+    <label class="layui-form-label">是否隐藏</label>
+    <div class="layui-input-block">
+      <input type="radio" name="display" value="block" title="否" checked="">
+      <input type="radio" name="display" value="none" title="是">
+    </div>
+  </div>
   <div class="layui-form-item">
     <div class="layui-input-block">
       <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="setsubmit">保存</button>
@@ -70,15 +105,11 @@
 
     </div>
   </div>
-
   </div>
 </template>
 <script>
   export default {
-    data(){
-      return {
-      }
-    },  
+ 
     //  watch: {
     // 'data': {
     //   handler(v) {

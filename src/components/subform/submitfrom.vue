@@ -2,6 +2,8 @@
 <div>
   <osinput v-if="data.type=='input'" :data="data"></osinput>
   <osradio v-if="data.type=='radio'" :data="data.data"></osradio>
+  <ueditor v-if="data.type=='ueditor'" :data="data.data"></ueditor>
+  
 </div>
 
 </template>

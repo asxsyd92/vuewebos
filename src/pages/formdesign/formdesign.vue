@@ -1,95 +1,90 @@
 <template>
-
   <div>
-
     <div class="layui-row">
-<div class="layui-col-space12">
-      <div class="layui-col-xs3 fdtools ">
+      <div class="layui-col-space12">
+        <div class="layui-col-xs3 fdtools ">
 
-        <div class="layui-col-md12">
-          <div class="layui-card">
-            <div class="layui-card-header">表单组件</div>
-            <div class="layui-card-body">
-              <!-- <draggable class="dragArea list-group"
-                :group="{ name: 'people', pull: 'clone', put: false }"  @change="log"   animation="300" > -->
+          <div class="layui-col-md12">
+            <!-- <div class="layui-card"> -->
+              <div class="layui-card-header">表单组件</div>
+              <div class="layui-card-body">
+                <div class="layui-row">
+                  <div class="layui-col-xs6 ">
+                    <ul class="layui-row layui-col-space10 fly-shortcut">
+                      <draggable class="dragArea list-group" :list="fromdata" :clone="clone" animation="300"
+                        :group="{ name: 'people', pull: 'clone', put: false,sort: true, }" @change="log">
+                        <li v-for="li in fromdata" :key="li.id" :data="li" class="layui-col-xs6 layui-col-xs6"> <span><i
+                              :class=" 'fa '+ li.icon"></i><cite>{{li.name}}</cite></span> </li>
+                      </draggable>
+                    </ul>
+                  </div>
+                <!-- </div> -->
 
-              <div class="layui-row">
-                <div class="layui-col-xs6 ">
-                  <ul class="layui-row layui-col-space10 fly-shortcut">
-                    <draggable class="dragArea list-group" :list="fromdata"          :clone="clone"        animation="300"
-                      :group="{ name: 'people', pull: 'clone', put: false,sort: true, }" @change="log">
-                      <li v-for="li in fromdata" :key="li.id" :data="li" class="layui-col-sm6 layui-col-xs6"> <span><i
-                            :class=" 'fa '+ li.icon"></i><cite>{{li.name}}</cite></span> </li>
-                    </draggable>
-                  </ul>
-                  <!-- <div class="grid-demo" ></div> -->
-                </div>
               </div>
-              <!-- <submitfrom ></submitfrom> -->
-
             </div>
           </div>
-        </div>
-        <div class="layui-col-md12">
-          <div class="layui-card">
-            <div class="layui-card-header">辅助组件</div>
-            <div class="layui-card-body">
-              结合 layui 的栅格系统<br>
-              轻松实现响应式布局
+          <div class="layui-col-md12">
+            <div class="layui-card">
+              <div class="layui-card-header">辅助组件</div>
+              <div class="layui-card-body">
+                结合 layui 的栅格系统<br>
+                轻松实现响应式布局
+              </div>
             </div>
           </div>
-        </div>
-        <div class="layui-col-md12">
-          <div class="layui-card">
-            <div class="layui-card-header">布局组件</div>
-            <div class="layui-card-body">
-              结合 layui 的栅格系统<br>
-              轻松实现响应式布局
+          <div class="layui-col-md12">
+            <div class="layui-card">
+              <div class="layui-card-header">布局组件</div>
+              <div class="layui-card-body">
+                结合 layui 的栅格系统<br>
+                轻松实现响应式布局
+              </div>
             </div>
           </div>
+
         </div>
 
-      </div>
-
-      <div class="layui-col-xs5 fdtools">
-        <div class="layui-col-md12">
-          <div class="layui-card">
-            <div class="layui-card-header">表单生成器</div>
-            <div class="layui-card-body">
-              <header class="el-header _fc-m-tools">
-                <button @click="show()" type="button" class="layui-btn layui-btn-normal layui-btn-sm">
-               
-                    预 览 
-                    </button>
-              </header>
-              <form class="layui-form" :fromData="list2">
-                <draggable class="dragArea list-group" :list="list2" group="people" @change="log"         animation="300">
-                  <comfrom @click.native="clickComponent(li)" class="list-group-item" v-for="li in list2" :key="li.id"
-                    :data="li" @change="contentChange" @select-change="contentSelectChange"></comfrom>
-                </draggable>
-              </form>
-            </div>
+        <div class="layui-col-xs5 fdtools">
+          <div class="layui-col-md12">
+            <!-- <div class="layui-card"> -->
+              <div class="layui-card-header">表单生成器</div>
+              <div class="layui-card-body">
+                <header class="el-header _fc-m-tools">
+                  <button @click="show()" type="button" class="layui-btn layui-btn-normal layui-btn-sm"> 预 览</button>
+                </header>
+                <form class="layui-form" :fromData="list2">
+                  <draggable class="dragArea list-group" :list="list2" group="people" @change="log" animation="300">
+                    <comfrom @click.native="clickComponent(li)" class="list-group-item" v-for="li in list2" :key="li.id"
+                      :data="li" @change="contentChange" @select-change="contentSelectChange"></comfrom>
+                  </draggable>
+                </form>
+              </div>
+            <!-- </div> -->
           </div>
+
+
         </div>
-
-
-      </div>
-      <div class="layui-col-xs3 fdtools">
-        <div class="layui-col-md12">
-          <div class="layui-card">
-            <div class="layui-card-header">属性</div>
-            <div class="layui-card-body">
-               <div class="layui-form"   lay-filter="setings">
+        <div class="layui-col-xs3 fdtools">
+          <div class="layui-col-md12">
+            <!-- <div class="layui-card"> -->
+              <div class="layui-card-header">属性</div>
+              <div class="layui-card-body">
+                <div class="layui-form" lay-filter="setings">
                   <setting :data="sets" v-if="sets!=null||sets!=undefined"></setting>
-               </div>
-        
-            </div>
+                </div>
+
+              </div>
+            <!-- </div> -->
           </div>
         </div>
       </div>
-</div>
+    </div>
+  <div id="_webosdialog" style="display:none">
+    <div v-if="dialogdata.length>0">
+  <submitfrom  v-for="li in dialogdata" :key="li.id" :data="li" ></submitfrom>
     </div>
 
+  </div>
   </div>
 
 
@@ -98,7 +93,7 @@
 <script>
   import draggable from "vuedraggable";
   import _ from 'lodash';
-   import Enumerable from 'linq'
+  import Enumerable from 'linq'
   import submitfrom from "@/components/subform/submitfrom";
   import comfrom from "@/pages/formdesign/comfrom";
   import setting from "@/components/subform/setting";
@@ -108,21 +103,19 @@
     display: "Custom Clone",
     order: 3,
     components: {
-      draggable, submitfrom, comfrom,setting
+      draggable, submitfrom, comfrom, setting
     },
     data() {
       return {
-       sets: null,
-       seleid:"",
-        list2: [
-
-        ], fromdata: [{
+        sets: null,
+        seleid: "",dialogdata:[],
+        list2: [ ], fromdata: [{
           icon: "fa fa-edit",
           name: "输入框",
           id: "1",
-          type:"input",
+          type: "input",
           data: {
-                id: "1",
+            id: "1",
             "col": "layui-col-md12",
             "label": "标题2",
             "type": "text",
@@ -130,17 +123,20 @@
             "autocomplete": "off",
             "placeholder": "placeholder",
             "inputclass": "layui-input",
-            "value":"",
-            "data":[],
-            "input":[]
+    
+            "disabled":"false",
+            "showtext":"false",
+            "value": "",
+            "data": [],
+            "input": []
           }
         }, {
           icon: "fa fa-dot-circle-o",
           name: "单选框",
           id: "2",
-          type:"radio",
+          type: "radio",
           data: {
-                id: "2",
+            id: "2",
             "col": "layui-col-md12",
             "label": "单选框",
             "type": "radio",
@@ -148,29 +144,32 @@
             "autocomplete": "off",
             "placeholder": "placeholder",
             "inputclass": "layui-input",
-            "value":"",
-            "data":"",
-            "input":[{
-                 value:"1",
-                 title:"男",
-                 checked:true,
-                 disabled:false
-            },{
-                 value:"2",
-                 title:"女",
-                 checked:false,
-                 disabled:false
+            "value": "",
+            "data": "",
+
+            "disabled":"false",
+            "showtext":"false",
+            "input": [{
+              value: "1",
+              title: "男",
+              checked: true,
+              disabled: false
+            }, {
+              value: "2",
+              title: "女",
+              checked: false,
+              disabled: false
             }
-            
+
             ],
           }
         },
         {
           icon: "fa fa-edit",
           name: "复选框",
-          id: "3",type:"checkbox",
+          id: "3", type: "checkbox",
           data: {
-                id: "3",
+            id: "3",
             "col": "layui-col-md12",
             "label": "复选框",
             "type": "text",
@@ -178,17 +177,19 @@
             "autocomplete": "off",
             "placeholder": "placeholder",
             "inputclass": "layui-input",
-            "value":"",
-            "data":[],
-            "input":[]
+            "disabled":"false",
+            "showtext":"false",
+            "value": "",
+            "data": [],
+            "input": []
           }
         },
         {
           icon: "fa fa-edit",
           name: "原始复选框",
-          id: "4",type:"checkbox",
+          id: "4", type: "checkbox",
           data: {
-                id: "4",
+            id: "4",
             "col": "layui-col-md12",
             "label": "原始复选框",
             "type": "text",
@@ -196,68 +197,102 @@
             "autocomplete": "off",
             "placeholder": "placeholder",
             "inputclass": "layui-input",
-            "value":"",
-            "data":[],
-            "input":[]
+            "readonly":true,
+            "disabled":false,
+            "showtext":false,
+            "display":"block",
+            "value": "",
+            "data": [],
+            "input": []
           }
         }
+,
+        {
+          icon: "fa fa-edit",
+          name: "富文本",
+          id: "5", type: "ueditor",
+          data: {
+            id: "5",
+            "col": "layui-col-md12",
+            "label": "富文本",
+            "type": "text",
+            "name": "name2",
+            "autocomplete": "off",
+            "placeholder": "placeholder",
+            "inputclass": "layui-input",
+            "readonly":true,
+            "disabled":false,
+            "showtext":false,
+            "display":"block",
+            "value": "",
+            "data": [],
+            "input": []
+          }
+        }
+        
         ]
       };
-    }, mounted() {
-         var m=this;
-if(window.localStorage.data!=undefined){
-m.list2= JSON.parse( window.localStorage.data)
+    }, 
+      updated () {
+        console.log( this.$els);
+                console.log('更新之后')
+                console.log(this.$refs.self)
+              }
+    ,mounted() {
+      var m = this;
+      if (window.localStorage.data != undefined) {
+        m.list2 = JSON.parse(window.localStorage.data)
 
-}
+      }
 
 
-   
+
       console.log('3')
 
       //window.localStorage.data
-           layui. form.on('submit(delsubmit)', function(data){
-  var id=    m.sets.id;
-          let temp = Enumerable.from(m.list2).where(i =>i.id !=id).toArray();
-          m.list2=temp;
-           });
-  //监听提交
-     layui. form.on('submit(setsubmit)', function(data){
-          var id=    m.sets.id;
-   let temp = Enumerable.from(m.list2).firstOrDefault(i =>i.id ==id);
+      layui.form.on('submit(delsubmit)', function (data) {
+        var id = m.sets.id;
+        let temp = Enumerable.from(m.list2).where(i => i.id != id).toArray();
+        m.list2 = temp;
+      });
+      //监听提交
+      layui.form.on('submit(setsubmit)', function (data) {
+        var id = m.sets.id;
+        let temp = Enumerable.from(m.list2).firstOrDefault(i => i.id == id);
 
-   temp.data=data.field;
-    var newArr = m.list2.filter(item => {
-      if(item.id==id){
-        item.data=data.field;
-      }
-        console.log(item);
-	          // if (tag.id !== item.id) {
-	          //   return true
-	          // }
-	        })
-//     Enumerable.from(m.list2).forEach(function(value, index){
-//          layui. layer.alert(JSON.stringify(value), {
-//       title: '最终的提交信息'
-//     })
-//       console.log("值="+value+",索引="+index);
-//        //  document.write("值="+value+",索引="+index);   
-//  });
+        temp.data = data.field;
+        var newArr = m.list2.filter(item => {
+          if (item.id == id) {
+            item.data = data.field;
+          }
+          console.log(item);
+          // if (tag.id !== item.id) {
+          //   return true
+          // }
+        })
+        //     Enumerable.from(m.list2).forEach(function(value, index){
+        //          layui. layer.alert(JSON.stringify(value), {
+        //       title: '最终的提交信息'
+        //     })
+        //       console.log("值="+value+",索引="+index);
+        //        //  document.write("值="+value+",索引="+index);   
+        //  });
 
-   //m.list2[0].data=data.field;
-        layui. layer.alert(JSON.stringify(newArr), {
-      title: '最终的提交信息'
-    })
-   console.log(m.list2);
-   layui. layer.alert(JSON.stringify(m.list2), {
-      title: '最终的提交信息'
-    })
-    return false;
-  });
+        //m.list2[0].data=data.field;
+        layui.layer.alert(JSON.stringify(newArr), {
+          title: '最终的提交信息'
+        })
+        console.log(m.list2);
+        layui.layer.alert(JSON.stringify(m.list2), {
+          title: '最终的提交信息'
+        })
+        return false;
+      });
     },
     provide() {
       return {
         formjson: this.list2,
-        settinglist:this.sets,
+        settinglist: this.sets,
         contentSelectChange: this.contentSelectChange
       }
 
@@ -274,24 +309,24 @@ m.list2= JSON.parse( window.localStorage.data)
     methods: {
       add(obj) {
         console.log(obj)
-       // const newObj = Object.assign(_.cloneDeep(obj.data), list2);
-      // const newObj = Object.assign(_.cloneDeep(obj), {id: `${obj.name}_${new Date().getTime()}`});
-      return newObj;
+        // const newObj = Object.assign(_.cloneDeep(obj.data), list2);
+        // const newObj = Object.assign(_.cloneDeep(obj), {id: `${obj.name}_${new Date().getTime()}`});
+        return newObj;
 
       },
       clickComponent: function (item) {
 
-       this.sets=item;
-       this.$emit('change', item);
-         layui.form.render(); //更新全部
-         setTimeout(function(){
-           console.log(1);
-        layui.form.val('setings',item.data );
-         },100);
+        this.sets = item;
+        this.$emit('change', item);
+        layui.form.render(); //更新全部
+        setTimeout(function () {
+          console.log(1);
+          layui.form.val('setings', item.data);
+        }, 100);
         console.log(2);
-           layui.form.render(); //更新全部
-             console.log(3);
-       // layer.msg(JSON.stringify(item));
+        layui.form.render(); //更新全部
+        console.log(3);
+        // layer.msg(JSON.stringify(item));
 
         // this.formData.formDataList.forEach(f => {
         //   if (f.name === 'Layout') {
@@ -317,16 +352,30 @@ m.list2= JSON.parse( window.localStorage.data)
       },
 
       clone(obj) {
-            const newObj = Object.assign(_.cloneDeep(obj), {id: `${obj.id}_${new Date().getTime()}`});
-      return newObj;
-      //  var m= this;
-      //   console.log(obj)
-      //   const newObj = Object.assign(_.cloneDeep(obj), m.list2);
-      //   return newObj;
+        const newObj = Object.assign(_.cloneDeep(obj), { id: `${obj.id}_${new Date().getTime()}` });
+        return newObj;
+        //  var m= this;
+        //   console.log(obj)
+        //   const newObj = Object.assign(_.cloneDeep(obj), m.list2);
+        //   return newObj;
       },
-      show(){
-        var m=this;
-      window.localStorage["data"]=JSON.stringify(  m.list2);
+      show() {
+        var m = this;
+        m.dialogdata=m.list2;
+        console.log( m.dialogdata);
+        setTimeout(() => {
+                layui.layer.open({
+                    type: 1,
+                    title: '表单预览',
+                    shadeClose: true,
+                    shade: 0.8,
+            
+                    area: ['35%', '55%'],
+                    content: document.getElementById("_webosdialog").innerHTML
+                });
+        }, 10);
+
+        window.localStorage["data"] = JSON.stringify(m.list2);
       }
     }
   };
@@ -384,33 +433,32 @@ m.list2= JSON.parse( window.localStorage.data)
     background-color: #2F9688;
   }
 
-._fc-m-tools {
+  ._fc-m-tools {
     height: 40px;
     align-items: center;
     display: flex;
     justify-content: flex-end;
     border: 1px solid #ECECEC;
     border-top: 0 none;
-}
+  }
 
-.el-header {
+  .el-header {
     padding: 0 20px;
     box-sizing: border-box;
     flex-shrink: 0;
-}
+  }
 
 
 
-header {
+  header {
     display: block;
-}
+  }
 
-._fc-designer {
+  ._fc-designer {
     height: 100%;
     min-height: 500px;
     overflow: hidden;
     cursor: default;
     position: relative;
-}
-
+  }
 </style>

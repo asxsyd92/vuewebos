@@ -22,7 +22,7 @@ export default {
         components: {
       submitfrom
     },  data(){return {
-data:JSON.parse( window.localStorage.data)
+  data:JSON.parse( window.localStorage.data)
 
     }},   
    // inject: ['formjson'],
