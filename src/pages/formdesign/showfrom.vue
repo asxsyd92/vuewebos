@@ -1,8 +1,8 @@
 <template>
 <div class="layui-card">
     <div class="layui-container">
-               <form class="layui-form">
-   <submitfrom  v-for="li in data" :key="li.id" :data="li" ></submitfrom>
+               <form class="layui-form" lay-filter="commonsubmit">
+          <submitfrom  v-for="li in data" :key="li.id" :data="li" ></submitfrom>
     
         <div class="layui-form-item">
     <div class="layui-input-block">

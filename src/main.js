@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 // import vueg from 'vueg'
-
+import LuckDraw from 'vue-luck-draw'
 import layui from 'layui-src'
 import init from './assets/js/init.js';
 import VueTaber from '@/components/tabs/index.js'
@@ -30,7 +30,7 @@ vueTaber.beforeCreateEach((tab, next) => {
     }
 })
 
-Vue.use(less).use(VueTaber)
+Vue.use(less).use(VueTaber).use(LuckDraw);
 
 /* eslint-disable no-new */
 new Vue({  

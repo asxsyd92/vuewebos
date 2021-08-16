@@ -64,6 +64,20 @@ export default [{
         // }, 3000)
     }
 }, {
+    name: 'luckywheel',
+    title: '抽奖',
+    component: resolve => {
+        require.ensure(['@/pages/activity/luckywheel.vue'], () => {
+            resolve(require('@/pages/activity/luckywheel.vue'))
+        })
+        // setTimeout(() => {
+        //     resolve({
+        //         template: '<h2>我是异步组件, 我也是受害者</h2>'
+        //     })
+        // }, 3000)
+    }
+},
+ {
     name: 'password',
     title: '修改密码',
     component: resolve => {

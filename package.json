@@ -26,6 +26,7 @@
     "stylus": "^0.54.8",
     "vue": "^2.5.2",
     "vue-json-viewer": "^2.2.19",
+    "vue-luck-draw": "^3.4.6",
     "vue-router": "^3.0.1",
     "vue-tabs": "^0.3.1",
     "vue-ueditor-wrap": "^2.5.6",
