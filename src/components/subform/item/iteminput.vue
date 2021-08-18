@@ -4,7 +4,7 @@
     <label class="layui-form-label">{{data.data.label}}</label>
     <div class="layui-input-block">
 
-      <input v-if="data.data.showtext=='false'" :type="data.data.type" :disabled="disabled" :name="data.data.name" :lay-verify="data.data.name" :autocomplete="data.data.autocomplete" :placeholder="data.data.placeholder" :class="data.data.inputclass">
+      <input v-if="data.data.showtext=='false'" :type="data.data.type" :disabled="disabled" :name="data.data.name" :lay-verify="data.data.required=='false'?'':'required'" :autocomplete="data.data.autocomplete" :placeholder="data.data.placeholder" :class="data.data.inputclass">
       <span v-if="data.data.showtext=='true'" style="line-height: 2.5;">{{data.data.value}}</span>
     </div>
   </div>
@@ -17,15 +17,6 @@ export default {
       disabled:false
     }
 },
-//      provide() {
-//     return {
-//       formData: this.form,
-//       contentSelectChange: this.contentSelectChange
-//     }
-//   },
-
-  //   inject: ['data'],  
-  // name: 'osinput',
   props: {
     data: {
       type: Object,

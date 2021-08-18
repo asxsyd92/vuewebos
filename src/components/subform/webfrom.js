@@ -1,7 +1,7 @@
-import osinput from './sublist/osinput';
-import osradio from './sublist/osradio';
-import ueditor from './sublist/ueditor';
+import iteminput from './item/iteminput';
+import itemradio from './item/itemradio';
+import ueditor from './item/ueditor';
 
 export default {
-    osinput,osradio,ueditor
+    iteminput,itemradio,ueditor
 }

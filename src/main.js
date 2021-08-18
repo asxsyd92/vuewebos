@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App'
 // import vueg from 'vueg'
 import LuckDraw from 'vue-luck-draw'
+
 import layui from 'layui-src'
 import init from './assets/js/init.js';
 import VueTaber from '@/components/tabs/index.js'

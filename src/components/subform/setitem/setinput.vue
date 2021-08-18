@@ -83,6 +83,13 @@
     </div>
   </div>
     <div class="layui-form-item">
+    <label class="layui-form-label">是否必填</label>
+    <div class="layui-input-block">
+      <input type="radio" name="required" value="false" title="否" checked="">
+      <input type="radio" name="required" value="true" title="是">
+    </div>
+  </div>
+    <div class="layui-form-item">
     <label class="layui-form-label">文本显示</label>
     <div class="layui-input-block">
       <input type="radio" name="showtext" value="false" title="否" checked="">

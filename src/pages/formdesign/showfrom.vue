@@ -1,6 +1,7 @@
 <template>
 <div class="layui-card">
     <div class="layui-container">
+       <div style="height:50px"></div>
                <form class="layui-form" lay-filter="commonsubmit">
           <submitfrom  v-for="li in data" :key="li.id" :data="li" ></submitfrom>
     
@@ -36,7 +37,7 @@ export default {
     mounted(){
       console.log(this.data);
            layui. form.on('submit(_submit)', function(data){
-
+console.log(data);
         layui. layer.alert(JSON.stringify(data.field), {
       title: '最终的提交信息'
     })

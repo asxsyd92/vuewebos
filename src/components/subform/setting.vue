@@ -1,6 +1,6 @@
 <template>
 
-<osinput v-if="data.type=='input'" :data="data"></osinput>
+<setinput v-if="data.type=='input'" :data="data"></setinput>
 </template>
 <script>
 import webset from '@/components/subform/webset.js';

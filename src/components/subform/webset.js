@@ -1,4 +1,4 @@
-import osinput from './setlist/osinput';
+import setinput from './setitem/setinput';
 export default {
-    osinput,
+    setinput,
 }

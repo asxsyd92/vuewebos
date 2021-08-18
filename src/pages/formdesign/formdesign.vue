@@ -92,6 +92,7 @@
 
 <script>
   import draggable from "vuedraggable";
+  import fromjson from '@/assets/js/data.js'
   import _ from 'lodash';
   import Enumerable from 'linq'
   import submitfrom from "@/components/subform/submitfrom";
@@ -109,129 +110,9 @@
       return {
         sets: null,
         seleid: "",dialogdata:[],
-        list2: [ ], fromdata: [{
-          icon: "fa fa-edit",
-          name: "输入框",
-          id: "1",
-          type: "input",
-          data: {
-            id: "1",
-            "col": "layui-col-md12",
-            "label": "标题2",
-            "type": "text",
-            "name": "name2",
-            "autocomplete": "off",
-            "placeholder": "placeholder",
-            "inputclass": "layui-input",
-    
-            "disabled":"false",
-            "showtext":"false",
-            "value": "",
-            "data": [],
-            "input": []
-          }
-        }, {
-          icon: "fa fa-dot-circle-o",
-          name: "单选框",
-          id: "2",
-          type: "radio",
-          data: {
-            id: "2",
-            "col": "layui-col-md12",
-            "label": "单选框",
-            "type": "radio",
-            "name": "name",
-            "autocomplete": "off",
-            "placeholder": "placeholder",
-            "inputclass": "layui-input",
-            "value": "",
-            "data": "",
-
-            "disabled":"false",
-            "showtext":"false",
-            "input": [{
-              value: "1",
-              title: "男",
-              checked: true,
-              disabled: false
-            }, {
-              value: "2",
-              title: "女",
-              checked: false,
-              disabled: false
-            }
-
-            ],
-          }
-        },
-        {
-          icon: "fa fa-edit",
-          name: "复选框",
-          id: "3", type: "checkbox",
-          data: {
-            id: "3",
-            "col": "layui-col-md12",
-            "label": "复选框",
-            "type": "text",
-            "name": "name2",
-            "autocomplete": "off",
-            "placeholder": "placeholder",
-            "inputclass": "layui-input",
-            "disabled":"false",
-            "showtext":"false",
-            "value": "",
-            "data": [],
-            "input": []
-          }
-        },
-        {
-          icon: "fa fa-edit",
-          name: "原始复选框",
-          id: "4", type: "checkbox",
-          data: {
-            id: "4",
-            "col": "layui-col-md12",
-            "label": "原始复选框",
-            "type": "text",
-            "name": "name2",
-            "autocomplete": "off",
-            "placeholder": "placeholder",
-            "inputclass": "layui-input",
-            "readonly":true,
-            "disabled":false,
-            "showtext":false,
-            "display":"block",
-            "value": "",
-            "data": [],
-            "input": []
-          }
-        }
-,
-        {
-          icon: "fa fa-edit",
-          name: "富文本",
-          id: "5", type: "ueditor",
-          data: {
-            id: "5",
-            "col": "layui-col-md12",
-            "label": "富文本",
-            "type": "text",
-            "name": "name2",
-            "autocomplete": "off",
-            "placeholder": "placeholder",
-            "inputclass": "layui-input",
-            "readonly":true,
-            "disabled":false,
-            "showtext":false,
-            "display":"block",
-            "value": "",
-            "data": [],
-            "input": []
-          }
-        }
-        
-        ]
-      };
+        list2: [ ], 
+        fromdata: fromjson.data
+           };
     }, 
       updated () {
         console.log( this.$els);
@@ -240,6 +121,7 @@
               }
     ,mounted() {
       var m = this;
+      console.log(this.fromdata);
       if (window.localStorage.data != undefined) {
         m.list2 = JSON.parse(window.localStorage.data)
 
@@ -291,7 +173,7 @@
     },
     provide() {
       return {
-        formjson: this.list2,
+        formjson: [],
         settinglist: this.sets,
         contentSelectChange: this.contentSelectChange
       }
