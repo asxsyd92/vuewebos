@@ -1,6 +1,8 @@
 <template>
-
+<div>
 <setinput v-if="data.type=='input'" :data="data"></setinput>
+<settextarea v-if="data.type=='textarea'" :data="data"></settextarea>
+</div>
 </template>
 <script>
 import webset from '@/components/subform/webset.js';

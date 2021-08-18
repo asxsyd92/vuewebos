@@ -1,5 +1,5 @@
 <template>
-<li :class="{'active': tabData.active, 'loading': tabData.loading}">{{tabData.meta.title}}<span class="btn-close" @click.stop="close">&times;</span></li>
+<li :class="{'active': tabData.active, 'loading': tabData.loading}">{{tabData.meta.title}}<span v-if="tabData.name!='home'" class="btn-close" @click.stop="close">&times;</span></li>
 </template>
 <script>
 export default {
@@ -8,6 +8,7 @@ export default {
     },
     methods: {
         close () {
+            console.log( this.tabData);
             this.$emit('close', this.tabData)
         }
     }

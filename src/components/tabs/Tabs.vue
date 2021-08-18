@@ -262,6 +262,7 @@ export default {
     zoom: 1;
 
     > li {
+            height: 25px;
         float: left;
         padding: 6px 18px;
         position: relative;

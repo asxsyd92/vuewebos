@@ -9,11 +9,11 @@
               <div class="layui-card-header">表单组件</div>
               <div class="layui-card-body">
                 <div class="layui-row">
-                  <div class="layui-col-xs6 ">
-                    <ul class="layui-row layui-col-space10 fly-shortcut">
+                  <div class="layui-col-ms3 ">
+                    <ul class="layui-row fly-shortcut">
                       <draggable class="dragArea list-group" :list="fromdata" :clone="clone" animation="300"
                         :group="{ name: 'people', pull: 'clone', put: false,sort: true, }" @change="log">
-                        <li v-for="li in fromdata" :key="li.id" :data="li" class="layui-col-xs6 layui-col-xs6"> <span><i
+                        <li v-for="li in fromdata" :key="li.id" :data="li" class="layui-col-xs3 layui-col-xs3 flyli"> <span><i
                               :class=" 'fa '+ li.icon"></i><cite>{{li.name}}</cite></span> </li>
                       </draggable>
                     </ul>
@@ -279,6 +279,8 @@
   }
 
   .fly-shortcut li {
+      margin: 5px;
+      line-height: 25px;
     text-align: center;
   }
 

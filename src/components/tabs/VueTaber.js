@@ -31,6 +31,8 @@ export default class VueTaber {
     }
 
     open (tab) {
+        console.log(tab);
+        console.log("打开");
         if (isString(tab)) {
             tab = {name: tab}
         }
@@ -124,7 +126,9 @@ export default class VueTaber {
     }
 
     mounted () {
-        this._restoreTabs()
+        this._restoreTabs();
+      var home=  {name: "home", params: {title: "首页"}}
+        this.open(home);
     }
 
     set vm (vm) {

@@ -71,17 +71,20 @@ export default   { data:[{
         "required":"false",
         "value": "",
         "data": [],
-        "input": []
+        "input": [
+            {"name":"checkbox1",value:"男"},
+            {"name":"checkbox2",value:"女"},
+        ]
     }
 },
 {
     icon: "fa fa-edit",
-    name: "原始复选框",
-    id: "4", type: "checkbox",
+    name: "文本域",
+    id: "4", type: "textarea",
     data: {
         id: "4",
         "col": "layui-col-md12",
-        "label": "原始复选框",
+        "label": "文本域",
         "type": "text",
         "name": "name2",
         "autocomplete": "off",
