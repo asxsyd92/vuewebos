@@ -37,7 +37,7 @@ export default {
   data () {
     return {
       // 3、v-model绑定数据
-      msg: '<p>这是测试数据</p>',
+      msg: '',
       // 4、根据项目需求自行配置,具体配置参见ueditor.config.js源码或 http://fex.baidu.com/ueditor/#start-start
       config: {
         // 编辑器不自动被内容撑高
@@ -102,7 +102,7 @@ export default {
     },
     // 6. 查看绑定的数据
     showData () {
-      alert(this.msg)
+     
       console.log(this.msg)
     },
     // 7. 借助 beforeInit 钩子，你可以实现对 UEditor 的二次开发，会在 scripts 加载完毕之后、编辑器初始化之前触发，以 编辑器 id 和 配置参数 作为入参
