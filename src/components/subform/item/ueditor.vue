@@ -1,12 +1,13 @@
 <template>
    <div class="layui-form-item layui-form-text">
-    <label class="layui-form-label">文本域</label>
+    <label class="layui-form-label">{{data.data.label}}</label>
 
     <div class="layui-input-block">
         <!-- 你不需要担心一个页面中过多vue-ueditor-wrap组件会导致混乱,或者重复引用JS(打开控制台瞄一眼),
     每个组件都保证拥有一个独立的UEditor实例,你可以尝试把数字改成99(根据自己电脑自行斟酌),但依然稳定可用 -->
     <vue-ueditor-wrap class="ueditor-ins"
-                      ref="ueditor"       name="content" 
+                      ref="ueditor"       
+                      :name="data.data.name" 
                       v-model="msg" 
                       :destroy="false" 
                       :config="config" 
@@ -73,6 +74,13 @@ export default {
   },
   created(){
     _that = this
+  },
+  props: {
+    data: {
+      type: Object,
+      required: true
+    },
+    model: Object
   },
   mounted () {
     this.showData();

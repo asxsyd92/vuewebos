@@ -26,8 +26,13 @@ npm install layui-src@1.2.0
 
  # 喜欢使用jquery可用安装
 npm install jquery    
- # 安装请求
+ # 安装axios
 npm install --save axios
+
+ # 安装vue-echarts
+npm install vue-echarts --save
+npm install --save @vue/composition-api
+
 ```
 
 

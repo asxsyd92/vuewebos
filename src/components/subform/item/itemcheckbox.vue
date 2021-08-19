@@ -5,8 +5,7 @@
     <div class="layui-input-block">
 
       <input v-for=" item in data.data.input" :key="item.name" type="checkbox" :name="item.name" :title="item.value">
-      <!-- <input v-if="data.data.showtext=='false'" :type="data.data.type" :disabled="disabled" :name="data.data.name" :lay-verify="data.data.required=='true'?'':'required'" :autocomplete="data.data.autocomplete" :placeholder="data.data.placeholder" :class="data.data.inputclass"> -->
-      <span v-if="data.data.showtext=='true'" style="line-height: 2.5;">{{data.data.value}}</span>
+   <span v-if="data.data.showtext=='true'" style="line-height: 2.5;">{{data.data.value}}</span>
     </div>
   </div>
   </div>

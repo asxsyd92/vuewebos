@@ -2,9 +2,9 @@
 <div>
   
   <iteminput v-if="data.type=='input'" :data="data"></iteminput>
-  <itemradio v-if="data.type=='radio'" :data="data.data"></itemradio>
-  <ueditor v-if="data.type=='ueditor'" :data="data.data"></ueditor>
-  <itemcheckbox v-if="data.type=='checkbox'" :data="data.data"></itemcheckbox>
+  <itemradio v-if="data.type=='radio'" :data="data"></itemradio>
+  <ueditor v-if="data.type=='ueditor'" :data="data"></ueditor>
+  <itemcheckbox v-if="data.type=='checkbox'" :data="data"></itemcheckbox>
   <itemtextarea v-if="data.type=='textarea'" :data="data"></itemtextarea>
   
 </div>

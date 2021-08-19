@@ -14,9 +14,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@vue/composition-api": "^1.1.1",
     "animate.css": "^4.1.1",
     "axios": "^0.21.1",
     "baidu-ueditor": "^1.4.3",
+    "echarts": "^5.1.2",
     "font-awesome": "^4.7.0",
     "jquery": "^3.6.0",
     "layui": "^2.6.8",
@@ -25,6 +27,7 @@
     "linq": "^3.2.4",
     "stylus": "^0.54.8",
     "vue": "^2.5.2",
+    "vue-echarts": "^6.0.0",
     "vue-json-viewer": "^2.2.19",
     "vue-luck-draw": "^3.4.6",
     "vue-router": "^3.0.1",

@@ -1,11 +1,11 @@
 <template>
 
     <div>
- <div :class="data.col">
-    <label class="layui-form-label">{{data.label}}</label>
+ <div :class="data.data.col">
+    <label class="layui-form-label">{{data.data.label}}</label>
     <div class="layui-input-block">
 
-  <input v-for="li in data.input" :key="li.value"  :type="data.type" :name="data.name" :value="li.value" :title="li.title" :checked="li.checked">
+  <input v-for="li in data.data.input" :key="li.value"  :type="data.data.type" :name="data.data.name" :value="li.value" :title="li.title" :checked="li.checked">
 
     </div>
   </div>
@@ -21,7 +21,7 @@ export default {
     },
     model: Object
   }   , mounted(){
-      console.log(this.data);
+      console.log(this.data.data);
       layui.form.render(); //更新全部
     }
 }
