@@ -121,6 +121,29 @@ export default   { data:[{
         "data": [],
         "input": []
     }
-}
+},{
+    icon: "fa fa-edit",
+    name: "下拉选择",
+    id: "6", type: "select",
+    data: {
+        id: "6",
+        "col": "layui-col-md12",
+        "label": "下拉选择",
+        "type": "text",
+        "name": "select",
+        "autocomplete": "off",
+        "placeholder": "{'title':'男',value:'1'},{'title':'测试',value:'2'}",
+        "inputclass": "layui-input",
+        "disabled": "false",
+        "showtext": "false",
+        "required":"false",
+        "value": "",
+        "data": [],
+        "input": [
+            {"title":"男",value:"1"},
+            {"title":"女",value:"2"},
+        ]
+    }
+},
 ]
 }

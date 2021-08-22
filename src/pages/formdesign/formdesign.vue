@@ -50,7 +50,8 @@
               <div class="layui-card-header">表单生成器</div>
               <div class="layui-card-body">
                 <header class="el-header _fc-m-tools">
-                  <button @click="show()" type="button" class="layui-btn layui-btn-normal layui-btn-sm"> 预 览</button>
+                   <button @click="show()" type="button" class="layui-btn layui-btn-normal layui-btn-sm">表单属性</button>
+                  <button @click="show()" type="button" class="layui-btn layui-btn-normal layui-btn-sm">预览</button>
                 </header>
                 <form class="layui-form" :fromData="list2">
                   <draggable class="dragArea list-group" :list="list2" group="people" @change="log" animation="300">
@@ -142,25 +143,20 @@
         var id = m.sets.id;
         let temp = Enumerable.from(m.list2).firstOrDefault(i => i.id == id);
 
-        temp.data = data.field;
+    if(temp.type=='select'){
+    data.field.input=JSON.parse(data.field.input);
+    console.log( data.field.input);
+    }
+    
+    
         var newArr = m.list2.filter(item => {
           if (item.id == id) {
             item.data = data.field;
           }
           console.log(item);
-          // if (tag.id !== item.id) {
-          //   return true
-          // }
+ 
         })
-        //     Enumerable.from(m.list2).forEach(function(value, index){
-        //          layui. layer.alert(JSON.stringify(value), {
-        //       title: '最终的提交信息'
-        //     })
-        //       console.log("值="+value+",索引="+index);
-        //        //  document.write("值="+value+",索引="+index);   
-        //  });
 
-        //m.list2[0].data=data.field;
         layui.layer.alert(JSON.stringify(newArr), {
           title: '最终的提交信息'
         })
@@ -201,9 +197,31 @@
         this.sets = item;
         this.$emit('change', item);
         layui.form.render(); //更新全部
+     
+
         setTimeout(function () {
-          console.log(1);
-          layui.form.val('setings', item.data);
+          var str=item.data.input;
+             if (typeof str == 'string') {
+            try {
+               // var obj=JSON.parse(str);
+                console.log('转换成功：'+obj);
+            
+            } catch(e) {
+                console.log('error：'+str+'!!!'+e);
+             
+            }
+        }else{
+           var ks= JSON.stringify(item.data.input);
+               var i=item.data.input=ks;
+        }
+          // if(item.data.input.indexOf('\\')>0){
+        
+          // }else{
+          //   var ks= JSON.stringify(item.data.input);
+          // }
+
+      
+          layui.form.val('setings',item.data);
         }, 100);
         console.log(2);
         layui.form.render(); //更新全部

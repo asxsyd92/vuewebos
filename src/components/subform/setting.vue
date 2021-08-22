@@ -2,6 +2,11 @@
   <div>
     <setinput v-if="data.type=='input'" :data="data"></setinput>
     <settextarea v-if="data.type=='textarea'" :data="data"></settextarea>
+    <setueditor v-if="data.type=='ueditor'" :data="data"></setueditor>
+    <setradio v-if="data.type=='radio'" :data="data"></setradio>
+    <setcheckbox v-if="data.type=='checkbox'" :data="data"></setcheckbox>
+    <setselect v-if="data.type=='select'" :data="data"></setselect>
+    
   </div>
 </template>
 <script>
