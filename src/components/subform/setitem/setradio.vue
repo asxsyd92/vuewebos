@@ -15,19 +15,20 @@
       </div>
     </div>
    <div class="layui-form-item">
-      <label class="layui-form-label">提示</label>
+      <label class="layui-form-label">数据源</label>
       <div class="layui-input-block">
-        <input type="text" name="placeholder" :value="data.placeholder" class="layui-input">
+        <textarea type="text" name="input" :value="json" class="layui-textarea">
+        </textarea>
       </div>
     </div>
-       <div class="layui-form-item">
+       <!-- <div class="layui-form-item">
       <label class="layui-form-label">值</label>
       <div class="layui-input-block">
       
         <input type="text" name="value" :value="data.value" class="layui-input">
       </div>
-    </div>
-      
+    </div> -->
+<!--       
       <div class="layui-form-item">
       <label class="layui-form-label">类型</label>
       <div class="layui-input-block">
@@ -38,7 +39,7 @@
           <option value="datetime">date</option>
         </select>
       </div>
-    </div>
+    </div> -->
        <div class="layui-form-item">
       <label class="layui-form-label">文本框样式</label>
       <div class="layui-input-block">
@@ -116,7 +117,11 @@
 </template>
 <script>
   export default {
- 
+ data(){
+     return {
+         json:"",
+     }
+ },
     //  watch: {
     // 'data': {
     //   handler(v) {
@@ -136,6 +141,11 @@
       },
       model: Object
     }, mounted() {
+        console.log("json");
+          console.log(this.data);
+   
+
+                console.log(this.json);
       //this.ids=this.data.id;
     //   layui.form.render(); //更新全部
     //   console.log(this.data.data);

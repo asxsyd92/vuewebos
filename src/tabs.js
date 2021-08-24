@@ -24,7 +24,18 @@ export default [{
         console.log('before create:', tab)
         next()
     }
-}, , {
+}, {
+    name: 'formdesignlist',
+    title: '表单设计',
+    component:  resolve => {
+        require.ensure(['./pages/formdesign/list.vue'], () => {
+            resolve(require('./pages/formdesign/list.vue'))
+        })},
+    beforeCreate (tab, next) {
+        console.log('before create:', tab)
+        next()
+    }
+}, {
     name: 'showfrom',
     title: '表单',
     component:  resolve => {

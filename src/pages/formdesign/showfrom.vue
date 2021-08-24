@@ -37,7 +37,7 @@ export default {
     mounted(){
       console.log(this.data);
            layui. form.on('submit(_submit)', function(data){
-console.log(data);
+          console.log(data);
         layui. layer.alert(JSON.stringify(data.field), {
       title: '最终的提交信息'
     })

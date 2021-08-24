@@ -1,6 +1,5 @@
 <template>
 <div>
-  <div> qis</div>
   <tp-form-box class="tpf-sf-tp-form" :formData="formData">
     <which-component v-for="li in formData.formDataList" :key="li.fieldId" :data="li" type="ShowForm" :prop="li.fieldId" :model="formData.model"></which-component>
   </tp-form-box>
