@@ -20,11 +20,11 @@
         <input type="text" name="placeholder" :value="data.placeholder" class="layui-input">
       </div>
     </div>
-       <div class="layui-form-item">
-      <label class="layui-form-label">值</label>
+    <div class="layui-form-item">
+      <label class="layui-form-label">数据源</label>
       <div class="layui-input-block">
-      
-        <input type="text" name="value" :value="data.value" class="layui-input">
+        <textarea type="text" name="input" :value="json" class="layui-textarea">
+        </textarea>
       </div>
     </div>
       
@@ -116,7 +116,11 @@
 </template>
 <script>
   export default {
- 
+  data(){
+     return {
+         json:"",
+     }
+ },
     //  watch: {
     // 'data': {
     //   handler(v) {

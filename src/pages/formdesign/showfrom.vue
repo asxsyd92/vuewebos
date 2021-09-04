@@ -35,6 +35,10 @@ export default {
     // }
   //},  
     mounted(){
+      setTimeout(function(){
+         layui.form.render(); //更新全部
+      },100)
+      
       console.log(this.data);
            layui. form.on('submit(_submit)', function(data){
           console.log(data);

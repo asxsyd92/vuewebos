@@ -4,7 +4,7 @@
     <label class="layui-form-label">{{data.data.label}}</label>
     <div class="layui-input-block">
 
-      <input v-for=" item in data.data.input" :key="item.name" type="checkbox" :name="item.name" :title="item.value">
+      <input v-for=" item in checkbox" :key="item.name" type="checkbox" :name="item.name" :title="item.value">
    <span v-if="data.data.showtext=='true'" style="line-height: 2.5;">{{data.data.value}}</span>
     </div>
   </div>
@@ -14,7 +14,7 @@
 export default { 
   data(){
     return {
-      disabled:false
+      disabled:false,checkbox:[]
     }
 },
   props: {
@@ -24,7 +24,21 @@ export default {
     },
     model: Object
   }   , mounted(){
-
+  var m=this;
+    var str=m.data.data.input;
+             if (typeof str == 'string') {
+            try {
+                var obj=JSON.parse(str);
+      m.checkbox=obj;
+                console.log('转换成功：'+obj);
+            
+            } catch(e) {
+                console.log('error：'+str+'!!!'+e);
+             
+            }
+        }else{
+          m.checkbox=str;
+        }
     this.disabled=this.data.data.disabled=='true'?true :false
 
       layui.form.render(); //更新全部

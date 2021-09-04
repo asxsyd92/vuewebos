@@ -203,7 +203,8 @@
           var str=item.data.input;
              if (typeof str == 'string') {
             try {
-               // var obj=JSON.parse(str);
+                var obj=JSON.parse(str);
+                var i=item.data.input=obj;
                 console.log('转换成功：'+obj);
             
             } catch(e) {
@@ -214,12 +215,6 @@
            var ks= JSON.stringify(item.data.input);
                var i=item.data.input=ks;
         }
-          // if(item.data.input.indexOf('\\')>0){
-        
-          // }else{
-          //   var ks= JSON.stringify(item.data.input);
-          // }
-
       
           layui.form.val('setings',item.data);
         }, 100);
