@@ -13,10 +13,18 @@
                             <div class="pwd">
                                 <label>密　码</label><input type="password" class="text" id="password" placeholder="密码"
                                     name="password" tabindex="2" />
-                                <input type="button" class="submit" lay-submit lay-filter="formsubmit" tabindex="3"
-                                    value="登录" />
-                                <div class="check"></div>
+                         
+                              
+                            
                             </div>
+                             <div class="pwd">
+                                    <label>验证码</label><input type="text" class="text" id="code" name="code"
+                                    placeholder="请输入验证码" tabindex="1" style="width:40%"/><img :src="code"/>
+                                    <div class="check"></div>
+                                       <input type="button" class="submit" lay-submit lay-filter="formsubmit" tabindex="3"
+                                    value="登录" />
+                             </div>
+                         
                             <div class="tip"></div>
                         </div>
                     </div>
@@ -35,14 +43,14 @@
         name: 'login',
         data() {
             return {
-                user: [],
+                user: [],code:'',
                 viewSize: [], viewWidth: 0, viewHeight: 0
             }
         },
         mounted: function () {
             var m = this;
             let form = layui.form;
-
+            m.code=m.host+"/api/login/getCode"
             m.airBalloon('div.air-balloon');
             //监听提交
             form.on('submit(formsubmit)', function (data) {
@@ -117,15 +125,19 @@
                 let $ = layui.$;
 
                 if (data.user.length <= 0) {
-                    layer.tips('用户名不能为空', '#user');
+                    layer.tips('用户名不能为空！', '#user');
                     return false;
                 }
                 if (data.password.length <= 0) {
-                    layer.tips('密码不能为空', '#password');
+                    layer.tips('密码不能为空！', '#password');
+                    return false;
+                }
+                     if (data.code.length <= 0) {
+                    layer.tips('验证码不能为空！', '#code');
                     return false;
                 }
                 var lay = layer.msg('正在登陆...', { icon: 16, shade: 0.5, time: 20000000 });
-                m.$post(m.host+"/api/login/Login", { user: data.user, pw: data.password }).then(res => {
+                m.$post(m.host+"/api/login/Login", { user: data.user, pw: data.password,code:data.code }).then(res => {
                  console.log(res);
          
 

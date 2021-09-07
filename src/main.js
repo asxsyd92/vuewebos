@@ -22,7 +22,7 @@ Vue.prototype.$patch = patch;
 Vue.prototype.$put = put;
 Vue.prototype.layui = layui;
 Vue.config.productionTip = false
-Vue.prototype.host = 'http://127.0.0.1:88';
+Vue.prototype.host = 'http://127.0.0.1:89';
 vueTaber.beforeCreateEach((tab, next) => {
     if (tab.name === 'setting') {
         next('home')
