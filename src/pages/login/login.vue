@@ -13,14 +13,11 @@
                             <div class="pwd">
                                 <label>密　码</label><input type="password" class="text" id="password" placeholder="密码"
                                     name="password" tabindex="2" />
-                         
-                              
-                            
                             </div>
                              <div class="pwd">
                                     <label>验证码</label><input type="text" class="text" id="code" name="code"
-                                    placeholder="请输入验证码" tabindex="1" style="width:40%"/><img :src="code"/>
-                                    <div class="check"></div>
+                                    placeholder="请输入验证码" tabindex="1" style="width:40%"/><img :src="code"  v-on:click="getnewcode"/>
+                                    <div class="check" ></div>
                                        <input type="button" class="submit" lay-submit lay-filter="formsubmit" tabindex="3"
                                     value="登录" />
                              </div>
@@ -38,7 +35,8 @@
     </div>
 </template>
 <script>
-
+import CryptoJS   from "crypto-js";
+import moment from 'moment';
     export default {
         name: 'login',
         data() {
@@ -50,7 +48,7 @@
         mounted: function () {
             var m = this;
             let form = layui.form;
-            m.code=m.host+"/api/login/getCode"
+            m.getnewcode();
             m.airBalloon('div.air-balloon');
             //监听提交
             form.on('submit(formsubmit)', function (data) {
@@ -60,7 +58,11 @@
             });
         },
         methods: {
-
+            getnewcode(){
+                console.log(Date.parse(new Date()));
+                var m=this;
+                m.code=m.host+"/api/login/getCode?v="+Date.parse(new Date())
+            },
             rand(mi, ma) {
                 var range = ma - mi;
                 var out = mi + Math.round(Math.random() * range);
@@ -93,7 +95,13 @@
                 m.viewHeight = m.viewSize[1];
             }
             ,
-
+  Encrypt(word) {
+      let key= "webos"+ moment(new Date()).format("YYYYMMDD")+"591"; //十六位十六进制数作为密钥
+       var keys = CryptoJS.enc.Utf8.parse(key);
+    var srcs = CryptoJS.enc.Utf8.parse(word);
+    var encrypted = CryptoJS.AES.encrypt(srcs, keys, {mode:CryptoJS.mode.ECB,padding: CryptoJS.pad.Pkcs7});
+    return encrypted.toString();
+    },
             fly(obj) {
                 var m=this;
                 var $ = layui.$;
@@ -137,7 +145,13 @@
                     return false;
                 }
                 var lay = layer.msg('正在登陆...', { icon: 16, shade: 0.5, time: 20000000 });
-                m.$post(m.host+"/api/login/Login", { user: data.user, pw: data.password,code:data.code }).then(res => {
+               var user = m.Encrypt(data.user);
+                      var password = m.Encrypt(data.password);
+                             var code = m.Encrypt(data.code);
+                // var user = m.Encrypt(data.user);
+                // var password = m.Encrypt(data.password);
+                // var code = m.Encrypt(data.code);
+                m.$post(m.host+"/api/login/Login", { user: user, pw: password,code:code }).then(res => {
                  console.log(res);
          
 
@@ -158,6 +172,7 @@
 
                         //  show_msg('登录成功咯！  正在为您跳转...', "/index.html");
                     } else {
+                        m.getnewcode();
                         layer.msg(data.msg, { icon: 2 });
                         // layer.alert(data.msg);
                         // show_err_msg(data.msg);

@@ -12,7 +12,6 @@ export default   { data:[{
         "autocomplete": "off",
         "placeholder": "placeholder",
         "inputclass": "layui-input",
-
         "disabled": "false",
         "showtext": "false",
         "value": "",

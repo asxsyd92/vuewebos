@@ -35,7 +35,7 @@
             <div class="layui-form-item">
               <label class="layui-form-label">确认密码</label>
               <div class="layui-input-block">
-                <input class="layui-input" data-target="" id="pw" lay-filter="column" lay-verify="pass" name="pw"
+                <input class="layui-input" data-target="" id="pw" lay-filter="column" name="pw"
                   placeholder="请输入确认密码" type="password">
               </div>
             </div>
@@ -47,7 +47,7 @@
       <div class="layui-form-item">
         <p style="text-align: center;color:red;">密码必须满足：数字、字母、特殊符号组成，密码长度8位至16位之间！</p>
         <div class="layui-input-block">
-          <button class="layui-btn layui-btn-normal " lay-filter="_submit" lay-submit="">立即提交</button>
+          <button class="layui-btn layui-btn-normal " lay-filter="_password" lay-submit="">立即提交</button>
         </div>
       </div>
     </form>
@@ -87,20 +87,27 @@
         //我们既支持上述函数式的方式，也支持下述数组的形式
         //数组的两个值分别代表：[正则匹配、匹配不符时的提示文字]
         , pass: [
-          /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*])[\da-zA-Z~!@#$%^&*]{8,16}$/
+          /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[.~!@#$%^&*])[\da-zA-Z~!@#$%^&.*]{8,16}$/
           , '为了保证账号安全：密码必须包含数字、字母、特殊符号组成,密码长度8至16之间！'
         ]
       });
 
 
-      form.on('submit(_submit)', function (data) {
+      form.on('submit(_password)', function (data) {
         if (data.field.newpw.length < 6) {
           layer.tips('密码过短！', '#pw', {
             tips: [1, '#FF5722']
           });
           return false;
+        }    
+        if (data.field.pw=="") {
+          //tips层-左
+          layer.tips('请输入确认密码！', '#pw', {
+            tips: [1, '#FF5722']
+          });
+          return false;
         }
-        if (data.field.newpw !== data.field.pw) {
+        if (data.field.newpw !== data.field.pw||data.field.pw=="") {
           //tips层-左
           layer.tips('两次密码不一致', '#pw', {
             tips: [1, '#FF5722']
