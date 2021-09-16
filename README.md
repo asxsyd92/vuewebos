@@ -32,6 +32,11 @@ npm install --save axios
  # 安装vue-echarts
 npm install vue-echarts --save
 npm install --save @vue/composition-api
+ # 安装字体
+npm i font-awesome
+
+#安装动画
+npm i animate
 
 ```
 
