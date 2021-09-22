@@ -2,7 +2,7 @@
 <div class="layui-card">
     <div class="layui-container">
        <div style="height:50px"></div>
-               <form class="layui-form" lay-filter="commonsubmit">
+    <form :class="from.type" :lay-filter="from.name">
           <submitfrom  v-for="li in data" :key="li.id" :data="li" ></submitfrom>
     
         <div class="layui-form-item">
@@ -22,25 +22,35 @@
 export default {
         components: {
       submitfrom
-    },  data(){return {
-  data:JSON.parse( window.localStorage.data)
-
+    },  data(){
+      return {
+  data:[],
+   from:[]
     }},   
-   // inject: ['formjson'],
 
-    //  props: {
-    // data: {
-    //   type: Object,
-    //   required: true
-    // }
-  //},  
     mounted(){
-      setTimeout(function(){
-         layui.form.render(); //更新全部
-      },100)
-      
+  
+      var m=this;
+         var lay = layer.msg('请稍等...', { icon: 16, shade: 0.5, time: 20000000 });
+        m.$post(m.host + "/api/form/getFormJson", { key: m.$tab.params.key }).then(res => {
+                    console.log(res);
+
+
+                }).catch(data => {
+
+                    layer.close(lay);
+                    if (data.success) {
+                      var k=JSON.parse(data.data.designhtml);
+                     m.data=k.data;
+                     m.from=k.from.data;
+                    } else {
+                
+                        layer.msg(data.msg, { icon: 2 });
+                        return;
+                    }
+                })
       console.log(this.data);
-           layui. form.on('submit(_submit)', function(data){
+      layui. form.on('submit(_submit)', function(data){
           console.log(data);
         layui. layer.alert(JSON.stringify(data.field), {
       title: '最终的提交信息'

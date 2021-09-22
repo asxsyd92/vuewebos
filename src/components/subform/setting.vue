@@ -6,7 +6,7 @@
     <setradio v-if="data.type=='radio'" :data="data"></setradio>
     <setcheckbox v-if="data.type=='checkbox'" :data="data"></setcheckbox>
     <setselect v-if="data.type=='select'" :data="data"></setselect>
-    
+    <setfrom v-if="data.type=='setfrom'" :data="data"></setfrom>
   </div>
 </template>
 <script>

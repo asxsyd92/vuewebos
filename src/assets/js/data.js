@@ -144,5 +144,5 @@ export default   { data:[{
         ]
     }
 },
-]
+],from:{}
 }

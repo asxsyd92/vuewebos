@@ -68,9 +68,11 @@ export default {
             console.log(item);
             this.selected = 11
             this.$taber.open({
-                name:item.tag,
+                name:item.tag,//"showfrom",
+                key:item.params,
                 params: {
-                    title: item.title
+                    title: item.title,
+                    key:item.params
                 }
             })
         }  

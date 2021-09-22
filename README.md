@@ -37,6 +37,7 @@ npm i font-awesome
 
 #安装动画
 npm i animate
+npm i animate.css@3.5.0
 
 ```
 

@@ -50,12 +50,12 @@
               <div class="layui-card-header">表单生成器</div>
               <div class="layui-card-body">
                 <header class="el-header _fc-m-tools">
-                   <button @click="show()" type="button" class="layui-btn layui-btn-normal layui-btn-sm">表单属性</button>
+                   <button @click="attribute()" type="button" class="layui-btn layui-btn-normal layui-btn-sm">表单属性</button>
                   <button @click="show()" type="button" class="layui-btn layui-btn-normal layui-btn-sm">预览</button>
                 </header>
-                <form class="layui-form" :fromData="list2">
+                <form class="layui-form" :fromData="list2.data">
                   <draggable class="dragArea list-group" :list="list2" group="people" @change="log" animation="300">
-                    <comfrom @click.native="clickComponent(li)" class="list-group-item" v-for="li in list2" :key="li.id"
+                    <comfrom @click.native="clickComponent(li)" class="list-group-item" v-for="li in list2.data" :key="li.id"
                       :data="li" @change="contentChange" @select-change="contentSelectChange"></comfrom>
                   </draggable>
                 </form>
@@ -111,7 +111,7 @@
       return {
         sets: null,
         seleid: "",dialogdata:[],
-        list2: [ ], 
+        list2: {data:[], from:{ data:{ name:'',type:"layui-form"},type:'setfrom' }}, 
         fromdata: fromjson.data
            };
     }, 
@@ -123,25 +123,41 @@
     ,mounted() {
       var m = this;
       console.log(this.fromdata);
-      if (window.localStorage.data != undefined) {
-        m.list2 = JSON.parse(window.localStorage.data)
+       var lay = layer.msg('请稍等...', { icon: 16, shade: 0.5, time: 20000000 });
+   
+      if(m.$tab.params.key!=null&&m.$tab.params.key!=undefined){
+            m.$post(m.host + "/api/form/getFormJson", { key: m.$tab.params.key }).then(res => {
+                    console.log(res);
 
+
+                }).catch(data => {
+
+                    layer.close(lay);
+                    if (data.success) {
+                      var kfrom=JSON.parse(data.data.designhtml);
+                     m.list2.data=kfrom.data;
+                     m.list2.from=kfrom.from;
+                    } else {
+                
+                        layer.msg(data.msg, { icon: 2 });
+                        return;
+                    }
+                })
       }
 
-
-
-      console.log('3')
-
-      //window.localStorage.data
+     layui.form.on('submit(setingfrom)', function (data) {
+           m.list2.from.data=data.field;
+           console.log(m.list2);
+      });
       layui.form.on('submit(delsubmit)', function (data) {
         var id = m.sets.id;
-        let temp = Enumerable.from(m.list2).where(i => i.id != id).toArray();
-        m.list2 = temp;
+        let temp = Enumerable.from(m.list2.data).where(i => i.id != id).toArray();
+        m.list2.data = temp;
       });
       //监听提交
       layui.form.on('submit(setsubmit)', function (data) {
         var id = m.sets.id;
-        let temp = Enumerable.from(m.list2).firstOrDefault(i => i.id == id);
+        let temp = Enumerable.from(m.list2.data).firstOrDefault(i => i.id == id);
 
     if(temp.type=='select'){
     data.field.input=JSON.parse(data.field.input);
@@ -149,7 +165,7 @@
     }
     
     
-        var newArr = m.list2.filter(item => {
+        var newArr = m.list2.data.filter(item => {
           if (item.id == id) {
             item.data = data.field;
           }
@@ -161,7 +177,7 @@
           title: '最终的提交信息'
         })
         console.log(m.list2);
-        layui.layer.alert(JSON.stringify(m.list2), {
+        layui.layer.alert(JSON.stringify(m.list2.data), {
           title: '最终的提交信息'
         })
         return false;
@@ -185,6 +201,16 @@
       }
     },
     methods: {
+      attribute(){
+        var m=this;
+        m.sets = m.list2.from;
+        m.$emit('change', m.sets );
+           setTimeout(function () {
+           layui.form.val('setings',m.sets.data);
+
+           });
+          
+      },
       add(obj) {
         console.log(obj)
         // const newObj = Object.assign(_.cloneDeep(obj.data), list2);
@@ -256,7 +282,7 @@
       },
       show() {
         var m = this;
-        m.dialogdata=m.list2;
+        m.dialogdata=m.list2.data;
         console.log( m.dialogdata);
         setTimeout(() => {
                 layui.layer.open({
@@ -269,8 +295,27 @@
                     content: document.getElementById("_webosdialog").innerHTML
                 });
         }, 10);
+        var key="";
+      if(m.$tab.params.key!=null&&m.$tab.params.key!=undefined){
+        key=m.$tab.params.key;
+      }
+             var lay = layer.msg('保存中...', { icon: 16, shade: 0.5, time: 20000000 });
+    m.$post(m.host + "/api/form/saveFormJson", { key: key,title:"测试",data: JSON.stringify(m.list2) }).then(res => {
+                    console.log(res);
 
-        window.localStorage["data"] = JSON.stringify(m.list2);
+
+                }).catch(data => {
+
+                    layer.close(lay);
+                    if (data.success) {
+                     m.list2.data=JSON.parse(data.designhtml);
+                    } else {
+                
+                        layer.msg(data.msg, { icon: 2 });
+                        return;
+                    }
+                })
+       
       }
     }
   };

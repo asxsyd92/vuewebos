@@ -15,19 +15,22 @@
     </div>
 </template>
 <script>
+var $=layui.$;
     export default {
         name: "formdesignlist",
         created() { },
         mounted() {
-
+console.log("list");
             var m = this;
             init: {
                 var table = layui.table;
+                var tableId="formdesignlist";
                 //第一个实例
                 table.render({
                     elem: '#formdesign'
                     , id: tableId
-                    , toolbar: '#toolbarformdesign'
+                    , toolbar: '#toolbarformdesign'        
+                    ,headers: { "Authorization": "bearer " + window.localStorage["_token"] }
                     , url: m.host + '/api/common/GetCommonList?tab=SysFormDesign' //数据接口
                     , page: { theme: '#1E9FFF' }
                     , cols: [[ //表头
@@ -54,10 +57,14 @@
                     }
 
                     else if (layEvent === 'edit') { //编辑
+                    console.log("edit");
                         if (!data.id) return;
-                        // top.xadmin.add_tab("编辑" + data.title, 'webos//page/FormDesign/FormDesign.html?tabid=' + data.tab + "&tabkey=" + data.id);
-                        // top.xadmin.open('编辑', '/webos/page/base/addSysFormDesign.html?id=' + data.ID + '&appid=' + appid, 400, 500);
-                    }
+                                m.$taber.open({
+                name:'formdesign',
+                params: {
+                   key:data.id
+                }});
+                  }
 
 
                 });
@@ -74,7 +81,13 @@
                             $("#title").val(title);
                             break;
                         case 'a_add':// add(-1);
-                            //  top.xadmin.open('添加角色',  m.host+'/webos/page/base/addSysFormDesign.html?appid=' + appid, 500, 600);
+                            m.$taber.open({
+                name:'formdesign',
+                params: {
+                   
+                }
+            })
+                         //  top.xadmin.open('添加角色',  m.host+'/webos/page/base/addSysFormDesign.html?appid=' + appid, 500, 600);
                             break;
 
                     }
