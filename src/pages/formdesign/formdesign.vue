@@ -56,7 +56,7 @@
                 <button @click="show()" type="button" class="layui-btn layui-btn-normal layui-btn-sm">预览</button>
               </header>
               <form class="layui-form" :fromData="list2.data">
-                <draggable class="dragArea list-group" :list="list2" group="people" @change="log" animation="300">
+                <draggable class="dragArea list-group" :list="list2.data" group="people" @change="log" animation="300">
                   <comfrom @click.native="clickComponent(li)" class="list-group-item" v-for="li in list2.data"
                     :key="li.id" :data="li" @change="contentChange" @select-change="contentSelectChange"></comfrom>
                 </draggable>
@@ -237,7 +237,7 @@
             if(data.type==0){
               var f=[];
                 layui.  $.each(data.data, function (i, value) {
-  //  data.data.forEach(function(value,index,array){
+ 
 　        var o=new Object();
 　　　    o.icon="fa fa-edit";
 　　　　  o.name=value.column_name.toLowerCase();
@@ -357,8 +357,10 @@
     },
 
     clone(obj) {
+      //layer.alert(JSON.stringify(obj));
+  
       const newObj = Object.assign(_.cloneDeep(obj), { id: `${obj.id}_${new Date().getTime()}` });
-      return newObj;
+      return obj;
       //  var m= this;
       //   console.log(obj)
       //   const newObj = Object.assign(_.cloneDeep(obj), m.list2);

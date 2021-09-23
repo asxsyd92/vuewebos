@@ -1,6 +1,12 @@
 .vue-tabs {
   position: relative;
 }
+.tabs-list-wrapper1{
+  width: 100%;
+    position: absolute;
+    top: 0px;
+    z-index: 1;
+}
 .tabs-list-wrapper {
   padding: 0px 8px;
 }
@@ -27,7 +33,7 @@
   overflow: auto;
   width: auto;
   zoom: 1;
-  background: #fff;
+  background-color: #f5f5f5;
 }
 .tabs-list > li {
   float: left;
@@ -93,6 +99,7 @@
 }
 .tabs-content-wrapper {
   position: relative;
+  top:39px
 }
 .tabs-content-wrapper .tabs-content {
  margin:  10px 0 0 0;

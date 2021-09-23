@@ -5,7 +5,10 @@
             <tab v-for="(tab, index) in tabs" :tab-data="tab" @close="close(tab)" @click.native="clickTab(tab)" :key="index"></tab>
         </ul>
     </div>
-    <div class="tabs-content-wrapper" ref="contentWrapEl">
+    <div class="overflow" >
+           <div class="tabs-content-wrapper" ref="contentWrapEl">
+    </div>
+ 
     </div>
 </div>
 </template>
@@ -238,7 +241,11 @@ export default {
 .vue-tabs {
     position: relative;
 }
-
+.overflow{ 
+overflow-y: auto;
+width: 100%;
+height: 800px;
+}
 .tabs-list-wrapper {
     padding: 0px 8px;
 }

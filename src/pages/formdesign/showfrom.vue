@@ -1,7 +1,7 @@
 <template>
 <div class="layui-card">
     <div class="layui-container">
-       <div style="height:50px"></div>
+    
     <form :class="from.type" :lay-filter="from.name">
           <submitfrom  v-for="li in data" :key="li.id" :data="li" ></submitfrom>
     
