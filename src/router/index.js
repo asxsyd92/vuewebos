@@ -1,52 +1,65 @@
-
 import Vue from 'vue'
-import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import login from '@/pages/login/login'
-import App from '@/App'
-import index  from '@/pages/index/index'
-import home  from '@/pages/index/home'
-import commontask from '@/pages/site/commontask'
+import VueRouter from 'vue-router'
+import custom from '../layout/default'
+import empty from "../layout/empty";
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
-  mode: 'history',
-  routes: [
+export const inRoutes = [
     {
-      path: '/login',
-      name: 'login',// 添加该字段，表示进入这个路由是需要登录的
-       
-      component: login
+        path: '/',
+        name: 'layout',
+        component: custom,
+        children: [
+            {
+                path: '/',
+                meta: {title: '首页'},
+                component: () => import('../views/Home.vue')
+            },
+            {
+                path: '/column',
+                meta: {title: '一级栏目'},
+                component: empty,
+                children: [
+                    {
+                        path: '/column/about',
+                        meta: {title: '关于我们'},
+                        component: () => import('../views/About.vue')
+                    },{
+                        path: '/column/list',
+                        meta: {title: '列表我们'},
+                        component: () => import('../views/List.vue')
+                    },{
+                        path: '/column/new',
+                        meta: {title: '新tab页面'},
+                        hidden: true,
+                        component: () => import('../views/New.vue')
+                    },
+                ],
+            },
+            {
+                path: '/content',
+                meta: {title: '联系我们'},
+                component: () => import('../views/Content.vue')
+            }
+        ],
     },
+]
 
+export const outRoute = [
     {
+        path: '/login',
+        name: 'Login',
+        meta: {noRequireAuth:true},
+        component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+    }
+];
+const routes = [...inRoutes, ...outRoute]
 
-      path: '',
+const router = new VueRouter({
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
+})
 
-      component: App, // 原来的 App.vue
-      children: [
-    { 
-      path: '/',
-      name: 'index',
-      component: index, requireAuth: true,  
-     
-    }, 
-    { 
-      path: '/index',
-      name: 'index',
-      component: index, requireAuth: true,  
-      children:[ { 
-        path: 'home',
-        name: 'home',
-        component: index, requireAuth: true,  
-       
-      },{ 
-        path: 'commontask',
-        name: 'commontask',
-        component: commontask, requireAuth: true,  
-       
-      }, ]
-    },    
-  ]}
-]})
+export default router

@@ -39,6 +39,7 @@ npm i font-awesome
 npm i animate
 npm i animate.css@3.5.0
 
+npm install --save crypto-js
 ```
 
 
