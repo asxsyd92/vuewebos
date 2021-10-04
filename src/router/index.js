@@ -17,23 +17,23 @@ export const inRoutes = [
                 component: () => import('../views/Home.vue')
             },
             {
-                path: '/column',
-                meta: {title: '一级栏目'},
+                path: '/formdesign',
+                meta: {title: '表单管理'},
                 component: empty,
                 children: [
                     {
-                        path: '/column/about',
-                        meta: {title: '关于我们'},
-                        component: () => import('../views/About.vue')
+                        path: '/formdesign/list',
+                        meta: {title: '表单管理'},
+                        component: () => import('../views/formdesign/list.vue')
                     },{
-                        path: '/column/list',
-                        meta: {title: '列表我们'},
-                        component: () => import('../views/List.vue')
+                        path: '/formdesign/formdesign',
+                        meta: {title: '表单设计'},
+                        component: () => import('../views/formdesign/formdesign.vue')
                     },{
-                        path: '/column/new',
-                        meta: {title: '新tab页面'},
+                        path: '/formdesign/showfrom/:fromid/:key',
+                        meta: {title: '表单显示'},
                         hidden: true,
-                        component: () => import('../views/New.vue')
+                        component: () => import('../views/formdesign/showfrom.vue')
                     },
                 ],
             },

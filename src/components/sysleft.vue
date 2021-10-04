@@ -1,15 +1,14 @@
 <template>
-    <!-- <a-layout class="components-layout-demo-custom-trigger">
-       -->
-    <div>
-        <sysheader></sysheader>
+
+<div>
+    <sysheader></sysheader>
 
         <div class="left-nav">
             <div id="side-nav">
                 <ul id="nav">
 
-                    <li v-for="m in menus" :key="m.id">
-                        <a href="javascript:;">
+                    <li v-for="m in menus" :key="m.id" >
+                        <a href="javascript:;" >
                             <i class="iconfont left-nav-li " v-bind:title="m.title" v-bind:lay-tips="m.title">
                                 <i v-bind:style="{color:Color(m.color)}" :class="m.icon"></i>
                             </i>
@@ -18,9 +17,9 @@
                         </a>
 
                         <ul class="sub-menu" v-for="ms in m.children" :key="ms.id">
-                            <li v-on:click="add_tab(ms)">
+                            <li v-on:click="add_tab(ms)" >
 
-                                <a>
+                                <a >
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>{{ms.title}}</cite>
                                 </a>
@@ -32,98 +31,85 @@
                 </ul>
             </div>
         </div>
-        <div class="page-tabs">
-            <a-tabs hideAdd :size="'small'" v-model="activeKey" type="editable-card" @edit="onEdit">
-                <a-tab-pane v-for="pane in panes" :tab="pane.meta.title" :key="pane.path"
-                    :closable="pane.path == inRoutes[0].children[0].path ? false : true" />
-            </a-tabs>
-        </div>
-        <div class="page-content">
-            <keep-alive>
-                <router-view />
-            </keep-alive>
-        </div>
-    </div>
 
+
+
+</div>
 </template>
-
 <script>
-    import panes from "./panes";
-    import sysheader from './sysheader'
-    export default {
-        name: "default", components: { sysheader },
-        data() {
-            return {
-                collapsed: false, menus: []
+import sysheader from '@/components/sysheader'
+export default { 
+    data () {
+        return {
+            menus: []
             }
-        },
+    }      , components:{
+
+    sysheader
+  },
         mounted: function () {
 
             this.getmenu();
-
-
+        
+    
         },
-        mixins: [panes],
-        methods: {
-            add_tab(to) {
-                var m = this;
-                if (m.$route.fullPath.indexOf(to.tag) > -1) {
-                    m.$router.push({
-                        path: "/" + to.tag + "/" + to.params + "/" + to.id,
-
-                    }
-                    )
-                } else {
-                    m.$router.push({
-                        path: "/" + to.tag + "/" + to.params + "/" + to.id,
-
-                    }
-                    )
-
+    created () {
+        this.$taber.$on('vue-tabs-active-change', (tab) => {
+            if (tab) {
+                this.selected = tab.meta.title
+            } else {
+                this.selected = null
+            }
+        })
+    },
+    methods: {
+        
+        add_tab (item) {
+            console.log(item);
+            this.selected = 11
+            this.$taber.open({
+                name:item.tag,//"showfrom",
+                key:item.id,
+                id:"new",
+                params: {
+                    title: item.title,
+                    fromid:item.params
                 }
-
-            },
-            onEdit(e) {
-                let panes = this.panes;
-                let activeKey = this.activeKey;
-                let index = panes.findIndex((item) => { return item.path == e });
-                panes.splice(index, 1);
-                this.panes = panes;
-                if (e == activeKey) {
-                    this.activeKey = panes[index - 1].path
-                }
-            }, getmenu: function () {
+            })
+        }  
+     ,
+         getmenu: function () {
                 var m = this;
                 console.log(m);
-                m.$post(m.host + '/api/users/GetAppList', {}).then(res => {
+                m.$post(m.host+'/api/users/GetAppList', {}).then(res => {
+                 console.log(res);
+         
+
+                }).catch(res=>{
+                    if(res.success){
+                     var mydata = res.data;
+                    m.menus = mydata;
+            setTimeout(function () {
+                        m.init();
+                    }, 1000);
                     console.log(res);
-
-
-                }).catch(res => {
-                    if (res.success) {
-                        var mydata = res.data;
-                        m.menus = mydata;
-                        setTimeout(function () {
-                            m.init();
-                        }, 1000);
-                        console.log(res);
-                    } else {
-                        layer.msg(res.msg, { icon: 2 });
+                    }else{
+                           layer.msg(res.msg, { icon: 2 });
                     }
                 });
-
+                
             },
-            Color: function (_this) {
+               Color: function (_this) {
                 console.log(_this);
                 if (_this === null || _this === undefined) {
                     return "red";
                 } else return _this;
 
-            }, init() {
-
-                var layer = layui.layer, $ = layui.$,
+            },     init() {
+      
+                var layer = layui.layer,$=layui.$,
                     element = layui.element, form = layui.form;
-
+        
 
                 // 打开页面初始
                 xadmin.init();
@@ -156,8 +142,6 @@
                     if ($('.left-nav').css('width') == '60px') {
                         $('.left-nav').animate({ width: '220px' }, 100);
                         $('.page-content').animate({ left: '220px' }, 100);
-                        $('.page-tabs').animate({ left: '220px' }, 100);
-
                         $('.left-nav i').css('font-size', '14px');
                         $('.left-nav cite,.left-nav .nav_right').show();
                     }
@@ -204,12 +188,10 @@
                         $('.left-nav').animate({ width: '60px' }, 100);
                         $('.left-nav cite,.left-nav .nav_right').hide();
                         $('.page-content').animate({ left: '60px' }, 100);
-                        $('.page-tabs').animate({ left: '60px' }, 100);
                         $('.page-content-bg').hide();
                     } else {
                         $('.left-nav').animate({ width: '220px' }, 100);
                         $('.page-content').animate({ left: '220px' }, 100);
-                        $('.page-tabs').animate({ left: '220px' }, 100);
                         $('.left-nav i').css('font-size', '14px');
                         $('.left-nav cite,.left-nav .nav_right').show();
                         if ($(window).width() < 768) {
@@ -225,7 +207,6 @@
                     $('.left-nav').animate({ width: '60px' }, 100);
                     $('.left-nav cite,.left-nav .nav_right').hide();
                     $('.page-content').animate({ left: '60px' }, 100);
-                    $('.page-tabs').animate({ left: '60px' }, 100);
                     $(this).hide();
                 });
 
@@ -255,7 +236,7 @@
                 })
 
 
-                $('.page-content,.page-tabs,#tab_show,.container,.left-nav').click(function (event) {
+                $('.page-content,#tab_show,.container,.left-nav').click(function (event) {
                     $('#tab_right').hide();
                     $('#tab_show').hide();
                 });
@@ -263,53 +244,9 @@
                 // 页面加载完要做的
                 xadmin.end();
             }
-        }
-
     }
+}
 </script>
+<style>
 
-<style scoped lang="less">
-    /deep/.ant-tabs-bar {
-        margin: 0;
-    }
-
-    .components-layout-demo-custom-trigger .trigger {
-        font-size: 18px;
-        line-height: 64px;
-        padding: 0 24px;
-        cursor: pointer;
-        transition: color 0.3s;
-    }
-
-    .components-layout-demo-custom-trigger .trigger:hover {
-        color: #1890ff;
-    }
-
-    .components-layout-demo-custom-trigger .logo {
-        height: 32px;
-        background: rgba(255, 255, 255, 0.2);
-        margin: 16px;
-    }
-
-    .components-layout-demo-custom-trigger {
-        height: 100%;
-    }
-
-
-    .page-content {
-
-        position: absolute;
-        z-index: 1;
-        top: 85px;
-        overflow-y: scroll;
-    }
-
-    .page-tabs {
-        top: 45px;
-        position: absolute;
-        z-index: 600;
-        left: 220px;
-        width: 100%;
-        background-color: #f5f5f5 !important;
-    }
 </style>

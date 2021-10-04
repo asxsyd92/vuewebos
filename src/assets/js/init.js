@@ -7,6 +7,7 @@
         }
 
     Xadmin.prototype.init = function () {
+        console.log("大大大大大大");
         var  element = layui.element;
         var tab_list = this.get_data();
         for (var i in tab_list) {
@@ -24,7 +25,7 @@
 
         for (var i in cate_list) {
             if (cate_list[i] != null) {
-                $('.left-nav #nav li').eq(cate_list[i]).click();
+               // $('.left-nav #nav li').eq(cate_list[i]).click();
             }
         }
     };
@@ -61,6 +62,8 @@
 
     Xadmin.prototype.add_lay_tab = function (title, url, id) {
         var  element = layui.element;
+
+        console.log(element);
         element.tabAdd('xbs_tab', {
             title: title
             , content: '<iframe tab-id="' + id + '" frameborder="0" src="' + url + '" scrolling="yes" class="x-iframe"></iframe>'
