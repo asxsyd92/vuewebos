@@ -321,7 +321,6 @@
     .page-tabs {
         top: 45px;
         position: absolute;
-        z-index: 600;
         left: 220px;
         width: 100%;
         background-color: #f5f5f5 !important;
