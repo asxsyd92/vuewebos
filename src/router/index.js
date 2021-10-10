@@ -38,9 +38,9 @@ export const inRoutes = [
                 ],
             },
             {
-                path: '/content',
-                meta: {title: '联系我们'},
-                component: () => import('../views/Content.vue')
+                path: '/common/querylist',
+                meta: {title: '公共列表'},
+                component: () => import('../views/common/querylist.vue')
             }
         ],
     },

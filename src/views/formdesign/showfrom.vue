@@ -64,7 +64,7 @@ this.init();
                      m.data=k.data;
                      m.from=k.from.data;
                      //处理表单
-                     var instanceid=m.$route.params.instanceid;
+                     var instanceid=m.$route.params.key;
                      if(instanceid!=null&&instanceid!=undefined&&instanceid!=""){
                      m.  getTabelDate(instanceid);
                      }

@@ -156,17 +156,21 @@ console.log(_this);
         add_tab (item) {
             console.log(item);
             var m=this;
-            m.$taber.open({
-                name:"showfrom",
-                key:item.instanceid,
-                id:item.instanceid,
-                params: {
-                    title: item.title,
+                   m.$router.push({
+                        path: "/formdesign/showfrom/" + item.fromid + "/" + item.instanceid,
+
+                    })
+            // m.$taber.open({
+            //     name:"showfrom",
+            //     key:item.instanceid,
+            //     id:item.instanceid,
+            //     params: {
+            //         title: item.title,
                     
-                    fromid:item.fromid,
-                    instanceid:item.instanceid
-                }
-            })
+            //         fromid:item.fromid,
+            //         instanceid:item.instanceid
+            //     }
+            // })
         }  
     }
     //接收父组件传过来的数据

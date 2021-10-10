@@ -68,18 +68,32 @@
             add_tab(to) {
                 var m = this;
                 if (m.$route.fullPath.indexOf(to.tag) > -1) {
+                    if(to.params!=null&&to.params!=""){
                     m.$router.push({
                         path: "/" + to.tag + "/" + to.params + "/" + to.id,
 
                     }
                     )
+                    }else{
+                            m.$router.push({
+                        path: "/" + to.tag ,
+
+                    } )
+                    }
+                
                 } else {
+                           if(to.params!=null&&to.params!=""){
                     m.$router.push({
                         path: "/" + to.tag + "/" + to.params + "/" + to.id,
 
-                    }
-                    )
+                    } )
+                           }else{
 
+        m.$router.push({
+                        path: "/" + to.tag ,
+
+                    } )
+                           }
                 }
 
             },
