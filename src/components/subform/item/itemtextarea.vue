@@ -4,7 +4,7 @@
     <label class="layui-form-label">{{data.data.label}}</label>
     <div class="layui-input-block">
 
-      <textarea class="layui-textarea" v-if="data.data.showtext=='false'" :type="data.data.type" :disabled="disabled" :name="data.data.name" :lay-verify="data.data.required=='true'?'':'required'" :autocomplete="data.data.autocomplete" :placeholder="data.data.placeholder" :class="data.data.inputclass">
+      <textarea class="layui-textarea" v-if="data.data.showtext=='false'" :value="data.data.value" :type="data.data.type" :disabled="disabled" :name="data.data.name" :lay-verify="data.data.required=='true'?'':'required'" :autocomplete="data.data.autocomplete" :placeholder="data.data.placeholder" :class="data.data.inputclass">
       </textarea>
       <span v-if="data.data.showtext=='true'" style="line-height: 2.5;">{{data.data.value}}</span>
     </div>

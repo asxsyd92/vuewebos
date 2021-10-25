@@ -26,7 +26,7 @@ export const inRoutes = [
                         meta: {title: '表单管理'},
                         component: () => import('../views/formdesign/list.vue')
                     },{
-                        path: '/formdesign/formdesign',
+                        path: '/formdesign/formdesign/:key',
                         meta: {title: '表单设计'},
                         component: () => import('../views/formdesign/formdesign.vue')
                     },{
@@ -37,6 +37,19 @@ export const inRoutes = [
                     },
                 ],
             },
+            {
+                path: '/webinfo',
+                meta: {title: '网站服务'},
+                component: empty,
+                 children: [
+                    {
+                        path: '/webinfo/list',
+                        meta: {title: '信息服务'},
+                        component: () => import('../views/webinfo/list.vue')
+                    }
+                ]
+            },
+         
             {
                 path: '/common/querylist',
                 meta: {title: '公共列表'},

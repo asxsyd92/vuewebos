@@ -127,8 +127,8 @@
       console.log(this.fromdata);
       var lay = layer.msg('请稍等...', { icon: 16, shade: 0.5, time: 20000000 });
       
-      if (m.$tab.params.key != null && m.$tab.params.key != undefined) {
-        m.$post(m.host + "/api/form/getFormJson", { key: m.$tab.params.key }).then(res => {
+      if (m.$route.params.key != null && m.$route.params.key != undefined) {
+        m.$post(m.host + "/api/form/getFormJson", { key: m.$route.params.key }).then(res => {
           console.log(res);
 
 
@@ -209,8 +209,8 @@
         var m = this;
         var lay = layer.msg('保存中...', { icon: 16, shade: 0.5, time: 20000000 });
       var ds = new Object();
-      if (m.$tab.params.key != null && m.$tab.params.key != undefined&&m.$tab.params.key!="") {
-        ds.id = m.$tab.params.key;
+      if (m.$route.params.key != null && m.$route.params.key != undefined&&m.$route.params.key!="") {
+        ds.id = m.$route.params.key;
       } else {
         if (m.list2.from.data.table == "") {
           layui.layer.alert("表名不能为空", {
@@ -382,8 +382,8 @@
         });
       }, 10);
       var key = "";
-      if (m.$tab.params.key != null && m.$tab.params.key != undefined) {
-        key = m.$tab.params.key;
+      if (m.$route.params.key != null && m.$route.params.key != undefined) {
+        key = m.$route.params.key;
       }
       var lay = layer.msg('保存中...', { icon: 16, shade: 0.5, time: 20000000 });
       m.$post(m.host + "/api/form/saveFormJson", { key: key, title: "测试", data: JSON.stringify(m.list2) }).then(res => {

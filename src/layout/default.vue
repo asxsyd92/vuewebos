@@ -101,6 +101,7 @@
                 let panes = this.panes;
                 let activeKey = this.activeKey;
                 let index = panes.findIndex((item) => { return item.path == e });
+          
                 panes.splice(index, 1);
                 this.panes = panes;
                 if (e == activeKey) {

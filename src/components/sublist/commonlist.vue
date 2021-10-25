@@ -156,10 +156,8 @@ console.log(_this);
         add_tab (item) {
             console.log(item);
             var m=this;
-                   m.$router.push({
-                        path: "/formdesign/showfrom/" + item.fromid + "/" + item.instanceid,
-
-                    })
+                   //m.$router.push({    path: "/formdesign/showfrom/" + item.fromid + "/" + item.instanceid,});
+                        m.$router.push({  path: "/formdesign/formdesign/" +item.id})
             // m.$taber.open({
             //     name:"showfrom",
             //     key:item.instanceid,

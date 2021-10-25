@@ -44,8 +44,8 @@
             <ul class="layui-nav right">
                 <li class="layui-nav-item to-index">
 
-                    <span style="font-family: digital-7;color: #4cff00; " id="show_time"></span>
-                    <span style="font-family: digital-7;color: #4cff00; " class="date" id="datatime"> </span>
+                    <span style="font-family: digital-7;color: #4cff00; " >{{show_time}}</span>
+                    <span style="font-family: digital-7;color: #4cff00; " class="date" >{{datatime}} </span>
 
                 </li>
                 <li class="layui-nav-item">
@@ -83,7 +83,7 @@
     export default {
         name: 'sysheader', data() {
             return {
-                users: []
+                users: [],datatime:'',show_time:''
             }
 
         }, 
@@ -135,16 +135,13 @@
 
                 });
             }, showtime: function () {
+                var m=this;
                 try {
                     setInterval(function () {
-                        var time = document.getElementById("datatime");
-                        var show_time = document.getElementById("show_time");
-
-                        var da = new Date();
-                        if (time != null & time != undefined) {
-                            time.innerHTML = da.getFullYear() + "-" + (da.getMonth() + 1) + "-" + da.getDate();
-                            show_time.innerHTML = da.getHours() + ":" + da.getMinutes() + ":" + da.getSeconds() + ' 星期' + '日一二三四五六'.charAt(da.getDay());
-                        }
+                         var da = new Date();
+                           m.  datatime= da.getFullYear() + "-" + (da.getMonth() + 1) + "-" + da.getDate();
+                           m.show_time = da.getHours() + ":" + da.getMinutes() + ":" + da.getSeconds() + ' 星期' + '日一二三四五六'.charAt(da.getDay());
+                      
                     }, 100);
                 } catch (e) { console.log(e); }
             }

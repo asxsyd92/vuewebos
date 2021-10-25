@@ -7,6 +7,7 @@ import store from './store'
 import { post, get,patch, put} from '@/utils/request'
 Vue.use(Antd);
 Vue.config.productionTip = false;
+import panes from "@/layout/panes";
 import init from './assets/js/init.js';
 import 'layui-src/src/css/layui.css'; 
 import 'layui-src/src/css/modules/layer/default/layer.css'; 
@@ -25,6 +26,22 @@ Vue.prototype.$put = put;
 Vue.prototype.layui = layui;
 Vue.config.productionTip = false
 Vue.prototype.host = '';
+
+
+export function claostabs(m) {
+  console.log("关闭");
+  var e=window.location.pathname;
+  let panes = m.$options.parent.$parent.panes;
+  let activeKey = m.$options.parent.$parent.activeKey;
+  let index = panes.findIndex((item) => { return item.path == e });
+    
+  panes.splice(index, 1);
+  m.$options.parent.$parent.panes = panes;
+  if (e == activeKey) {
+      m.$options.parent.$parent.activeKey = panes[index - 1].path
+  }
+}
+Vue.prototype.$claostabs = claostabs;
 router.beforeEach((to, from, next) => {
     console.log(to.fullPath)
     if(to.meta && !to.meta.noRequireAuth){
