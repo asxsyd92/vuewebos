@@ -1,4 +1,5 @@
-export default   { data:[{
+export default   { data:[
+    {
     icon: "fa fa-edit",
     name: "输入框",
     id: "1",
@@ -15,8 +16,8 @@ export default   { data:[{
         "disabled": "false",
         "showtext": "false",
         "value": "",
-        "data": [],
-        "input": []
+        "data":"",
+        "input":""
     }
 }, {
     icon: "fa fa-dot-circle-o",
@@ -69,7 +70,7 @@ export default   { data:[{
         "showtext": "false",
         "required":"false",
         "value": "",
-        "data": [],
+        "data":"",
         "input": [
             {"name":"checkbox1",value:"男"},
             {"name":"checkbox2",value:"女"},
@@ -94,8 +95,8 @@ export default   { data:[{
         "required":"false",
         "display": "block",
         "value": "",
-        "data": [],
-        "input": []
+        "data":"",
+        "input":""
     }
 }
     ,
@@ -117,8 +118,8 @@ export default   { data:[{
         "required":"false",
         "display": "block",
         "value": "",
-        "data": [],
-        "input": []
+        "data":"",
+        "input":""
     }
 },{
     icon: "fa fa-edit",
@@ -137,11 +138,70 @@ export default   { data:[{
         "showtext": "false",
         "required":"false",
         "value": "",
-        "data": [],
+        "data":"",
         "input": [
             {"title":"男",value:"1"},
             {"title":"女",value:"2"},
         ]
+    }
+},{
+    icon: "fa fa-edit",
+    name: "字体图标",
+    id: "7",
+     type: "icon",
+    data: {
+        id: "7",
+        "col": "layui-col-md12",
+        "label": "标题2",
+        "type": "text",
+        "name": "icon",
+        "autocomplete": "off",
+        "placeholder": "placeholder",
+        "inputclass": "layui-input",
+        "disabled": "false",
+        "showtext": "false",
+        "value": "",
+        "data":"",
+        "input":""
+    }
+},{
+    icon: "fa fa-edit",
+    name: "颜色",
+    id: "8",
+    type: "color",
+    data: {
+        id: "8",
+        "col": "layui-col-md12",
+        "label": "颜色",
+        "type": "text",
+        "name": "color",
+        "autocomplete": "off",
+        "placeholder": "placeholder",
+        "inputclass": "layui-input",
+        "disabled": "false",
+        "showtext": "false",
+        "value": "",
+        "data":"",
+        "input":""
+    }
+},{
+    icon: "fa fa-edit",
+    name: "xmselect",
+    id: "9", type: "xmselect",
+    data: {
+        id: "9",
+        "col": "layui-col-md12",
+        "label": "颜色",
+        "type": "xmselect",
+        "name": "xmselect",
+        "autocomplete": "off",
+        "placeholder": "placeholder",
+        "inputclass": "layui-input",
+        "disabled": "false",
+        "showtext": "false",
+        "value": "",
+        "data": "",
+        "input":""
     }
 },
 ],from:{}

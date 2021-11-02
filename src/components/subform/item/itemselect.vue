@@ -25,10 +25,10 @@ export default {
     },
     model: Object
   }   , mounted(){
-    console.log(this.data);
+   
     layui.form.render(); //更新全部
     this.disabled=this.data.data.disabled=='true'?true :false
-      console.log(this.data);
+     
     }
 }
 </script>

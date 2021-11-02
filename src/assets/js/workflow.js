@@ -702,7 +702,7 @@
         //步骤属性设置
         stepSetting: function () {
             stepSettingid = this.id;
-            console.log(this);
+   
             var bbox = this.getBBox();
             //var url = top.rootdir + "/Platform/WorkFlowDesigner/Set_Step.aspx?appid=" + appid + "&id=" + this.id + "&x=" + bbox.x + "&y=" + bbox.y + "&width=" + bbox.width + "&height=" + bbox.height;
             //dialog.open({ title: "步骤参数设置", width: 700, height: 400, url: url, openerid: iframeid, resize: false });

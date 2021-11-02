@@ -7,6 +7,11 @@
     <setcheckbox v-if="data.type=='checkbox'" :data="data"></setcheckbox>
     <setselect v-if="data.type=='select'" :data="data"></setselect>
     <setfrom v-if="data.type=='setfrom'" :data="data"></setfrom>
+    <setxmselct v-if="data.type=='setfrom'" :data="data"></setxmselct>
+   <seticon v-if="data.type=='icon'" :data="data"></seticon>
+   <setcolor v-if="data.type=='color'" :data="data"></setcolor>
+  <setxmselect v-if="data.type=='xmselect'" :data="data"></setxmselect>
+   
   </div>
 </template>
 <script>
@@ -22,7 +27,7 @@
     }, watch: {
       'data': {
         handler(v) {
-          console.log(v);
+        
           this.$emit('change', v);
         },
         deep: true
@@ -30,7 +35,7 @@
     },
     mounted() {
       debugger;
-      console.log(this.data);
+     
     }
   }
 </script>

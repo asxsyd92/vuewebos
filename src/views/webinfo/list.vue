@@ -21,7 +21,7 @@
         created() { }
         ,watch: {
                 '$route'(to, from) { //监听路由是否变化
-               console.log(this);
+            
         
                 this.init();
            
@@ -29,7 +29,7 @@
                 }
             },
         mounted() {
-            console.log("list");
+     
             let m = this;
              m.init();
 
@@ -42,6 +42,7 @@
                 table.render({
                     elem: '#webinfolist'
                     , id: tableId
+                    , height: 'full'
                     , toolbar: '#toolbarformdesign'
                     , headers: { "Authorization": "bearer " + window.localStorage["_token"] }
                     , url: '/api/tasks/WaitList?title=&type=&desc=AddTime desc'
@@ -88,7 +89,7 @@
                     }
 
                     else if (layEvent === 'edit') { //编辑
-                        console.log("edit");
+                     
                         if (!data.id) return;
                         // m.$taber.open({  name:'formdesign', params: {    key:data.id   }});
                         // m.$router.push({ path: "/formdesign/formdesign/" + data.id, })

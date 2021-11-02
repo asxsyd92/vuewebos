@@ -65,7 +65,7 @@ export default {
     methods: {
         
         add_tab (item) {
-            console.log(item);
+         
             this.selected = 11
             this.$taber.open({
                 name:item.tag,//"showfrom",
@@ -80,9 +80,9 @@ export default {
      ,
          getmenu: function () {
                 var m = this;
-                console.log(m);
+           
                 m.$post(m.host+'/api/users/GetAppList', {}).then(res => {
-                 console.log(res);
+           
          
 
                 }).catch(res=>{
@@ -92,7 +92,7 @@ export default {
             setTimeout(function () {
                         m.init();
                     }, 1000);
-                    console.log(res);
+                
                     }else{
                            layer.msg(res.msg, { icon: 2 });
                     }

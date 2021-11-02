@@ -48,8 +48,74 @@ export const inRoutes = [
                         component: () => import('../views/webinfo/list.vue')
                     }
                 ]
+            }, 
+            {
+                path: '/users',
+                meta: {title: '用户管理'},
+                component: empty,
+                 children: [
+                    {
+                        path: '/users/list',
+                        meta: {title: '用户管理'},
+                        component: () => import('../views/users/list.vue')
+                    }
+                ]
+            }, 
+               {
+                path: '/sys',
+                meta: {title: '系统设置'},
+                component: empty,
+                 children: [
+                    {
+                        path: '/sys/menu',
+                        meta: {title: '菜单管理'},
+                        component: () => import('../views/sys/menu.vue')
+                    },    {
+                        path: '/sys/dictionary',
+                        meta: {title: '数据字典'},
+                        component: () => import('../views/sys/dictionary.vue')
+                    },    {
+                        path: '/sys/role',
+                        meta: {title: '数据字典'},
+                        component: () => import('../views/sys/role.vue')
+                    },    {
+                        path: '/sys/log',
+                        meta: {title: '日志管理'},
+                        component: () => import('../views/sys/log.vue')
+                    }
+                ]
+            },    {
+                path: '/oa',
+                meta: {title: '办公系统'},
+                component: empty,
+                 children: [
+                    {
+                        path: '/oa/wait',
+                        meta: {title: '待办事项'},
+                        component: () => import('../views/oa/wait.vue')
+                    },  {
+                        path: '/oa/completed',
+                        meta: {title: '已办事项'},
+                        component: () => import('../views/oa/completed.vue')
+                    }
+                ]
+            },    {
+                path: '/workflow',
+                meta: {title: '流程设计'},
+                component: empty,
+                 children: [
+                    {
+                        path: '/workflow/list',
+                        meta: {title: '流程列表'},
+                        component: () => import('../views/workflow/list.vue')
+                    },  {
+                        path: '/workflow/designer',
+                        meta: {title: '设计'},
+                        component: () => import('../views/workflow/designer.vue')
+                    }
+                ]
             },
-         
+            
             {
                 path: '/common/querylist',
                 meta: {title: '公共列表'},

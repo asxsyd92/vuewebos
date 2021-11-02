@@ -88,10 +88,10 @@ console.log(_this);
 
         }
         else if (layEvent === 'edit') { //编辑
-            console.log(data);
+       
             if (!data.id) return;
             var content;
-     console.log(_this);
+ 
     _this. add_tab(data);
         // _this.$taber.open({
         //         name:'showfrom',

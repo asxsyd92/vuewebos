@@ -141,15 +141,8 @@
       },
       model: Object
     }, mounted() {
-        console.log("json");
-          console.log(this.data);
-   
+    
 
-                console.log(this.json);
-      //this.ids=this.data.id;
-    //   layui.form.render(); //更新全部
-    //   console.log(this.data.data);
-    //  layui.form.val('setings',this.data.data );
     }
   }
 </script>

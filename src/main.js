@@ -9,15 +9,20 @@ Vue.use(Antd);
 Vue.config.productionTip = false;
 import panes from "@/layout/panes";
 import init from './assets/js/init.js';
+
 import 'layui-src/src/css/layui.css'; 
 import 'layui-src/src/css/modules/layer/default/layer.css'; 
 /* @import 'layui-src/src/css/modules/laydate/default/font.css';   */
 import 'layui-src/src/css/modules/laydate/default/laydate.css'; 
 import layui from 'layui-src';
+import DTree from '@/assets/js/dtree.js';
+
+import iconPicker from '@/assets/js/iconPicker.js';
 import './assets/css/webos/xadmin.css';
 import './assets/css/webos/theme5.css';
 import 'font-awesome/css/font-awesome.css';
 import 'animate.css/animate.min.css';
+
 //定义全局变量
 Vue.prototype.$post = post;
 Vue.prototype.$get = get;

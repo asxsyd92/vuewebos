@@ -30,10 +30,10 @@ export default {
             try {
                 var obj=JSON.parse(str);
       m.checkbox=obj;
-                console.log('转换成功：'+obj);
+           
             
             } catch(e) {
-                console.log('error：'+str+'!!!'+e);
+          
              
             }
         }else{

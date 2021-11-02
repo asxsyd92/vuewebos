@@ -57,8 +57,8 @@
               </header>
               <form class="layui-form" :fromData="list2.data">
                 <draggable class="dragArea list-group" :list="list2.data" group="people" @change="log" animation="300">
-                  <comfrom @click.native="clickComponent(li)" class="list-group-item" v-for="li in list2.data"
-                    :key="li.id" :data="li" @change="contentChange" @select-change="contentSelectChange"></comfrom>
+                  <design @click.native="clickComponent(li)" class="list-group-item" v-for="li in list2.data"
+                    :key="li.id" :data="li" @change="contentChange" @select-change="contentSelectChange"></design>
                 </draggable>
               </form>
             </div>
@@ -82,12 +82,12 @@
         </div>
       </div>
     </div>
-    <div id="_webosdialog" style="display:none">
+    <script type="text/html" id="_webosdialog" >
       <div v-if="dialogdata.length>0">
         <submitfrom v-for="li in dialogdata" :key="li.id" :data="li"></submitfrom>
       </div>
 
-    </div>
+    </script>
   </div>
 
 
@@ -99,7 +99,7 @@
   import _ from 'lodash';
   import Enumerable from 'linq'
   import submitfrom from "@/components/subform/submitfrom";
-  import comfrom from "@/views/formdesign/comfrom";
+  import design from "@/views/formdesign/design";
   import setting from "@/components/subform/setting";
   let idGlobal = 8;
   export default {
@@ -107,7 +107,7 @@
     display: "Custom Clone",
     order: 3,
     components: {
-      draggable, submitfrom, comfrom, setting
+      draggable, submitfrom, design, setting
     },
     data() {
       return {
@@ -118,13 +118,10 @@
       };
     },
     updated() {
-      console.log(this.$els);
-      console.log('更新之后')
-      console.log(this.$refs.self)
     }
     , mounted() {
       var m = this;
-      console.log(this.fromdata);
+
       var lay = layer.msg('请稍等...', { icon: 16, shade: 0.5, time: 20000000 });
       
       if (m.$route.params.key != null && m.$route.params.key != undefined) {
@@ -149,7 +146,6 @@
 
       layui.form.on('submit(setingfrom)', function (data) {
         m.list2.from.data = data.field;
-        console.log(m.list2);
            layer.msg("保存成功", { icon: 1 });
       });
       layui.form.on('submit(delsubmit)', function (data) {
@@ -159,30 +155,19 @@
       });
       //监听提交
       layui.form.on('submit(setsubmit)', function (data) {
+        console.log(444)
         var id = m.sets.id;
         let temp = Enumerable.from(m.list2.data).firstOrDefault(i => i.id == id);
-
-        if (temp.type == 'select') {
-          data.field.input = JSON.parse(data.field.input);
-          console.log(data.field.input);
-        }
-
-
         var newArr = m.list2.data.filter(item => {
           if (item.id == id) {
             item.data = data.field;
           }
-          console.log(item);
 
         })
 
-        layui.layer.alert(JSON.stringify(newArr), {
-          title: '最终的提交信息'
-        })
-        console.log(m.list2);
-        layui.layer.alert(JSON.stringify(m.list2.data), {
-          title: '最终的提交信息'
-        })
+ 
+ 
+        layui.layer.msg("成功")
         return false;
       });
     },
@@ -253,12 +238,12 @@
            dd.placeholder="请输入"+value.column_comment.toLowerCase();
            dd.inputclass="layui-input";
            dd.disabled="false";
-              dd.showtext="false";
-              dd.required="false";
-              dd.display="block";
-               dd.value="block";
-             dd.data=[];
-           dd.input=[];
+           dd.showtext="false";
+           dd.required="false";
+           dd.display="block";
+           dd.value="";
+           dd.data="";
+           dd.input="";
           o.data=dd;
      
           f.push(o);
@@ -296,9 +281,6 @@
 
     },
     add(obj) {
-      console.log(obj)
-      // const newObj = Object.assign(_.cloneDeep(obj.data), list2);
-      // const newObj = Object.assign(_.cloneDeep(obj), {id: `${obj.name}_${new Date().getTime()}`});
       return newObj;
 
     },
@@ -310,41 +292,12 @@
 
 
       setTimeout(function () {
-        var str = item.data.input;
-        if (typeof str == 'string') {
-          try {
-            var obj = JSON.parse(str);
-            var i = item.data.input = obj;
-            console.log('转换成功：' + obj);
-
-          } catch (e) {
-            console.log('error：' + str + '!!!' + e);
-
-          }
-        } else {
-          var ks = JSON.stringify(item.data.input);
-          var i = item.data.input = ks;
-        }
+      
 
         layui.form.val('setings', item.data);
       }, 100);
-      console.log(2);
+  
       layui.form.render(); //更新全部
-      console.log(3);
-      // layer.msg(JSON.stringify(item));
-
-      // this.formData.formDataList.forEach(f => {
-      //   if (f.name === 'Layout') {
-      //     f.setting.colList.forEach(c => {
-      //       if(c) {console.log("abc:", c)
-      //         c && (c.makeStyle.active = false)
-      //       }
-      //     });
-      //   }
-      //   if (f === item) f.makeStyle.active = true;
-      //   else f.makeStyle.active = false;
-      // });
-      //this.$emit('select-change', item);
     }, contentSelectChange(item) {
       console.log(item)
     },
@@ -357,19 +310,14 @@
     },
 
     clone(obj) {
-      //layer.alert(JSON.stringify(obj));
-  
       const newObj = Object.assign(_.cloneDeep(obj), { id: `${obj.id}_${new Date().getTime()}` });
       return obj;
-      //  var m= this;
-      //   console.log(obj)
-      //   const newObj = Object.assign(_.cloneDeep(obj), m.list2);
-      //   return newObj;
+ 
     },
     show() {
       var m = this;
       m.dialogdata = m.list2.data;
-      console.log(m.dialogdata);
+    
       setTimeout(() => {
         layui.layer.open({
           type: 1,
@@ -378,7 +326,7 @@
           shade: 0.8,
 
           area: ['35%', '55%'],
-          content: document.getElementById("_webosdialog").innerHTML
+          content: layui.$("#_webosdialog").html()
         });
       }, 10);
       var key = "";
@@ -386,7 +334,7 @@
         key = m.$route.params.key;
       }
       var lay = layer.msg('保存中...', { icon: 16, shade: 0.5, time: 20000000 });
-      m.$post(m.host + "/api/form/saveFormJson", { key: key, title: "测试", data: JSON.stringify(m.list2) }).then(res => {
+      m.$post(m.host + "/api/form/saveFormJson", { key: key, title: m.list2.from.data.name, data: JSON.stringify(m.list2) }).then(res => {
         console.log(res);
 
 

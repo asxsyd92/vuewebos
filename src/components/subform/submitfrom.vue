@@ -7,6 +7,9 @@
   <itemcheckbox v-if="data.type=='checkbox'" :data="data"></itemcheckbox>
   <itemtextarea v-if="data.type=='textarea'" :data="data"></itemtextarea>
   <itemselect v-if="data.type=='select'" :data="data"></itemselect>
+  <itemcolor v-if="data.type=='color'" :data="data"></itemcolor>
+  <itemicon v-if="data.type=='icon'" :data="data"></itemicon>
+  <itemxmselect v-if="data.type=='xmselect'" :data="data"></itemxmselect>
 </div>
 
 </template>
@@ -33,7 +36,7 @@ export default {
     // }},
     mounted(){
      
-      console.log(this.data);
+     
       
     }
 

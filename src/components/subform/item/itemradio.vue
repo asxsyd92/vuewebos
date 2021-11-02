@@ -31,18 +31,16 @@ export default {
             try {
                 var obj=JSON.parse(str);
       m. radio=obj;
-                console.log('转换成功：'+obj);
+            
             
             } catch(e) {
-                console.log('error：'+str+'!!!'+e);
+              
              
             }
         }else{
           m.  radio=str;
         }
-    //data.data.input;
-    console.log(m.radio);
-      console.log(this.data.data);
+
       layui.form.render(); //更新全部
     }
 }

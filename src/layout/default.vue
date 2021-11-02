@@ -31,13 +31,14 @@
 
                 </ul>
             </div>
-        </div>
-        <div class="page-tabs">
+                <div class="page-tabs">
             <a-tabs hideAdd :size="'small'" v-model="activeKey" type="editable-card" @edit="onEdit">
                 <a-tab-pane v-for="pane in panes" :tab="pane.meta.title" :key="pane.path"
                     :closable="pane.path == inRoutes[0].children[0].path ? false : true" />
             </a-tabs>
         </div>
+        </div>
+    
         <div class="page-content">
             <keep-alive>
                 <router-view />
@@ -109,7 +110,7 @@
                 }
             }, getmenu: function () {
                 var m = this;
-                console.log(m);
+                
                 m.$post(m.host + '/api/users/GetAppList', {}).then(res => {
                     console.log(res);
 
@@ -138,7 +139,9 @@
 
                 var layer = layui.layer, $ = layui.$,
                     element = layui.element, form = layui.form;
-
+               if ($('.left-nav').css('width') == '60px') {
+                      $('.page-tabs').animate({ left: '60px' }, 10);
+               }
 
                 // 打开页面初始
                 xadmin.init();
@@ -178,6 +181,7 @@
                     }
 
                     if ($(window).width() < 768) {
+                
                         $('.page-content-bg').show();
                     }
 
@@ -321,7 +325,7 @@
 
     .page-tabs {
         top: 45px;
-        position: absolute;
+        position: fixed;
         left: 220px;
         width: 100%;
         background-color: #f5f5f5 !important;

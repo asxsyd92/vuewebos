@@ -142,7 +142,7 @@
       model: Object
     }, mounted() {
         console.log("json");
-          console.log(this.data);
+         
    
 
                 console.log(this.json);

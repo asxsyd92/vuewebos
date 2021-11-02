@@ -52,7 +52,7 @@ export default {
         // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
         serverUrl: '/api/ueditor/upload?asxsyd92user='+window.localStorage.userid,
         // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
-        UEDITOR_HOME_URL: '../../../../ueditor/',
+        UEDITOR_HOME_URL: '../../../../common/ueditor/',
         toolbars: [[
             'fullscreen', 'source', '|', 'undo', 'redo', '|',
             'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
@@ -92,21 +92,19 @@ export default {
 
 
   },
-  methods: { s(s){
-    console.log(s);
-    alert(11);
-      this.umgs=this.msgs;
-    console.log(s);
-  },
+  methods: { 
     changeEditorHeight(){
       //拿到工具栏的高度
-      var toolbarbox = document.querySelector(".edui-editor-toolbarbox") 
+      var toolbarbox = document.querySelector(".edui-editor-toolbarbox") ;
+      if(toolbarbox!=null&&toolbarbox!=undefined){
       var toolbarboxHeight = toolbarbox.offsetHeight
         
       var allDeltaHeight = toolbarboxHeight + 23 + 'px'
 
       var iframeholder = document.querySelector(".edui-editor-iframeholder")
       iframeholder.style.height ="400px";// `calc(100% - ${allDeltaHeight})`
+      }
+
     },
     // 5、 你可以在ready方法中拿到editorInstance实例,所有API和官方的实例是一样了。http://fex.baidu.com/ueditor/#api-common
     ready (editorInstance) {

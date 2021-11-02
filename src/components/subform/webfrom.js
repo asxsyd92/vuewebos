@@ -4,7 +4,9 @@ import ueditor from './item/ueditor';
 import itemcheckbox from './item/itemcheckbox'
 import itemtextarea from './item/itemtextarea'
 import itemselect from './item/itemselect'
-
+import itemcolor from './item/itemcolor'
+import itemicon from './item/itemicon'
+import itemxmselect from './item/itemxmselect'
 export default {
-    iteminput,itemradio,ueditor,itemcheckbox,itemtextarea,itemselect
+    iteminput,itemradio,ueditor,itemcheckbox,itemtextarea,itemselect,itemcolor,itemicon,itemxmselect
 }
