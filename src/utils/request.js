@@ -156,22 +156,27 @@ axios.interceptors.response.use(
 //  }
 
 // Form Data   Request payload//当headers为 json时是 request 方式发送请求    但是如果你们的后台是formData的方式接口 就传一个header进来 就可以 formData  需要qs序列化//因为我们后台是json接受的比较多 所以json在我这里是默认  可以根据自己的情况修改   这个需要json转字符串不然是乱码的
-export function post(url, params = {}, headers) {
+export function post(url, params = {},msg, headers) {
+  var lay = layer.msg('请稍等...', { icon: 16, shade: 0.5, time: 20000000 });
   return new Promise((resolve, reject) => {
     if (headers == undefined) {
       axios.post(url, Qs.stringify(params), {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}})
         .then(res => {
+          layer.close(lay);
           resolve(res.data);
         })
         .catch(err => {
+          layer.close(lay);
           reject(err.data)
         })
     } else {
       axios.post(url, Qs.stringify(params), headers)
         .then(res => {
+          layer.close(lay);
           resolve(res.data);
         })
         .catch(err => {
+          layer.close(lay);
           reject(err)
         })
     }

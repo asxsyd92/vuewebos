@@ -69,11 +69,11 @@
                         layui.layer.confirm(msg, { icon: 3, title: '删除' + data.title }, function (index) {
                             layer.close(index);
                             //向服务端发送删除指令
-                            var lay = layui.layer.msg('正在处理中..', { icon: 16, shade: 0.5, time: 20000000 });
-                            m.$post(m.host + '/api/tasks/DelFormData', { table: data.t_table, instanceid: data.instanceid, id: data.id }).then(res => {
+
+                            m.$post(m.host + '/api/tasks/DelFormData', { table: data.t_table, instanceid: data.instanceid, id: data.id },"正在处理中..").then(res => {
                                 console.log(res);
                             }).catch(resp => {
-                                layui.layer.close(lay);
+                        
                                 if (resp.success) {
                                     //obj.del(); //删除对应行（tr）的DOM结构
                                     table.reload(tableId, {});
@@ -91,9 +91,10 @@
                     else if (layEvent === 'edit') { //编辑
                      
                         if (!data.id) return;
-                        // m.$taber.open({  name:'formdesign', params: {    key:data.id   }});
-                        // m.$router.push({ path: "/formdesign/formdesign/" + data.id, })
-                        m.$router.push({ path: "/formdesign/showfrom/" + data.fromid + "/" + data.instanceid, })
+                        var query=new Object();
+                       query.fromid= data.fromid;
+                       query.instanceid=data.instanceid;
+                        m.$router.push({ path: "/formdesign/showfrom"  ,query:query })
 
                     }
 

@@ -23,7 +23,7 @@
       },
       model: Object
     }, mounted() {
-     
+     console.log("xmselect");
       var m = this;
       m.init();
       this.disabled = this.data.data.disabled == 'true' ? true : false
@@ -42,9 +42,9 @@
               // 这里绑定css选择器
               el: '#' + m.data.data.name,
               title: m.data.data.name, 
-              initValue: m.data.data.value,
+              initValue: m.data.data.value==null?[]: m.data.data.value.split(","),
               layVerify: 'required',
-              layVerType: 'msg',
+              layVerType: m.data.data.name,
               // 渲染的数据
               data: resp.data,
             })

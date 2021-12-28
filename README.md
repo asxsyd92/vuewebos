@@ -40,6 +40,10 @@ npm i animate
 npm i animate.css@3.5.0
 
 npm install --save crypto-js
+npm i linq
+
+#安装二维码插件
+npm i @styleofpicasso/qrcode
 ```
 
 

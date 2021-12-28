@@ -106,7 +106,7 @@
                             $("#title").val(title);
                             break;
                         case 'a_add':// add(-1);
-                            m.$router.push({ path: "/formdesign/formdesign/_" })
+                            m.$router.push({ path: "/formdesign/formdesign/add" })
                             //   m.$taber.open({  name:'formdesign', params: { }})
                             //  top.xadmin.open('添加角色',  m.host+'/webos/page/base/addSysFormDesign.html?appid=' + appid, 500, 600);
                             break;

@@ -1,14 +1,26 @@
 <template>
   <div :class="data.data.col" :style="'display:'+data.data.display">
     <div class="layui-form-item">
-      <label class="layui-form-label">{{data.data.label}}</label>
-      <div class="layui-input-block">
+      <div v-if="data.type=='textarea'">
+        <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">{{data.data.label}}</label>
+          <div class="layui-input-block">
+            <textarea :disabled="disabled" :name="data.data.name" :id="data.data.name" :lay-verify="required" :autocomplete="data.data.autocomplete"
+            :placeholder="data.data.placeholder"  class="layui-textarea" :value="data.data.value"></textarea>
+          </div>
+        </div>
 
-        <input v-if="data.data.showtext=='false'" :value="data.data.value" :type="data.data.type" :disabled="disabled"
-          :name="data.data.name" :id="data.data.name" :lay-verify="required" :autocomplete="data.data.autocomplete"
-          :placeholder="data.data.placeholder" :class="data.data.inputclass">
-        <span v-if="data.data.showtext=='true'" style="line-height: 2.5;">{{data.data.value}}</span>
       </div>
+      <div v-if="data.type=='input'">
+        <label class="layui-form-label">{{data.data.label}}</label>
+        <div class="layui-input-block">
+          <input v-if="data.data.showtext=='false'" :value="data.data.value" :type="data.data.type" :disabled="disabled"
+            :name="data.data.name" :id="data.data.name" :lay-verify="required" :autocomplete="data.data.autocomplete"
+            :placeholder="data.data.placeholder" :class="data.data.inputclass">
+          <span v-if="data.data.showtext=='true'" style="line-height: 2.5;">{{data.data.value}}</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -26,10 +38,10 @@
       },
       model: Object
     }, mounted() {
-
+console.log("input");
       this.init();
 
-     
+
     }, methods: {
       init() {
         var m = this;

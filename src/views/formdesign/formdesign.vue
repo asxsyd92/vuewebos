@@ -125,6 +125,9 @@
       var lay = layer.msg('请稍等...', { icon: 16, shade: 0.5, time: 20000000 });
       
       if (m.$route.params.key != null && m.$route.params.key != undefined) {
+        if(m.$route.params.key=="add"){
+           layer.msg("请设置表单属性", { icon: 1 });
+        }else{
         m.$post(m.host + "/api/form/getFormJson", { key: m.$route.params.key }).then(res => {
           console.log(res);
 
@@ -142,6 +145,7 @@
             return;
           }
         })
+        }
       }
 
       layui.form.on('submit(setingfrom)', function (data) {
@@ -192,9 +196,9 @@
       generate() {
         console.log("generate");
         var m = this;
-        var lay = layer.msg('保存中...', { icon: 16, shade: 0.5, time: 20000000 });
+        var lay = layer.msg('请稍等...', { icon: 16, shade: 0.5, time: 20000000 });
       var ds = new Object();
-      if (m.$route.params.key != null && m.$route.params.key != undefined&&m.$route.params.key!="") {
+      if (m.$route.params.key != null && m.$route.params.key != undefined&&m.$route.params.key!=""&&m.$route.params.key!="add") {
         ds.id = m.$route.params.key;
       } else {
         if (m.list2.from.data.table == "") {
@@ -213,7 +217,7 @@
       }
         m.$post(m.host + "/api/form/FormTable", { id:ds.id,table:ds.table }).then(res => {
           console.log(res);
-  layer.close(lay);
+          layer.close(lay);
 
         }).catch(data => {
 
@@ -223,9 +227,9 @@
               var f=[];
                 layui.  $.each(data.data, function (i, value) {
  
-　        var o=new Object();
-　　　    o.icon="fa fa-edit";
-　　　　  o.name=value.column_name.toLowerCase();
+       var o=new Object();
+   o.icon="fa fa-edit";
+  o.name=value.column_name.toLowerCase();
          o.id=value.column_name.toLowerCase();
          o.type="input";
          var dd=new Object();
@@ -330,7 +334,7 @@
         });
       }, 10);
       var key = "";
-      if (m.$route.params.key != null && m.$route.params.key != undefined) {
+      if (m.$route.params.key != null && m.$route.params.key != undefined&& m.$route.params.key!="add") {
         key = m.$route.params.key;
       }
       var lay = layer.msg('保存中...', { icon: 16, shade: 0.5, time: 20000000 });

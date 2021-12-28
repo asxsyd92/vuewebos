@@ -67,6 +67,7 @@
         mixins: [panes],
         methods: {
             add_tab(to) {
+                console.log("tianjia");
                 var m = this;
                 if (m.$route.fullPath.indexOf(to.tag) > -1) {
                     if(to.params!=null&&to.params!=""){

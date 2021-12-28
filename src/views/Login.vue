@@ -112,6 +112,9 @@
 <script>
   
     import CryptoJS from "crypto-js";
+    import JSEncrypt from "jsencrypt";
+    import AES from "crypto-js/aes";
+
     import moment from 'moment';
     export default {
         name: 'login',
@@ -196,6 +199,30 @@
                     }, m.rand(1000, 3000));
                 });
             },
+             stringToByte(str) {
+    var bytes = new Array();
+    var len, c;
+    len = str.length;
+    for (var i = 0; i < len; i++) {
+        c = str.charCodeAt(i);
+        if (c >= 0x010000 && c <= 0x10FFFF) {
+            bytes.push(((c >> 18) & 0x07) | 0xF0);
+            bytes.push(((c >> 12) & 0x3F) | 0x80);
+            bytes.push(((c >> 6) & 0x3F) | 0x80);
+            bytes.push((c & 0x3F) | 0x80);
+        } else if (c >= 0x000800 && c <= 0x00FFFF) {
+            bytes.push(((c >> 12) & 0x0F) | 0xE0);
+            bytes.push(((c >> 6) & 0x3F) | 0x80);
+            bytes.push((c & 0x3F) | 0x80);
+        } else if (c >= 0x000080 && c <= 0x0007FF) {
+            bytes.push(((c >> 6) & 0x1F) | 0xC0);
+            bytes.push((c & 0x3F) | 0x80);
+        } else {
+            bytes.push(c & 0xFF);
+        }
+    }
+    return bytes;
+},
             getViewSize() {
                 var de = document.documentElement;
                 var db = document.body;
@@ -205,6 +232,7 @@
 
 
             }, login(data) {
+
                 let m = this;
                 let $ = layui.$;
 
@@ -220,22 +248,19 @@
                     layer.tips('验证码不能为空！', '#code');
                     return false;
                 }
-                var lay = layer.msg('正在登陆...', { icon: 16, shade: 0.5, time: 20000000 });
+          
                 var user = m.Encrypt(data.user);
                 var password = m.Encrypt(data.password);
                 var code = m.Encrypt(data.code);
                 // var user = m.Encrypt(data.user);
                 // var password = m.Encrypt(data.password);
                 // var code = m.Encrypt(data.code);
-                m.$post(m.host + "/api/login/Login", { user: user, pw: password, code: code }).then(res => {
+                m.$post(m.host + "/api/login/Login", { user: user, pw: password, code: code },"正在登陆...").then(res => {
                     console.log(res);
 
 
                 }).catch(data => {
-
-                    layer.close(lay);
                     if (data.success) {
-
                         window.localStorage["user"] = data.name;
                         window.localStorage["userid"] = data.userid;
                         window.localStorage["orname"] = data.orname;
@@ -245,15 +270,9 @@
                         window.localStorage["picture"] = data.picture;
                          localStorage.setItem('isLogin',true);
                          m.$router.replace('/')
-
-
-                        //  show_msg('登录成功咯！  正在为您跳转...', "/index.html");
                     } else {
                         m.getnewcode();
                         layer.msg(data.msg, { icon: 2 });
-                        // layer.alert(data.msg);
-                        // show_err_msg(data.msg);
-                        //  asxsyd92.createCode();
                     }
                 })
 

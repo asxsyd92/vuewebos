@@ -72,7 +72,7 @@
             </ul>
         </div>
         <!-- 顶部结束 -->
-        <script type="text/html" id="password" style="display:none">
+        <script type="text/html" id="password" >
 
     <form class="layui-form layui-form-pane" lay-filter="laypasswd">
     <form class="layui-form layui-form-pane" lay-filter="addinfos">

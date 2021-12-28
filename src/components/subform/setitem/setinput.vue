@@ -23,8 +23,18 @@
        <div class="layui-form-item">
       <label class="layui-form-label">值</label>
       <div class="layui-input-block">
-      
-        <input type="text" name="value" :value="data.value" class="layui-input">
+              <select  name="value">
+           <option value="">空值</option>
+          <option value="@_SYS_GETUSERID">获取当前用户id</option>
+          <option value="@_SYS_GETUSERNAME">获取当前用户名</option>
+          <option value="@_SYS_GETUSERNICKNAME">获取当前用户昵称</option>
+          <option value="@_SYS_ORGID">获取当前组织id</option>
+          <option value="@_SYS_ORGNAME">获取当前组织</option>
+          <option value="@_SYS_DATETIME">获取当前时间</option>
+          <option value="00000000-0000-0000-0000-000000000000">获取空Guid</option>
+          <option value="@_SYS_GW">获取当前岗位名称</option>
+        </select>
+        <!-- <input type="text" name="value" :value="data.value" class="layui-input"> -->
       </div>
     </div>
       
@@ -36,6 +46,9 @@
           <option value="password">password</option>
           <option value="datetime">datetime</option>
           <option value="datetime">date</option>
+          <option value="number">number</option>
+          <option value="number">textarea</option>
+          
         </select>
       </div>
     </div>
