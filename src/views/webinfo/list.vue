@@ -45,7 +45,7 @@
                     , height: 'full'
                     , toolbar: '#toolbarformdesign'
                     , headers: { "Authorization": "bearer " + window.localStorage["_token"] }
-                    , url: '/api/tasks/WaitList?title=&type=&desc=AddTime desc'
+                    , url: '/api/tasks/WaitList?title=&type='+m.$route.query.zhuanti+'&desc=AddTime desc'
                     , page: { theme: '#1E9FFF' }
                     , toolbar: '#toolbarwebinfo'
                     , cols: [[
@@ -94,6 +94,7 @@
                         var query=new Object();
                        query.fromid= data.fromid;
                        query.instanceid=data.instanceid;
+                       query.zhuanti=m.$route.query.zhuanti;
                         m.$router.push({ path: "/formdesign/showfrom"  ,query:query })
 
                     }
@@ -107,13 +108,18 @@
                             var title = $("#title").val();
                             //搜索page设置为0
                             table.reload(tableId, {
-                                url: m.host + '/api/tasks/WaitList?title' + title + "&page=1"
-                                , where: {} //设定异步数据接口的额外参数
+                                url: m.host + '/api/tasks/WaitList?title' + title 
+                                , where: {page:1,type:m.$route.query.zhuanti} //设定异步数据接口的额外参数
                             });
                             $("#title").val(title);
                             break;
                         case 'a_add':// add(-1);
-                            m.$router.push({ path: "/formdesign/showfrom/" + item.fromid + "/" + item.instanceid, })
+                           var query=new Object();
+                            query.fromid= data.fromid;
+                            query.instanceid=data.instanceid;
+                            query.zhuanti=m.$route.query.zhuanti;
+                        m.$router.push({ path: "/formdesign/showfrom"  ,query:query })
+                           // m.$router.push({ path: "/formdesign/showfrom?fromid=" + item.fromid + "&&instanceid=" + item.instanceid+"&&zhuanti="+m.$route.query.zhuanti, })
                             //   m.$taber.open({  name:'formdesign', params: { }})
                             //  top.xadmin.open('添加角色',  m.host+'/webos/page/base/addSysFormDesign.html?appid=' + appid, 500, 600);
                             break;

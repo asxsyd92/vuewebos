@@ -72,54 +72,26 @@
         var m = this;
         m.$claostabs(m);
       },
-      getTabelDate(id, k) {
-        var m = this;
-        m.$post(m.host + "/api/tasks/GetFormData", { key: id, tab: k.from.data.table }).then(res => {
-
-        }).catch(data => {
-          if (data.success) {
-            //对所有表单赋值
-            Enumerable.from(k.data).toArray().filter(item => {
-              try {
-                item.data.value = data.data[item.data.name];
-              } catch {
-                item.data.value = "";
-              }
-            });
-
-
-          }
-
-          m.data = k.data;
-          m.from = k.from.data;
-          layui.form.val(m.from.name, data.data);
-        });
-      }, init() {
+      init() {
         console.log("show");
         var m = this;
         var lay = layer.msg('请稍等...', { icon: 16, shade: 0.5, time: 20000000 });
-        m.$post(m.host + "/api/form/getFormJson", { key: m.$route.params.fromid }).then(res => {
+        m.$post(m.host + "/api/form/getFormJson", { fromid: m.$route.query.fromid,instanceid:m.$route.query.instanceid }).then(res => {
           console.log(res);
 
 
-        }).catch(data => {
+        }).catch(res => {
 
           layer.close(lay);
-          if (data.success) {
-            var k = JSON.parse(data.data.designhtml);
+          if (res.success) {
+            var k = JSON.parse(res.data.designhtml);
             console.log(k);
-
-            //处理表单
-            var instanceid = m.$route.params.key;
-            if (instanceid != null && instanceid != undefined && instanceid != "") {
-              m.getTabelDate(instanceid, k);
-            } else {
               m.data = k.data;
               m.from = k.from.data;
-            }
+
           } else {
 
-            layer.msg(data.msg, { icon: 2 });
+            layer.msg(res.msg, { icon: 2 });
             return;
           }
         })
@@ -127,7 +99,7 @@
         layui.form.on('submit(_submit)', function (data) {
           console.log(555);
           var lay = layer.msg('保存中...', { icon: 16, shade: 0.5, time: 20000000 });
-          m.$post(m.host + "/api/form/FormCommonTaskSave", { table: m.from.table, data: JSON.stringify(data.field), istask: true, fromid: m.$route.params.fromid }).then(res => {
+          m.$post(m.host + "/api/form/FormCommonTaskSave", { table: m.from.table, data: JSON.stringify(data.field), istask: true, fromid: m.$route.query.fromid }).then(res => {
             console.log(res);
 
 

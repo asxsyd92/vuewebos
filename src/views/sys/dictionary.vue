@@ -226,6 +226,7 @@ export default {
             cols: [[
             { type: 'checkbox' },
             // {type: 'numbers'},
+              { field: 'id', title: 'id' },
             { field: 'title', title: '名称' },
             { field: 'value', title: '值', },
             // {field: 'parentid', title: '父级id'},

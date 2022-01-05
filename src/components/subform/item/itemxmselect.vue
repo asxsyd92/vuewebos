@@ -3,7 +3,7 @@
     <div class="layui-form-item">
       <label class="layui-form-label">{{data.data.label}}</label>
       <div class="layui-input-block">
-        <div v-if="data.data.showtext=='false'" :id="data.data.name"  :name="data.data.name" ></div>
+        <div v-if="data.data.showtext=='false'" :id="data.data.name"  :name="data.data.name"  class="xm-select-demo"></div>
         <span v-if="data.data.showtext=='true'" style="line-height: 2.5;">{{data.data.value}}</span>
       </div>
     </div>
@@ -42,6 +42,7 @@
               // 这里绑定css选择器
               el: '#' + m.data.data.name,
               title: m.data.data.name, 
+               name: m.data.data.name,
               initValue: m.data.data.value==null?[]: m.data.data.value.split(","),
               layVerify: 'required',
               layVerType: m.data.data.name,

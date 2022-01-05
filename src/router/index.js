@@ -14,7 +14,7 @@ export const inRoutes = [
             {
                 path: '/',
                 meta: { title: '首页' },
-                component: () => import('../views/Home.vue')
+                component: () => import('../views/home/index.vue')
             },
             {
                 path: '/formdesign',
