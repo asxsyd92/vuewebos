@@ -1,5 +1,4 @@
 <template>
-
     <div>
  <div :class="data.data.col">
     <label class="layui-form-label">{{data.data.label}}</label>
@@ -26,22 +25,62 @@ export default {
     model: Object
   }   , mounted(){
     var m=this;
-    var str=m.data.data.input;
-             if (typeof str == 'string') {
-            try {
-                var obj=JSON.parse(str);
-      m. radio=obj;
-            
-            
-            } catch(e) {
-              
+    console.log(m);
+    //本地数据
+    if(m.data.data.type='local'){
+       if(m.data.data.input!=null&&m.data.data.input!=undefined&&m.data.data.input!=""){
+           try{
              
-            }
-        }else{
-          m.  radio=str;
-        }
+            let s=   m.data.data.input.split(';');
+            layui.$(s).each(function (i, it) {
+              var d=new Object();
+            let ss=it.split(",");
+            d.title=ss[0];
+            d.value=ss[1];
+            if(ss.length>2){
+              if(ss[2]=='false'){
+                  d.checked=false;
+              }else if(ss[2]=='true'){
+                d.checked=true;
+              }
+           
+              
+              }
 
-      layui.form.render(); //更新全部
+              //赋值选择
+              if(m.data.data.value+""==d.value){
+                d.checked=true;
+              }
+               m.radio.push(d);
+             })
+     
+           }catch(e){
+             console.log(m.data.data.name+"radio配置不正确");
+           }
+        
+
+       }
+    }
+    //字典数据
+    else{
+          var m = this;
+        m.$post(m.host + "/api/form/GetDictionaryByCode", { id:data.data.input }).then(res => {
+          console.log(res); }).catch(resp => {
+          if (resp.success) {
+           m.radio=resp.data;
+   
+          } else {
+            layui.layer.alert(resp.msg, { icon: 2, title: '温馨提示' });
+          }
+
+        })
+
+    }
+    
+     setTimeout(function(){
+          layui.form.render(); //更新全部
+     },10);
+    
     }
 }
 </script>

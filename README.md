@@ -7,7 +7,7 @@
 npm install -g vue-cli 
 ``` bash
 # 初始项目
-vue init webpack webos 
+vue create  webos 
 
 # 进入webos
 cd webos

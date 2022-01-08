@@ -142,6 +142,9 @@
                     element = layui.element, form = layui.form;
                if ($('.left-nav').css('width') == '60px') {
                       $('.page-tabs').animate({ left: '60px' }, 10);
+               }else{
+                   $('.page-tabs').animate({ left: '220px' }, 10);
+
                }
 
                 // 打开页面初始

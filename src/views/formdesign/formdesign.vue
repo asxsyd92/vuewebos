@@ -14,7 +14,8 @@
                     <draggable class="dragArea list-group" :list="fromdata" :clone="clone" animation="300"
                       :group="{ name: 'people', pull: 'clone', put: false,sort: true, }" @change="log">
                       <li v-for="li in fromdata" :key="li.id" :data="li" class="layui-col-xs3 layui-col-xs3 flyli">
-                        <span><i :class=" 'fa '+ li.icon"></i><cite>{{li.name}}</cite></span> </li>
+                        <span><i :class=" 'fa '+ li.icon"></i><cite>{{li.name}}</cite></span>
+                      </li>
                     </draggable>
                   </ul>
                 </div>
@@ -55,11 +56,28 @@
                 <button @click="attribute()" type="button" class="layui-btn layui-btn-normal layui-btn-sm">表单属性</button>
                 <button @click="show()" type="button" class="layui-btn layui-btn-normal layui-btn-sm">预览</button>
               </header>
-              <form class="layui-form" :fromData="list2.data">
-                <draggable class="dragArea list-group" :list="list2.data" group="people" @change="log" animation="300">
-                  <design @click.native="clickComponent(li)" class="list-group-item" v-for="li in list2.data"
-                    :key="li.id" :data="li" @change="contentChange" @select-change="contentSelectChange"></design>
+              <form :class="list2.from.data.type" :fromData="list2.data">
+                <draggable class="dragArea list-group" :list="list2.data" animation="300"
+                  :group="{ name: 'people', pull: 'clone', put: false,sort: true, }" @change="log">
+                  <li class="layui-col-xs6 layui-col-xs6 " v-for="li in list2.data" :key="li.id" :data="li"
+                   @change="contentChange" @select-change="contentSelectChange">
+
+                    <div :class="li.data.col" @click="clickComponent(li)">
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">{{li.data.label}}</label>
+                        <div class="layui-input-block">
+
+                          <input v-if="li.data.showtext=='false'" :value="li.type" disabled="disabled"
+                            :type="li.data.type" :name="li.data.name" :id="li.data.name" 
+                            :autocomplete="li.data.autocomplete" :placeholder="li.data.placeholder" class="layui-input">
+                       
+                        </div>
+                      </div>
+                    </div>
+                  </li>
                 </draggable>
+
+
               </form>
             </div>
             <!-- </div> -->
@@ -82,7 +100,7 @@
         </div>
       </div>
     </div>
-    <script type="text/html" id="_webosdialog" >
+    <script type="text/html" id="_webosdialog">
       <div v-if="dialogdata.length>0">
         <submitfrom v-for="li in dialogdata" :key="li.id" :data="li"></submitfrom>
       </div>
@@ -99,7 +117,6 @@
   import _ from 'lodash';
   import Enumerable from 'linq'
   import submitfrom from "@/components/subform/submitfrom";
-  import design from "@/views/formdesign/design";
   import setting from "@/components/subform/setting";
   let idGlobal = 8;
   export default {
@@ -107,7 +124,7 @@
     display: "Custom Clone",
     order: 3,
     components: {
-      draggable, submitfrom, design, setting
+      draggable, submitfrom, setting
     },
     data() {
       return {
@@ -122,35 +139,35 @@
     , mounted() {
       var m = this;
 
-      var lay = layer.msg('请稍等...', { icon: 16, shade: 0.5, time: 20000000 });
-      
+
+
       if (m.$route.params.key != null && m.$route.params.key != undefined) {
-        if(m.$route.params.key=="add"){
-           layer.msg("请设置表单属性", { icon: 1 });
-        }else{
-        m.$post(m.host + "/api/form/getFormJson", { key: m.$route.params.key }).then(res => {
-          console.log(res);
+        if (m.$route.params.key == "add") {
+          layer.msg("请设置表单属性", { icon: 1 });
+        } else {
+          m.$post(m.host + "/api/form/getFormJsonById", { fromid: m.$route.params.key }, "获取表单中").then(res => {
+            console.log(res);
 
 
-        }).catch(data => {
+          }).catch(res => {
 
-          layer.close(lay);
-          if (data.success) {
-            var kfrom = JSON.parse(data.data.designhtml);
-            m.list2.data = kfrom.data;
-            m.list2.from = kfrom.from;
-          } else {
 
-            layer.msg(data.msg, { icon: 2 });
-            return;
-          }
-        })
+            if (res.success) {
+              var kfrom = JSON.parse(res.data.designhtml);
+              m.list2.data = kfrom.data;
+              m.list2.from = kfrom.from;
+            } else {
+
+              layer.msg(res.msg, { icon: 2 });
+              return;
+            }
+          })
         }
       }
 
       layui.form.on('submit(setingfrom)', function (data) {
         m.list2.from.data = data.field;
-           layer.msg("保存成功", { icon: 1 });
+        layer.msg("保存成功", { icon: 1 });
       });
       layui.form.on('submit(delsubmit)', function (data) {
         var id = m.sets.id;
@@ -169,8 +186,8 @@
 
         })
 
- 
- 
+
+
         layui.layer.msg("成功")
         return false;
       });
@@ -196,74 +213,74 @@
       generate() {
         console.log("generate");
         var m = this;
-        var lay = layer.msg('请稍等...', { icon: 16, shade: 0.5, time: 20000000 });
-      var ds = new Object();
-      if (m.$route.params.key != null && m.$route.params.key != undefined&&m.$route.params.key!=""&&m.$route.params.key!="add") {
-        ds.id = m.$route.params.key;
-      } else {
-        if (m.list2.from.data.table == "") {
-          layui.layer.alert("表名不能为空", {
-            title: '温馨提示'
-          })
-          return false;
+
+        var ds = new Object();
+        if (m.$route.params.key != null && m.$route.params.key != undefined && m.$route.params.key != "" && m.$route.params.key != "add") {
+          ds.id = m.$route.params.key;
         } else {
-          ds.table = m.list2.from.data.table;
+          if (m.list2.from.data.table == "") {
+            layui.layer.alert("表名不能为空", {
+              title: '温馨提示'
+            })
+            return false;
+          } else {
+            ds.table = m.list2.from.data.table;
+          }
+          if (m.list2.from.data.name == "") {
+            ds.name = "未命名";
+          } else {
+            ds.name = m.list2.from.data.name;
+          }
         }
-        if (m.list2.from.data.name == "") {
-         ds.name= "未命名";
-        }else{
-          ds.name=m.list2.from.data.name;
-        }
-      }
-        m.$post(m.host + "/api/form/FormTable", { id:ds.id,table:ds.table }).then(res => {
+        m.$post(m.host + "/api/form/FormTable", { id: ds.id, table: ds.table }).then(res => {
           console.log(res);
-          layer.close(lay);
+
 
         }).catch(data => {
 
-          layer.close(lay);
-          if (data.success) {
-            if(data.type==0){
-              var f=[];
-                layui.  $.each(data.data, function (i, value) {
- 
-       var o=new Object();
-   o.icon="fa fa-edit";
-  o.name=value.column_name.toLowerCase();
-         o.id=value.column_name.toLowerCase();
-         o.type="input";
-         var dd=new Object();
-         dd.id=o.id;
-         dd. col="layui-col-md12";
-         dd.label=value.column_comment;
-         dd.type="text";
-         dd.name=o.id;
-         dd.autocomplete="off";
-           dd.placeholder="请输入"+value.column_comment.toLowerCase();
-           dd.inputclass="layui-input";
-           dd.disabled="false";
-           dd.showtext="false";
-           dd.required="false";
-           dd.display="block";
-           dd.value="";
-           dd.data="";
-           dd.input="";
-          o.data=dd;
-     
-          f.push(o);
-　　});
-  
-    var obgfrom=new Object();
-   obgfrom. data=f;
-   obgfrom.from=m.list2.from;
-         m.list2=obgfrom;    
 
-            }else{
-             var k=JSON.parse(data.data.designhtml);
-              m.data=k.data;
-              m.from=k.from.data;
+          if (data.success) {
+            if (data.type == 0) {
+              var f = [];
+              layui.$.each(data.data, function (i, value) {
+
+                var o = new Object();
+                o.icon = "fa fa-edit";
+                o.name = value.column_name.toLowerCase();
+                o.id = value.column_name.toLowerCase();
+                o.type = "input";
+                var dd = new Object();
+                dd.id = o.id;
+                dd.col = "layui-col-md12";
+                dd.label = value.column_comment;
+                dd.type = "text";
+                dd.name = o.id;
+                dd.autocomplete = "off";
+                dd.placeholder = "请输入" + value.column_comment.toLowerCase();
+                dd.inputclass = "layui-input";
+                dd.disabled = "false";
+                dd.showtext = "false";
+                dd.required = "false";
+                dd.display = "block";
+                dd.value = "";
+                dd.data = "";
+                dd.input = "";
+                o.data = dd;
+
+                f.push(o);
+              });
+
+              var obgfrom = new Object();
+              obgfrom.data = f;
+              obgfrom.from = m.list2.from;
+              m.list2 = obgfrom;
+
+            } else {
+              var k = JSON.parse(data.data.designhtml);
+              m.data = k.data;
+              m.from = k.from.data;
             }
-         
+
           } else {
 
             layer.msg(data.msg, { icon: 2 });
@@ -273,89 +290,90 @@
 
       }
       //FormTable
-  ,
-    attribute() {
-      var m = this;
-      m.sets = m.list2.from;
-      m.$emit('change', m.sets);
-      setTimeout(function () {
-        layui.form.val('setings', m.sets.data);
+      ,
+      attribute() {
+        var m = this;
+        m.sets = m.list2.from;
+        m.$emit('change', m.sets);
+        setTimeout(function () {
+          layui.form.val('setings', m.sets.data);
 
-      });
-
-    },
-    add(obj) {
-      return newObj;
-
-    },
-    clickComponent: function (item) {
-
-      this.sets = item;
-      this.$emit('change', item);
-      layui.form.render(); //更新全部
-
-
-      setTimeout(function () {
-      
-
-        layui.form.val('setings', item.data);
-      }, 100);
-  
-      layui.form.render(); //更新全部
-    }, contentSelectChange(item) {
-      console.log(item)
-    },
-    contentChange(list) {
-      console.log(list)
-    },
-    log: function (evt) {
-      console.log(evt);
-
-    },
-
-    clone(obj) {
-      const newObj = Object.assign(_.cloneDeep(obj), { id: `${obj.id}_${new Date().getTime()}` });
-      return obj;
- 
-    },
-    show() {
-      var m = this;
-      m.dialogdata = m.list2.data;
-    
-      setTimeout(() => {
-        layui.layer.open({
-          type: 1,
-          title: '表单预览',
-          shadeClose: true,
-          shade: 0.8,
-
-          area: ['35%', '55%'],
-          content: layui.$("#_webosdialog").html()
         });
-      }, 10);
-      var key = "";
-      if (m.$route.params.key != null && m.$route.params.key != undefined&& m.$route.params.key!="add") {
-        key = m.$route.params.key;
-      }
-      var lay = layer.msg('保存中...', { icon: 16, shade: 0.5, time: 20000000 });
-      m.$post(m.host + "/api/form/saveFormJson", { key: key, title: m.list2.from.data.name, data: JSON.stringify(m.list2) }).then(res => {
-        console.log(res);
+
+      },
+      add(obj) {
+        return newObj;
+
+      },
+      clickComponent: function (item) {
+
+        this.sets = item;
+        this.$emit('change', item);
+        layui.form.render(); //更新全部
 
 
-      }).catch(data => {
+        setTimeout(function () {
 
-        layer.close(lay);
-        if (data.success) {
-          m.list2.data = JSON.parse(data.designhtml);
-        } else {
 
-          layer.msg(data.msg, { icon: 2 });
-          return;
+          layui.form.val('setings', item.data);
+        }, 100);
+
+        layui.form.render(); //更新全部
+      }, contentSelectChange(item) {
+        console.log(item)
+      },
+      contentChange(list) {
+        console.log(list)
+      },
+      log: function (evt) {
+        console.log(evt);
+
+      },
+
+      clone(obj) {
+        console.log(obj);
+        const newObj = Object.assign(_.cloneDeep(obj), { id: `${obj.id}_${new Date().getTime()}` });
+        return newObj;
+
+      },
+      show() {
+        var m = this;
+        m.dialogdata = m.list2.data;
+
+        setTimeout(() => {
+          layui.layer.open({
+            type: 1,
+            title: '表单预览',
+            shadeClose: true,
+            shade: 0.8,
+
+            area: ['35%', '55%'],
+            content: layui.$("#_webosdialog").html()
+          });
+        }, 10);
+        var key = "";
+        if (m.$route.params.key != null && m.$route.params.key != undefined && m.$route.params.key != "add") {
+          key = m.$route.params.key;
         }
-      })
+        var lay = layer.msg('保存中...', { icon: 16, shade: 0.5, time: 20000000 });
+        m.$post(m.host + "/api/form/saveFormJson", { key: key, title: m.list2.from.data.name, data: JSON.stringify(m.list2) }).then(res => {
+          console.log(res);
 
+
+        }).catch(data => {
+
+          layer.close(lay);
+          if (data.success) {
+            m.list2.data = JSON.parse(data.designhtml);
+          } else {
+
+            layer.msg(data.msg, { icon: 2 });
+            return;
+          }
+        })
+
+      }
     }
-  }
   }
 </script>
 

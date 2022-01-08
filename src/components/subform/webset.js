@@ -8,6 +8,7 @@ import setfrom from './setitem/setfrom';
 import setcolor from './setitem/setcolor';
 import seticon from './setitem/seticon';
 import setxmselect from './setitem/setxmselect';
+import setbaiduuplod from './setitem/setbaiduuplod';
 export default {
-    setinput,settextarea,setcheckbox,setradio,setueditor,setselect,setfrom,setcolor,seticon,setxmselect
+    setinput,settextarea,setcheckbox,setradio,setueditor,setselect,setfrom,setcolor,seticon,setxmselect,setbaiduuplod
 }

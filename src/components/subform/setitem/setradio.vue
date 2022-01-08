@@ -14,32 +14,26 @@
         <input type="text" name="name" :value="data.name"   class="layui-input">
       </div>
     </div>
+      <div class="layui-form-item">
+      <label class="layui-form-label">数据来源</label>
+      <div class="layui-input-block">
+        <select name="type">
+          <option value="local">本地数据</option>
+          <option value="dic">字典数据</option>
+
+        </select>
+      </div>
+    </div>
    <div class="layui-form-item">
       <label class="layui-form-label">数据源</label>
       <div class="layui-input-block">
-        <textarea type="text" name="input" :value="json" class="layui-textarea">
+        <textarea type="text" name="input"  class="layui-textarea" placeholder="数据格式：数据项,值,是否选中true;数据项1,值1;">
         </textarea>
       </div>
     </div>
-       <!-- <div class="layui-form-item">
-      <label class="layui-form-label">值</label>
-      <div class="layui-input-block">
+
       
-        <input type="text" name="value" :value="data.value" class="layui-input">
-      </div>
-    </div> -->
-<!--       
-      <div class="layui-form-item">
-      <label class="layui-form-label">类型</label>
-      <div class="layui-input-block">
-        <select name="type">
-          <option value="text">text</option>
-          <option value="password">password</option>
-          <option value="datetime">datetime</option>
-          <option value="datetime">date</option>
-        </select>
-      </div>
-    </div> -->
+
        <div class="layui-form-item">
       <label class="layui-form-label">文本框样式</label>
       <div class="layui-input-block">
@@ -119,21 +113,10 @@
   export default {
  data(){
      return {
-         json:"",
+
      }
  },
-    //  watch: {
-    // 'data': {
-    //   handler(v) {
-    //     console.log(v);
-    //     this.data=v;
-    //     this.$emit('change', v);
-    //     layui.form.render(); //更新全部
-    //   console.log(this.data.data);
-    //  layui.form.val('setings',this.data.data );
-    //   },
-    //   deep: true
-    // }},
+
     props: {
       data: {
         type: Object,

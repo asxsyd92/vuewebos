@@ -11,7 +11,7 @@
    <seticon v-if="data.type=='icon'" :data="data"></seticon>
    <setcolor v-if="data.type=='color'" :data="data"></setcolor>
   <setxmselect v-if="data.type=='xmselect'" :data="data"></setxmselect>
-   
+     <setbaiduuplod v-if="data.type=='baiduuplod'" :data="data"></setbaiduuplod>
   </div>
 </template>
 <script>

@@ -38,19 +38,7 @@ export default   { data:[
 
         "disabled": "false",
         "showtext": "false",
-        "input": [{
-            value: "1",
-            title: "男",
-            checked: true,
-            disabled: false
-        }, {
-            value: "2",
-            title: "女",
-            checked: false,
-            disabled: false
-        }
-
-        ],
+        "input":"男,1;女,0,false",
     }
 },
 {
@@ -71,10 +59,7 @@ export default   { data:[
         "required":"false",
         "value": "",
         "data":"",
-        "input": [
-            {"name":"checkbox1",value:"男"},
-            {"name":"checkbox2",value:"女"},
-        ]
+        "input": "男,1;女,0,false"
     }
 },
 {
@@ -203,6 +188,26 @@ export default   { data:[
         "data": "",
         "input":""
     }
+},{
+    icon: "fa fa-edit",
+    name: "baiduuplod",
+    id: "10", type: "baiduuplod",
+    data: {
+        id: "10",
+        "col": "layui-col-md12",
+        "label": "文件上传",
+        "type": "baiduuplod",
+        "name": "baiduuplod",
+        "autocomplete": "off",
+        "placeholder": "placeholder",
+        "inputclass": "",
+        "disabled": "false",
+        "showtext": "false",
+        "value": "",
+        "data": "",
+        "input":""
+    }
 },
+
 ],from:{}
 }

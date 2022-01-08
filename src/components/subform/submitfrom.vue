@@ -10,6 +10,7 @@
   <itemcolor v-if="data.type=='color'" :data="data"></itemcolor>
   <itemicon v-if="data.type=='icon'" :data="data"></itemicon>
   <itemxmselect v-if="data.type=='xmselect'" :data="data"></itemxmselect>
+  <baiduuplod v-if="data.type=='baiduuplod'" :data="data"></baiduuplod>
 </div>
 
 </template>

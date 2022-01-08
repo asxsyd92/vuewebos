@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
-import Antd from 'ant-design-vue';
+ import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 import router from './router'
 import store from './store'
 import { post, get,patch, put} from '@/utils/request'
-Vue.use(Antd);
+ Vue.use(Antd);
 Vue.config.productionTip = false;
 import panes from "@/layout/panes";
 import init from './assets/js/init.js';
