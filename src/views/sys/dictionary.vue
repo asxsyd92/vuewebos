@@ -5,11 +5,11 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md2" style="width:260px">
             <div class="layui-card">
-                <div class="layui-card-body" style="padding: 10px;">
+                <div class="layui-card-body" style="padding: 1px;">
                     <!-- 表格工具栏1 -->
                     <form class="layui-form toolbar">
                         <div class="layui-form-item">
-                            <div class="layui-inline" style="max-width: 140px;">
+                            <div class="layui-inline">
                                 <input name="dictName" class="layui-btn layui-btn-normal  layui-btn-sm" placeholder="输入字典名称" style="text-align: left;color: #009688; background-color: #fff;"/>
                             </div>
                             <div class="layui-inline">
@@ -24,9 +24,9 @@
                 </div>
             </div>
         </div>
-        <div class="layui-col-md9">
+        <div class="layui-col-md9" style="width:calc(100% - 260px); ">
             <div class="layui-card">
-                <div class="layui-card-body" style="padding: 10px;">
+                <div class="layui-card-body" style="padding: 1px;">
                     <!-- 表格工具栏2 -->
                     <form class="layui-form toolbar">
                         <div class="layui-form-item">
@@ -50,7 +50,7 @@
                         </div>
                     </form>
                     <!-- 数据表格2 -->
-                    <div id="dicDataTable"  lay-filter="dicDataTable"></div>
+                    <table id="dicDataTable"  lay-filter="dicDataTable"></table>
                 </div>
             </div>
         </div>
@@ -132,9 +132,13 @@
 export default {
     data(){return{
    selObj:"",
-   layerindex:0
+   layerindex:0,
+   table:null,
+   dtree:null,
     }},mounted(){
         let m=this;
+        m.table=layui.table;
+        m.dtree=layui.dtree;
         m.init();
 
 
@@ -183,13 +187,13 @@ export default {
     
       init() {
           let m=this;
-            var $ = layui.$, dtree=layui.dtree,table=layui.table,form=layui.form, colorpicker=layui.colorpicker;
+            var $ = layui.$, form=layui.form, colorpicker=layui.colorpicker;
           console.log("dic");
 
       // 分页配置
 
 
-    var insTb = dtree.render({
+    var insTb = m.dtree.render({
         elem: "#dicTable",
         //  data: demoTree,
         method: "post",
@@ -198,9 +202,9 @@ export default {
            url: "/api/form/GetDictionaryByID?id=00000000-0000-0000-0000-000000000000"
     });
     // 绑定节点点击
-    dtree.on("node('dicTable')", function (obj) {
+   m. dtree.on("node('dicTable')", function (obj) {
         var title = $("#title").val();
-        var param = dtree.getParam("dicTable", obj.param.nodeId); //获取ID为001的节点的值
+        var param = m.dtree.getParam("dicTable", obj.param.nodeId); //获取ID为001的节点的值
       m.  selObj = obj.param.nodeId;
         insTb2.reload({ where: { id: obj.param.nodeId, page: 1, limit: 10 }, page: { curr: 1 }, url: '/api/dictionary/getPageById' });
     });
@@ -212,19 +216,19 @@ export default {
 
 
     /* 渲染表格2 */
-    var insTb2 = table.render({
+    var insTb2 =  m.table.render({
         elem: '#dicDataTable', method: "post", headers: { "Authorization": "bearer " + window.localStorage["_token"] },
         data: [], id: 'dicDataTable',
         height: 'full',
         page: { theme: '#1E9FFF' },
-        //size:'sm',
+       // size:'sm',
         toolbar: ['<p>',
             '<button lay-event="add" class="layui-btn layui-btn-normal  layui-btn-sm icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>&nbsp;',
             '<button lay-event="del" class="layui-btn layui-btn-sm layui-btn-danger icon-btn"><i class="layui-icon">&#xe640;</i>删除</button>&nbsp;',
             '</p>'].join(''),
-        cellMinWidth: 100,
+      //  cellMinWidth: 100,
             cols: [[
-            { type: 'checkbox' },
+          //  { type: 'checkbox' },
             // {type: 'numbers'},
               { field: 'id', title: 'id' },
             { field: 'title', title: '名称' },
@@ -256,7 +260,7 @@ export default {
     });
 
     /* 表格2工具条点击事件 */
-    table.on('tool(dicDataTable)', function (obj) {
+     m.table.on('tool(dicDataTable)', function (obj) {
         if (obj.event === 'edit') { // 修改
         
               m.editdic(obj);
@@ -266,7 +270,7 @@ export default {
     });
 
     /* 表格2头工具栏点击事件 */
-    table.on('toolbar(dicDataTable)', function (obj) {
+     m.table.on('toolbar(dicDataTable)', function (obj) {
         if (obj.event === 'add') { // 添加
            m.adddic();
         } else if (obj.event === 'del') { // 删除

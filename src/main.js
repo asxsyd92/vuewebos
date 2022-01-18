@@ -6,6 +6,8 @@ import router from './router'
 import store from './store'
 import { post, get,patch, put} from '@/utils/request'
  Vue.use(Antd);
+
+
 Vue.config.productionTip = false;
 import panes from "@/layout/panes";
 import init from './assets/js/init.js';

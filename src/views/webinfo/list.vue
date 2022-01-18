@@ -7,7 +7,9 @@
         <script id="toolbarwebinfo" type="text/html">
     <div class="layui-btn-container">
         <input class="layui-btn layui-btn-normal  layui-btn-sm" type="text" name="title" id="title" placeholder="请输入表单名称" style="text-align: left;color: #009688; background-color: #fff;" />
+
         <button class="layui-btn layui-btn-normal  layui-btn-sm" lay-event="a_search">查询</button>
+        <button class="layui-btn layui-btn-normal  layui-btn-sm" lay-event="a_add">新增</button>
         <!-- <button class="layui-btn layui-btn-normal  layui-btn-sm" lay-event="a_add">添加</button> -->
     </div>
     </script>
@@ -114,11 +116,15 @@
                             $("#title").val(title);
                             break;
                         case 'a_add':// add(-1);
+                        if(m.$route.query.fromid==null||m.$route.query.fromid==undefined){
+                            layer.msg("未找到fromid", { icon: 2 });
+                            return false;
+                        }
                            var query=new Object();
-                            query.fromid= data.fromid;
-                            query.instanceid=data.instanceid;
+                            query.fromid= m.$route.query.fromid;
+                            query.operation='add';
                             query.zhuanti=m.$route.query.zhuanti;
-                        m.$router.push({ path: "/formdesign/showfrom"  ,query:query })
+                            m.$router.push({ path: "/formdesign/showfrom"  ,query:query })
                            // m.$router.push({ path: "/formdesign/showfrom?fromid=" + item.fromid + "&&instanceid=" + item.instanceid+"&&zhuanti="+m.$route.query.zhuanti, })
                             //   m.$taber.open({  name:'formdesign', params: { }})
                             //  top.xadmin.open('添加角色',  m.host+'/webos/page/base/addSysFormDesign.html?appid=' + appid, 500, 600);

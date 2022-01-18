@@ -50,7 +50,7 @@
                         </div>
                     </form>
                     <!-- 数据表格2 -->
-                    <div id="menuDataTable"  lay-filter="menuDataTable"></div>
+                    <table id="menuDataTable"  lay-filter="menuDataTable"></table>
                 </div>
             </div>
         </div>
@@ -274,7 +274,7 @@ export default {
             '</p>'].join(''),
         cellMinWidth: 100,
         cols: [[
-            { type: 'checkbox' },
+           // { type: 'checkbox' },
             // {type: 'numbers'},
             { field: 'title', title: '名称' },
             { field: 'tag', title: '路径', },

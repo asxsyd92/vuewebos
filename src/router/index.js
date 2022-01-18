@@ -85,6 +85,22 @@ export const inRoutes = [
                     }
                 ]
             }, {
+            path: '/file',
+            meta: { title: '文件分享' },
+            component: empty,
+            children: [
+                {
+                    path: '/file/fileshare',
+                    meta: { title: '待办事项' },
+                    component: () => import('../views/file/fileshare.vue')
+                }, {
+                    path: '/file/myfile',
+                    meta: { title: '我的文件' },
+                    component: () => import('../views/file/myfile.vue')
+                }
+            ]
+        },
+        {
                 path: '/oa',
                 meta: { title: '办公系统' },
                 component: empty,

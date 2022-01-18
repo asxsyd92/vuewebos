@@ -39,24 +39,27 @@
              table.render({
         id: tableId,
         elem: '#loglist'
-        , url: '/api/log/getLogList?title=&type='
-        , totalRow: true,
+        , url: m.host+'/api/log/getLogList?title=&type='
+        //, totalRow: true
+        ,
         method:'post' //这里可以写post请求,默认get
         //, height: 'full'
         ,  headers: { "Authorization": "bearer " + window.localStorage["_token"] },
-        height: 'full', //自适应高度
-        size: 'sm',   //表格尺寸，可选值sm lg
+       // height: 'full', //自适应高度
+       // size: 'sm',   //表格尺寸，可选值sm lg
         //skin: '',   //边框风格，可选值line row nob
         //even:true,  //隔行变色
         page: {theme: '#1E9FFF'},
         height: 'full' ,
-        limits: [ 20, 30, 40, 50, 70, 100], toolbar: '#toolbarDemo',
-        limit: 14, even: true , //隔行背景,
+       // limits: [ 20, 30, 40, 50, 70, 100], 
+        toolbar: '#toolbarDemo',
+       // limit: 14, 
+        //even: true , //隔行背景,
 
         cols: [[
-            { type: 'checkbox', fixed: 'left' }
+          //  { type: 'checkbox', fixed: 'left' }
             //, { field: 'id', title: 'id',  fixed: 'left', unresize: true, sort: true, totalRowText: '合计' }
-            , { field: 'title', title: '标题' }
+             { field: 'title', title: '标题' }
             //, {
             //    field: 'email', title: '邮箱', width: 150, edit: 'text', templet: function (res) {
             //        return '<em>' + res.email + '</em>'
@@ -125,7 +128,8 @@
     });
     //表格重载
     function reloadTable() {
-        table.reload(tableid, {});
+        var title= $("#title").val(title);
+        table.reload(tableid, {title:title});
     }
 
     //打开添加页面

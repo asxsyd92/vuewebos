@@ -218,6 +218,7 @@
                     el: '#sends',
                     autoRow: true,
                     filterable: true,
+                    clickClose: true,
                     name: "users",
                     tree: {
                       show: true,
