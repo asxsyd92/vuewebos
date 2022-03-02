@@ -44,6 +44,9 @@ npm i linq
 
 #安装二维码插件
 npm i @styleofpicasso/qrcode
+
+npm install gojs --save
+
 ```
 
 

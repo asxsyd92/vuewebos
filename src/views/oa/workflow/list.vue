@@ -37,6 +37,7 @@
                     elem: '#formdesign'
                     , id: tableId
                     , height: 'full'
+                      ,method:"post"
                     , toolbar: '#toolbarformdesign'
                     , headers: { "Authorization": "bearer " + window.localStorage["_token"] }
                     , url: m.host + '/api/common/GetCommonList?tab=SysFormDesign&' //数据接口

@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 import { post, get,patch, put} from '@/utils/request'
  Vue.use(Antd);
+ import gojs from 'gojs'
 
 
 Vue.config.productionTip = false;
@@ -33,7 +34,7 @@ Vue.prototype.$put = put;
 Vue.prototype.layui = layui;
 Vue.config.productionTip = false
 Vue.prototype.host = '';
-
+Vue.prototype.go = gojs
 
 export function claostabs(m) {
   console.log("关闭");

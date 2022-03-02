@@ -71,6 +71,7 @@
         m.table.render({
           elem: '#mainwait'
           , height: 'full'
+            ,method:"post"
           , headers: { "Authorization": "bearer " + window.localStorage["_token"] }
           , url: m.host + '/api/workflowtasks/WaitList?limit=5' //数据接口
           , cols: [[

@@ -45,6 +45,7 @@
                     elem: '#webinfolist'
                     , id: tableId
                     , height: 'full'
+                    ,method:"post"
                     , toolbar: '#toolbarformdesign'
                     , headers: { "Authorization": "bearer " + window.localStorage["_token"] }
                     , url: '/api/tasks/WaitList?title=&type='+m.$route.query.zhuanti+'&desc=AddTime desc'
