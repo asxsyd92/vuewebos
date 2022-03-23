@@ -59,7 +59,7 @@
       '$route'(to, from) { //监听路由是否变化
         console.log(this);
         if (to.fullPath.indexOf("showfrom") > 0) {
-          this.init();
+         layui.form.render(); //更新全部
         }
 
       }

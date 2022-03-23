@@ -47,6 +47,8 @@ npm i @styleofpicasso/qrcode
 
 npm install gojs --save
 
+
+npm i raphael
 ```
 
 

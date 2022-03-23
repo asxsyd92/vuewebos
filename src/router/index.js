@@ -91,7 +91,7 @@ export const inRoutes = [
             children: [
                 {
                     path: '/file/fileshare',
-                    meta: { title: '待办事项' },
+                    meta: { title: '共享文件' },
                     component: () => import('../views/file/fileshare.vue')
                 }, {
                     path: '/file/myfile',
@@ -121,11 +121,11 @@ export const inRoutes = [
                 component: empty,
                 children: [
                     {
-                        path: '/oa/workflow/list',
+                        path: 'list',
                         meta: { title: '流程列表' },
                         component: () => import('../views/oa/workflow/list.vue')
                     }, {
-                        path: '/oa/workflow/designer',
+                        path: 'designer',
                         meta: { title: '设计' },
                         component: () => import('../views/oa/workflow/designer.vue')
                     }

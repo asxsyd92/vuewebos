@@ -19,26 +19,33 @@
     export default {
         name: "waitlist",
         created() { },
+        data(){
+            return {
+                table:null,
+                tableId:"",
+            }
+        },
         watch: {
             '$route'(to, from) { //监听路由是否变化
                 console.log(this);
                 if (to.fullPath.indexOf("showfrom") > 0) {
-                    this.init();
+                   // this.init();
                 }
 
             }
         }, methods: {
             init() {
                    let m = this;
-                var table = layui.table;
-                var tableId = "waitlist";
+                m. table = layui.table;
+                m. tableId = "waitlist";
                 //第一个实例
-                table.render({
+                m.table.render({
                     elem: '#wait'
-                    , id: tableId
+                    , id: m.tableId
                     , height: 'full'
-                    , toolbar: '#toolbarwait'
-                    , headers: { "Authorization": "bearer " + window.localStorage["_token"] }
+                       ,method:"post"
+                    , toolbar: '#toolbarwait',
+                      headers: { "Authorization": "bearer " + window.localStorage["_token"] }
                     , url: m.host + '/api/workflowtasks/WaitList?' //数据接口
                     , page: { theme: '#1E9FFF' }
                     , cols: [[ //表头
@@ -53,7 +60,7 @@
                     ]]
                 });
                 //监听工具条
-                table.on('tool(wait)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                m.table.on('tool(wait)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
                     var data = obj.data; //获得当前行数据
                     var layEvent = obj.event; //获得 lay-event 对应的值
                     var tr = obj.tr; //获得当前行 tr 的DOM对象
@@ -101,13 +108,13 @@
 
 
                 });
-                table.on('toolbar(wait)', function (obj) {
-                    var checkStatus = table.checkStatus(obj.config.id);
+               m. table.on('toolbar(wait)', function (obj) {
+                    var checkStatus = m.table.checkStatus(obj.config.id);
                     switch (obj.event) {
                         case 'a_search':
                             var title = $("#title").val();
                             //搜索page设置为0
-                            table.reload(tableId, {
+                           m. table.reload(m.tableId, {
                                 url: m.host + '/api/workflowtasks/WaitList?title=' + title
                                 , where: { page: 1 } //设定异步数据接口的额外参数
                             });

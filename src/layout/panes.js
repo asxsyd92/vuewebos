@@ -14,6 +14,7 @@ export default {
     methods: {
         // 添加Panes
         addPanes(to) {
+            console.log("tian")
             let panesIndex = this.panes.findIndex((item) => {
                 return item.path == to.path
             });
@@ -24,6 +25,7 @@ export default {
                 this.panes = panes;
                 activeKey = to.path
             } else {
+                
                 activeKey = this.panes[panesIndex].path
             }
             this.activeKey = activeKey

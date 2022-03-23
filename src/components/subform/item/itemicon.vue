@@ -46,7 +46,7 @@ export default {
             limit: 12,
             // 点击回调
             click: function (data) {
-                m.data.data.value=data.icon;
+                m.data.data.value="fa "+data.icon;
             },
             // 渲染成功后的回调
             success: function (d) {
