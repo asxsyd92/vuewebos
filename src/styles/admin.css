@@ -1,0 +1,120 @@
+@font-face {
+  font-family: 'digital-7';
+  src: url('/common/fonts/digital-7.ttf') format('truetype');
+}
+.lay-config-provider {
+  height: 100%;
+}
+.layui-logo {
+  width: 100%;
+  font-size: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.layui-logo img {
+  width: 50px;
+  height: 50px;
+}
+.layui-body {
+  background-color: whitesmoke;
+}
+.layui-body > .layui-tab {
+  margin: 0px;
+  position: absolute;
+    z-index: 20;
+    width: 100%;
+}
+.layui-body > .layui-tab > .layui-tab-content {
+  padding: 0px;
+}
+.layui-body > .layui-tab > .layui-tab-head {
+  width: 100%;
+}
+.layui-body > .layui-tab > .layui-tab-head > .layui-tab-title {
+  border: 1px solid whitesmoke;
+  background-color: #f5f5f5;
+  border-left: none;
+}
+.layui-body > .layui-tab > .layui-tab-head > .layui-tab-title > li {
+  color: dimgray;
+  font-size: 13.5px;
+  line-height: 40px;
+  border-right: 1px solid whitesmoke;
+}
+.layui-body > .layui-tab > .layui-tab-head > .layui-tab-title > li.layui-this::after {
+  border: none;
+}
+.layui-header {
+  /* background: white; */
+  background: linear-gradient(270deg,#7b4397,#2196f3);
+}
+.layui-header .layui-nav {
+  background: transparent;
+}
+.layui-header .layui-nav.layui-layout-left {
+  left: 0 !important ;
+  position: relative !important;
+}
+.layui-header .layui-nav .layui-anim .layui-dropdown .layui-dropdown-up .layui-anim-upbit {
+  /* color: #393d49; */
+    color: black !important;
+}
+.layui-header .layui-nav .layui-nav-item > a {
+  padding: 0px 24px;
+}
+.layui-side {
+
+  width: 230px !important;
+  /* background: rgb(34, 36, 37, 98%); */
+  /* box-shadow: 2px 0 6px rgb(0 21 41 / 35%); */
+}
+.layui-side .layui-nav {
+  width: 100%;
+  background-color: transparent;
+}
+
+.layui-layout.collapse .layui-logo {
+  width: 60px;
+}
+.layui-layout.collapse .layui-side {
+  width: 60px !important;
+}
+.layui-layout.collapse .layui-body {
+  left: 60px;
+}
+.layui-layout.collapse .layui-header .layui-layout-left {
+  left: 60px;
+}
+.layui-layout .layui-logo,
+.layui-layout .layui-side,
+.layui-layout .layui-body,
+.layui-layout .layui-header .layui-layout-left {
+  transition: all 0.3s;
+}
+.layui-layout {
+  height: 100%;
+}
+.layui-menu .layui-dropdown-menu .layui-menu-body-title{
+  color: black !important;
+}
+.layui-tab  .layui-this{
+  border-width:0px;
+  background:inherit;
+  background-color:white;
+  box-sizing:border-box;
+  border-width:2px;
+  border-style:solid;
+  border-color:rgba(32, 34, 42, 1);
+  border-left:0px;
+  border-right:0px;
+  border-bottom:0px;
+  border-radius:0px;
+  border-top-left-radius:0px;
+  border-top-right-radius:0px;
+  border-bottom-right-radius:0px;
+  border-bottom-left-radius:0px;
+  -moz-box-shadow:none;
+  -webkit-box-shadow:none;
+  box-shadow:none;
+  color:#383838;
+  text-align:left;
+}

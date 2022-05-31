@@ -1,54 +1,31 @@
-# webos免开发版vue版
+# Vue 3 + Typescript + Vite
 
+This template should help get you started developing with Vue 3 and Typescript in Vite.
 
-## Build Setup
-``` bash 
-# 第一步：安装vue
-npm install -g vue-cli 
-``` bash
-# 初始项目
-vue create  webos 
+## Get Started
 
-# 进入webos
-cd webos
-
-# 安装依赖
-$ npm install  //下载依赖包(一般启动前都需要的) 
-
-# 安装layui
-npm install  layui-src 
-npm install layui-src@1.2.0
-
-# 第五步：在main.js中import layui
- import layui from 'layui-src'
-# 第6步：安装vuedraggable用于拖拽实现拖拽表单
- npm i vuedraggable
-
- # 喜欢使用jquery可用安装
-npm install jquery    
- # 安装axios
-npm install --save axios
-
- # 安装vue-echarts
-npm install vue-echarts --save
-npm install --save @vue/composition-api
- # 安装字体
-npm i font-awesome
-
-#安装动画
-npm i animate
-npm i animate.css@3.5.0
-
-npm install --save crypto-js
-npm i linq
-
-#安装二维码插件
-npm i @styleofpicasso/qrcode
-
-npm install gojs --save
-
-
-npm i raphael
+```
+yarn install
 ```
 
+```
+npm run dev
+```
 
+[`<script setup>`](https://github.com/vuejs/rfcs/pull/227) is a feature that is currently in RFC stage. To get proper IDE support for the syntax, use [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) instead of Vetur (and disable Vetur).
+
+## Type Support For `.vue` Imports in TS
+
+Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can use the following:
+
+### If Using Volar
+
+Run `Volar: Switch TS Plugin on/off` from VSCode command palette.
+
+### If Using Vetur
+
+1. Install and add `@vuedx/typescript-plugin-vue` to the [plugins section](https://www.typescriptlang.org/tsconfig#plugins) in `tsconfig.json`
+2. Delete `src/shims-vue.d.ts` as it is no longer needed to provide module info to Typescript
+3. Open `src/main.ts` in VSCode
+4. Open the VSCode command palette
+5. Search and run "Select TypeScript version" -> "Use workspace version"
