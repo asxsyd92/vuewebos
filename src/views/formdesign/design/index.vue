@@ -4,8 +4,8 @@
         <lay-side>
             <lay-collapse v-model="openKeys2" accordion>
                 <lay-collapse-item title="表单组件" id="1">
-                    <draggable :list="tools"  animation="300"
-                    :add="add" :clone="cloneDog" :group="{ name: 'people', pull: 'clone', put: false,sort: true, }" item-key="name" >
+                    <draggable :list="tools" animation="300" :add="add" :clone="cloneDog"
+                        :group="{ name: 'people', pull: 'clone', put: false, sort: true, }" item-key="name">
                         <template #item="{ element }">
                             <div class="layui-col-xs3 layui-col-xs3 flyli">
                                 <i :class="'fa ' + element.icon + ' fa-2x'"></i>
@@ -19,32 +19,31 @@
         </lay-side>
         <lay-body>
             <div style="  border:1px dashed rgb(0 255 99);min-height: 200px;">
-            <header class="el-header _fc-m-tools">
-                <button @click="generate()" type="button"
-                  class="layui-btn layui-btn-normal layui-btn-sm">从数据中生成表单</button>
-                <button @click="attribute()" type="button" class="layui-btn layui-btn-normal layui-btn-sm">表单属性</button>
-                <button @click="showfrom()" type="button" class="layui-btn layui-btn-normal layui-btn-sm">预览</button>
-              </header>
-
+                <header class="el-header _fc-m-tools">
+                    <button @click="generate()" type="button"
+                        class="layui-btn layui-btn-normal layui-btn-sm">从数据中生成表单</button>
+                    <button @click="attribute()" type="button"
+                        class="layui-btn layui-btn-normal layui-btn-sm">表单属性</button>
+                    <button @click="showfrom()" type="button"
+                        class="layui-btn layui-btn-normal layui-btn-sm">预览</button>
+                </header>
                 <draggable :list="confirm" group="people">
-                    <template #item="{ element,index }">
-                        <div >
-                   
-                            <subdesign @dblclick="set(element,index)" class="list-group-item1" :data="element"></subdesign>
+                    <template #item="{ element, index }">
+                        <div>
+
+                            <subdesign @dblclick="set(element, index)" class="list-group-item1" :data="element">
+                            </subdesign>
                         </div>
                     </template>
                 </draggable>
             </div>
         </lay-body>
-        <lay-side style="flex: 0 0 350px; width: 350px;border: 1px dashed rgb(0, 255, 99);">
-        <sets :data="needdata"   :setdata="setdata"></sets>
-
+        <lay-side style="flex: 0 0 350px; width: 350px;border: 1px dashed rgb(0, 255, 99);overflow: auto;">
+            <sets :data="needdata" :setdata="setdata"></sets>
         </lay-side>
+        <rawDisplayer class="col-3" :value="tools" title="List 1" />
 
-
- <rawDisplayer class="col-3" :value="tools" title="List 1" />
-
-    <rawDisplayer class="col-3" :value="confirm" title="List 2" />
+        <rawDisplayer class="col-3" :value="confirm" title="List 2" />
     </lay-layout>
 
 </template>
@@ -53,67 +52,74 @@
 import draggable from "vuedraggable";
 import subdesign from './subdesign.vue';
 import sets from './set.vue';
-  import _ from 'lodash';
+import _ from 'lodash';
 import http from "../../../utils/http";
-import { defineComponent, watch, ref,reactive } from 'vue';
+import { defineComponent, watch, ref, reactive } from 'vue';
 import toolsdata from '../../../assets/toolsdata';
-import {layer} from '@layui/layer-vue';
-  const needdata = ref(new Object());
+import { layer } from '@layui/layer-vue';
+const needdata = ref(new Object());
 export default {
     components: {
-        draggable, subdesign,sets
+        draggable, subdesign, sets
     },
-    name: "designindex",   
+    name: "designindex",
     setup() {
         const tools = ref(toolsdata.data);
         const groups = ref({ name: 'people', pull: 'clone', put: false });
 
-        const confirm = ref([])  as any;
+        const confirm = ref([]) as any;
         const openKeys2 = ref("0");
-      
-       const layers=layer as any;
+
+        const layers = layer as any;
         const log = (evt: any) => {
-            alert(1111);
-            confirm.value.push(evt);
-            console.log(evt);
+     
 
         }
-  
-       const  cloneDog=( obj :any)=> {
-       
-        const newObj = Object.assign(_.cloneDeep(obj), { id: `${obj.id}_${new Date().getTime()}` });
-        return newObj;
 
-      }
-        const set = (evt: any,v:number) => {
-      
-             needdata.value={};
-            needdata.value=evt;
-         
-       
-           
-        }
-       const generate = () => {
+        const cloneDog = (obj: any) => {
+
+            const newObj = Object.assign(_.cloneDeep(obj), { id: `${obj.id}_${new Date().getTime()}` });
+            return newObj;
 
         }
-      const attribute = () => {
+        const set = (evt: any, v: number) => {
+
+            needdata.value = {};
+            setTimeout(function(){
+            needdata.value = evt;
+            },100);
+        
+
+
 
         }
-      const  setdata=(val:any)=>{
-           alert(val.id);
-      needdata.value={};
+        const generate = () => {
 
-      }
-      const showfrom = () => {
+        }
+        const attribute = () => {
 
- 
+        }
+        const setdata = (val: any) => {
 
-     console.log(confirm.value);
-      layer.open({title:"标题", content: JSON.stringify(confirm.value)});
+            needdata.value = {};
+           var con= confirm.value;
+           confirm.value=[];
+           setTimeout(function(){
+            confirm.value = con;
+            },100);
+
+         layer.msg("更新成功", { icon: 1 });
+        }
+        const showfrom = () => {
+
+
+
+            console.log(confirm.value);
+            layer.open({ title: "标题", content: JSON.stringify(confirm.value) });
         }
 
         return {
-            tools, log, groups,openKeys2,setdata,set,generate,attribute,showfrom,confirm,needdata,cloneDog
+            tools, log, groups, openKeys2, setdata, set, generate, attribute, showfrom, confirm, needdata, cloneDog
         }
     }
 }
