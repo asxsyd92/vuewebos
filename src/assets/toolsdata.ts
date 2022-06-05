@@ -18,7 +18,7 @@ const toolsdata={ data:[
         "value": "",
         "data":"",
         "input":""
-    }
+    },rules:[]
 }, {
     icon: "fa fa-dot-circle-o",
     name: "单选框",
@@ -39,7 +39,7 @@ const toolsdata={ data:[
         "disabled": "false",
         "showtext": "false",
         "input":"男,1;女,0,false",
-    }
+    },rules:[]
 },
 {
     icon: "fa fa-edit",
@@ -60,7 +60,7 @@ const toolsdata={ data:[
         "value": "",
         "data":"",
         "input": "男,1;女,0,false"
-    }
+    },rules:[]
 },
 {
     icon: "fa fa-edit",
@@ -82,7 +82,7 @@ const toolsdata={ data:[
         "value": "",
         "data":"",
         "input":""
-    }
+    },rules:[]
 }
     ,
 {
@@ -105,7 +105,7 @@ const toolsdata={ data:[
         "value": "",
         "data":"",
         "input":""
-    }
+    },rules:[]
 },{
     icon: "fa fa-edit",
     name: "下拉选择",
@@ -128,7 +128,7 @@ const toolsdata={ data:[
             {"title":"男",value:"1"},
             {"title":"女",value:"2"},
         ]
-    }
+    },rules:[]
 },{
     icon: "fa fa-edit",
     name: "字体图标",
@@ -148,7 +148,7 @@ const toolsdata={ data:[
         "value": "",
         "data":"",
         "input":""
-    }
+    },rules:[]
 },{
     icon: "fa fa-edit",
     name: "颜色",
@@ -168,7 +168,7 @@ const toolsdata={ data:[
         "value": "",
         "data":"",
         "input":""
-    }
+    },rules:[]
 },{
     icon: "fa fa-edit",
     name: "xmselect",
@@ -187,7 +187,7 @@ const toolsdata={ data:[
         "value": "",
         "data": "",
         "input":""
-    }
+    },rules:[]
 },{
     icon: "fa fa-edit",
     name: "baiduuplod",
@@ -206,10 +206,11 @@ const toolsdata={ data:[
         "value": "",
         "data": "",
         "input":""
-    }
+    },rules:[]
 },
 
-],from:{}
+],from:{},
+
 }
 
 export default toolsdata;

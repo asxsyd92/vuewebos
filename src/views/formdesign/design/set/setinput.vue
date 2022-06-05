@@ -3,7 +3,7 @@
     <lay-form-item label="名称">
       <lay-input v-model="modle.label"></lay-input>
     </lay-form-item>
-        <lay-form-item label="id">
+    <lay-form-item label="id">
       <lay-input v-model="modle.id"></lay-input>
     </lay-form-item>
     <lay-form-item label="name">
@@ -80,25 +80,25 @@
       <lay-radio v-model="modle.disabled" label="false">否</lay-radio>
 
     </lay-form-item>
- <div class="layui-form-item">
-    <div class="layui-input-block">
-      <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" @click="setsubmit">保存</button>
+    <div class="layui-form-item">
+      <div class="layui-input-block">
+        <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" @click="setsubmit">保存</button>
 
-    <button type="submit" class="layui-btn layui-btn-danger layui-btn-sm" @click="delsubmit">移除</button>
+        <button type="submit" class="layui-btn layui-btn-danger layui-btn-sm" @click="delsubmit">移除</button>
 
 
+      </div>
     </div>
-  </div>
   </div>
 </template>
 
 <script lang="ts">
 
-import { values } from 'xe-utils';
+import { values, keys } from 'xe-utils';
 import { functionDeclaration } from '@babel/types';
 export default {
   name: "setinput",
-   mounted() {
+  mounted() {
 
   }
 };
@@ -106,32 +106,46 @@ export default {
 <script lang="ts" setup>
 import { ref, getCurrentInstance } from "vue";
 interface IsetinputProps {
-  data: any,setdata:Function
+  data: any, setdata: Function
 }
 const props = withDefaults(defineProps<IsetinputProps>(), {
-  data: Object,setdata:Function
+  data: Object, setdata: Function
 });
 const data = ref(props.data);
 
-const modle=ref({}) as any;
-   //data.value.data.forEach((key:any) => {
-  for (let keys in data.value.data) {
-          modle.value[keys]= data.value.data[keys];
-			 // modle.value.push( { [keys]: data.value.data[keys] });
-              //modle.value.push( {keys:data.value.data[keys] });
+const modle = ref({}) as any;
+//data.value.data.forEach((key:any) => {
+for (let keys in data.value.data) {
+  modle.value[keys] = data.value.data[keys];
 
-          
-  };
-  console.log( modle.value);
-const setsubmit=()=>{
+
+
+};
+console.log(modle.value);
+const setsubmit = () => {
   debugger;
 
-data.value.data=modle.value;
- console.log(data.value);
-props.setdata(data.value);
+  data.value.data = modle.value;
+
+    for (let key in data.value.data) {
+      if (key == "name") {
+        if (modle.value.required == true || modle.value.required == "true") {
+          var m = new Object();
+          var e = [{ required: true, errorMessage: modle.value.placeholder }];
+          m[data.value.data.name] = { rules: e }
+          data.value.rules=[];
+          data.value.rules.push(m);
+        }
+
+      }
+
+    }
+
+
+  props.setdata(data.value);
 
 }
-const delsubmit=()=>{
+const delsubmit = () => {
 
 }
 </script>

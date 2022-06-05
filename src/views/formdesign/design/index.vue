@@ -105,6 +105,10 @@ export default {
 
       }
       const showfrom = () => {
+
+ 
+
+     console.log(confirm.value);
       layer.open({title:"标题", content: JSON.stringify(confirm.value)});
         }
 
