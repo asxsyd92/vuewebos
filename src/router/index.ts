@@ -57,9 +57,9 @@ export const inRoutes =[
             meta: { title: '表单管理' },
             component: () => import('../views/formdesign/list.vue')
         }, {
-            path: '/formdesign/formdesign/:key',
+            path: '/formdesign/index',
             meta: { title: '表单设计' },
-            component: () => import('../views/formdesign/formdesign.vue')
+            component: () => import('../views/formdesign/design/index.vue')
         }, {
             path: '/formdesign/submitfrom',
             meta: { title: '新增→编辑详情' },

@@ -9,6 +9,13 @@
     </lay-form-item>
 
 </div>
+<div v-if="data.data.type=='password'">
+    <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name">
+ 
+   <lay-input-password v-model="value[data.data.name]" ></lay-input-password>
+    </lay-form-item>
+
+</div>
 <div v-else-if="data.data.type=='date'">
     <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name">
  
@@ -47,30 +54,6 @@ const props = withDefaults(defineProps<ItemnputProps>(), {
 
 const data = ref(props.data);
 const value = ref(props.value);
-// interface Data {
-//     [key:string]:null
-// }
-// export default {
-  
-//     name: "itemnput",
 
-//   props: {  //指定接收的值，必须指定类型
-//     data: {
-//       type:Object
-//     },
-//     value:{
-//          type:Object
-//     }
-//   },
-//   setup(props:Data) {
-//          const {data,value} = toRefs(props) as any;
-// return {
-//   data,
-//   value
-// }
-//          }
-
-
-// }
 
 </script>

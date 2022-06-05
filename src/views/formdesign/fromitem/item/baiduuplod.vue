@@ -87,10 +87,7 @@
   const showimg = function () {
 
     var win = window as any;
-    var uploadEditor = win.UE.getEditor(editorId.value);
-    uploadEditor.ready(function () {
-      uploadEditor.addListener("beforeInsertImage", _beforeInsertImage);
-    });
+
 
     var dialog = uploadEditor.getDialog("insertimage");
 
@@ -106,8 +103,8 @@
   }
   const showfile = function () {
 
-    var win = window as any;
 
+      var win = window as any;
     var uploadEditor = win.UE.getEditor(editorId.value);
     uploadEditor.addListener("afterUpfile", _afterUpfile);
     var dialog = uploadEditor.getDialog("attachment");
@@ -156,7 +153,12 @@
   // 7. 借助 beforeInit 钩子，你可以实现对 UEditor 的二次开发，会在 scripts 加载完毕之后、编辑器初始化之前触发，以 编辑器 id 和 配置参数 作为入参
   const ready = function (editorInstance: any) {
 
-    editorId.value = editorInstance.key;
+
+     var uploadEditor = win.UE.getEditor(editorInstance.key);
+    uploadEditor.ready(function () {
+      uploadEditor.addListener("beforeInsertImage", _beforeInsertImage);
+    });
+  
   }
 
 

@@ -35,7 +35,7 @@ class Http {
         /* 响应拦截 */
         this.service.interceptors.response.use((response: AxiosResponse<any>) => {
             const data = response.data
-      
+            debugger
             if(layerid!=null){
                 layer.close(layerid);
             }
@@ -43,6 +43,7 @@ class Http {
             // 错误处理 to do
             return response.data
         }, error => {
+            debugger
             if(layerid!=null){
                 layer.close(layerid);
             }

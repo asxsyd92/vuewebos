@@ -1,14 +1,15 @@
 <template>
   <lay-container fluid="true" style="padding:10px">
+  
   <div class="home">
-
+<lay-notice-bar leftIcon="layui-icon-mute" rightIcon="layui-icon-close" text="所有发生过的都是既定的。是应该发生。只能发生。" mode="closeable" background="#ecf5ff"	></lay-notice-bar>
     <div style="padding: 20px; background-color: #F2F2F2;">
       <div class="layui-row layui-col-space15">
         <div class="layui-col-md6">
           <div class="layui-card">
             <div class="layui-card-header">待办事项</div>
             <div class="layui-card-body">
-              <table id="mainwait" lay-filter="mainwait"></table>
+              <table id="mainwait" ></table>
             </div>
           </div>
         </div>
