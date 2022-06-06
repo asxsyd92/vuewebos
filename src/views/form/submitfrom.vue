@@ -23,7 +23,7 @@
   import { layer } from '@layui/layer-vue'
   import { useRoute, useRouter } from "vue-router";
   import http from "../../utils/http";
-  import subform from './fromitem/subform.vue';
+  import subform from '../../components/formitem/subform.vue';
   export default {
     components: {subform },
     setup() {

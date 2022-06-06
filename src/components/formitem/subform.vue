@@ -22,7 +22,6 @@
 
 <script lang="ts" >
 import webfrom from './webfrom';
-import { ref,reactive  } from "vue";
 export default {
    
     components:{ ...webfrom},

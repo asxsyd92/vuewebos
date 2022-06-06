@@ -49,7 +49,7 @@
   </div>
 </template>
 
-<script>
+<script >
   import { ref, reactive, onMounted } from 'vue'
   import { useRouter, useRoute } from 'vue-router';
   import { layer } from '@layui/layer-vue'

@@ -3,9 +3,9 @@
 
 <div v-if="data.type=='input'"   >
 
-    <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label">
+    <lay-form-item  :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label">
  
-      <lay-input v-model="data.data.col"></lay-input>
+      <lay-input v-model="data.data.col" disabled="disabled"></lay-input>
     </lay-form-item>
 
 
@@ -13,7 +13,7 @@
 </div>
 <div v-if="data.type=='textarea'"   >
   <lay-form-item :placeholder="data.data.placeholder"  class="layui-form-item"  :label="data.data.label">
-      <lay-textarea  v-model="data.data.col"></lay-textarea>
+      <lay-textarea  v-model="data.data.col" disabled="disabled"></lay-textarea>
     </lay-form-item></div>
 </div>
 
@@ -34,6 +34,6 @@ const props = withDefaults(defineProps<IdesignnputProps>(), {
 });
 
 const data = ref(props.data);
-debugger
+
 
 </script>

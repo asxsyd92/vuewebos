@@ -105,7 +105,7 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import { ref, getCurrentInstance } from "vue";
+import { ref,watch } from "vue";
 interface IsetinputProps {
   data: any, setdata: Function
 }
@@ -124,15 +124,13 @@ for (let keys in data.value.data) {
 };
 console.log(modle.value);
 const setsubmit = () => {
-  debugger;
-
   data.value.data = modle.value;
 
     for (let key in data.value.data) {
       if (key == "name") {
         if (modle.value.required == true || modle.value.required == "true") {
           var m = new Object();
-          var e = [{ required: true, errorMessage: modle.value.placeholder }];
+          var e = [{ required: true, errorMessage: modle.value.label +"不能为空"}];
           m[data.value.data.name] = { rules: e }
           data.value.rules=[];
           data.value.rules.push(m);
@@ -149,4 +147,13 @@ const setsubmit = () => {
 const delsubmit = () => {
 
 }
+
+  watch(modle.value, (newValue, oldValue)  => {
+
+       modle.value.name=  modle.value.id;
+         modle.value.placeholder= "请输入"+ modle.value.label;
+
+  });
+
+
 </script>

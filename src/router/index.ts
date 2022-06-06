@@ -55,16 +55,16 @@ export const inRoutes =[
         {
             path: '/formdesign/list',
             meta: { title: '表单管理' },
-            component: () => import('../views/formdesign/list.vue')
+            component: () => import('../views/form/list.vue')
         }, {
             path: '/formdesign/index',
             meta: { title: '表单设计' },
-            component: () => import('../views/formdesign/design/index.vue')
+            component: () => import('../views/form/design/index.vue')
         }, {
             path: '/formdesign/submitfrom',
             meta: { title: '新增→编辑详情' },
             hidden: true,
-            component: () => import('../views/formdesign/submitfrom.vue')
+            component: () => import('../views/form/submitfrom.vue')
         },
     ],
 },{

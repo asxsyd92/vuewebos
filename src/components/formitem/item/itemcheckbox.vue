@@ -22,7 +22,7 @@ export default {
 <script lang="ts" setup>
 import { ref,reactive,onMounted   } from "vue";
   import { useRoute } from "vue-router";
-    import http from "../../../../utils/http";
+    import http from "../../../utils/http";
     interface ItemcolorProps {
   data: any;
   value:any;

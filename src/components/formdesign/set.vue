@@ -1,7 +1,10 @@
 <template>
 <div>
 
-  <designnput v-if="data.type=='input'" :data="data" ></designnput>
+  <setinput v-if="data.type=='input'||data.type=='textarea'" :data="data" :setdata="setdata"></setinput>
+  <setradio v-if="data.type=='radio'" :data="data" :setdata="setdata"></setradio>
+  <setselect v-if="data.type=='select'" :data="data" :setdata="setdata"></setselect>
+  <setcheckbox v-if="data.type=='checkbox'" :data="data" :setdata="setdata"></setcheckbox>
 <!-- <itemradio v-if="data.type=='radio'" :data="data" ></itemradio>
  <itemcolor v-if="data.type=='color'" :data="data" ></itemcolor>
   <itemicon v-if="data.type=='icon'" :data="data" ></itemicon>
@@ -21,19 +24,23 @@
 </template>
 
 <script lang="ts" >
-import design from './design';
-
+import set from './set';
 export default {
-   
-    components:{ ...design},
-  name:"subdesign",
+      
+    components:{ ...set},
+  name:"set",
    props: {
     data: {
       type: Object,
       required: true
-    }
-  },
+    },setdata: {
+      type: Function,
+      default: () => {
+        return Function
+      }
 
+  }
 
+   }
 }
 </script>

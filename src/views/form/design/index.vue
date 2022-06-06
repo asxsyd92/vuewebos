@@ -1,5 +1,6 @@
 
 <template>
+<div>
     <lay-layout class="design">
         <lay-side>
             <lay-collapse v-model="openKeys2" accordion>
@@ -41,26 +42,31 @@
         <lay-side style="flex: 0 0 350px; width: 350px;border: 1px dashed rgb(0, 255, 99);overflow: auto;">
             <sets :data="needdata" :setdata="setdata"></sets>
         </lay-side>
-        <rawDisplayer class="col-3" :value="tools" title="List 1" />
 
-        <rawDisplayer class="col-3" :value="confirm" title="List 2" />
     </lay-layout>
+    <lay-layer title="表单预览" :area="['80%','80%']" move="true" shade="true" v-model="showvisible">
 
+
+
+  
+  </lay-layer>
+</div>
 </template>
 
 <script lang="ts">
 import draggable from "vuedraggable";
-import subdesign from './subdesign.vue';
-import sets from './set.vue';
+import subdesign from '../../../components/formdesign/subdesign.vue';
+import sets from '../../../components/formdesign/set.vue';
 import _ from 'lodash';
 import http from "../../../utils/http";
-import { defineComponent, watch, ref, reactive } from 'vue';
+import { watch, ref } from 'vue';
 import toolsdata from '../../../assets/toolsdata';
 import { layer } from '@layui/layer-vue';
+import subform from '../../../components/formitem/subform.vue';
 const needdata = ref(new Object());
 export default {
     components: {
-        draggable, subdesign, sets
+        draggable, subdesign, sets,subform
     },
     name: "designindex",
     setup() {
@@ -69,10 +75,9 @@ export default {
 
         const confirm = ref([]) as any;
         const openKeys2 = ref("0");
-
+        const showvisible = ref(false)
         const layers = layer as any;
         const log = (evt: any) => {
-     
 
         }
 
@@ -85,13 +90,9 @@ export default {
         const set = (evt: any, v: number) => {
 
             needdata.value = {};
-            setTimeout(function(){
-            needdata.value = evt;
-            },100);
-        
-
-
-
+            setTimeout(function () {
+                needdata.value = evt;
+            }, 100);
         }
         const generate = () => {
 
@@ -102,25 +103,35 @@ export default {
         const setdata = (val: any) => {
 
             needdata.value = {};
-           var con= confirm.value;
-           confirm.value=[];
-           setTimeout(function(){
-            confirm.value = con;
-            },100);
+            var con = confirm.value;
+            confirm.value = [];
+            setTimeout(function () {
+                confirm.value = con;
+            }, 100);
 
-         layer.msg("更新成功", { icon: 1 });
+            layers.msg("更新成功", { icon: 1 });
         }
         const showfrom = () => {
 
 
-
-            console.log(confirm.value);
-            layer.open({ title: "标题", content: JSON.stringify(confirm.value) });
+            showvisible.value = !showvisible.value
+            // console.log(confirm.value);
+            // layers.open({ title: "标题", content: JSON.stringify(confirm.value) });
         }
+        watch(confirm.value, (val: any) => {
 
+            setTimeout(function () {
+                var con = confirm.value;
+                confirm.value = con;
+            }, 1000);
+
+
+        });
         return {
-            tools, log, groups, openKeys2, setdata, set, generate, attribute, showfrom, confirm, needdata, cloneDog
+            tools, log,showvisible, groups, openKeys2, setdata, set, generate, attribute, showfrom, confirm, needdata, cloneDog
         }
+
+
     }
 }
 
