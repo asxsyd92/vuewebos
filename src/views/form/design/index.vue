@@ -1,6 +1,5 @@
 
 <template>
-<div>
     <lay-layout class="design">
         <lay-side>
             <lay-collapse v-model="openKeys2" accordion>
@@ -44,13 +43,7 @@
         </lay-side>
 
     </lay-layout>
-    <lay-layer title="表单预览" :area="['80%','80%']" move="true" shade="true" v-model="showvisible">
 
-
-
-  
-  </lay-layer>
-</div>
 </template>
 
 <script lang="ts">
@@ -62,11 +55,10 @@ import http from "../../../utils/http";
 import { watch, ref } from 'vue';
 import toolsdata from '../../../assets/toolsdata';
 import { layer } from '@layui/layer-vue';
-import subform from '../../../components/formitem/subform.vue';
 const needdata = ref(new Object());
 export default {
     components: {
-        draggable, subdesign, sets,subform
+        draggable, subdesign, sets
     },
     name: "designindex",
     setup() {
@@ -75,7 +67,7 @@ export default {
 
         const confirm = ref([]) as any;
         const openKeys2 = ref("0");
-        const showvisible = ref(false)
+
         const layers = layer as any;
         const log = (evt: any) => {
 
@@ -114,9 +106,9 @@ export default {
         const showfrom = () => {
 
 
-            showvisible.value = !showvisible.value
-            // console.log(confirm.value);
-            // layers.open({ title: "标题", content: JSON.stringify(confirm.value) });
+
+            console.log(confirm.value);
+            layers.open({ title: "标题", content: JSON.stringify(confirm.value) });
         }
         watch(confirm.value, (val: any) => {
 
@@ -128,7 +120,7 @@ export default {
 
         });
         return {
-            tools, log,showvisible, groups, openKeys2, setdata, set, generate, attribute, showfrom, confirm, needdata, cloneDog
+            tools, log, groups, openKeys2, setdata, set, generate, attribute, showfrom, confirm, needdata, cloneDog
         }
 
 
