@@ -2,7 +2,7 @@
 <div>
  
         <vxe-grid  ref="xGrid" v-bind="gridOptions" v-on="gridEvents"  
-          
+         
           :column-config="{isCurrent: true, isHover: true}"
           :row-config="{isCurrent: true, isHover: true}"
      >

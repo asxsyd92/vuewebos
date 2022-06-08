@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@layui/layui-vue': ^1.0.7
+  '@layui/layui-vue': ^1.1.5
   '@vitejs/plugin-vue': ^2.2.0
   '@vue/compiler-sfc': ^3.2.33
   axios: ^0.24.0
@@ -15,7 +15,7 @@ specifiers:
   vue-tsc: ^0.29.8
 
 dependencies:
-  '@layui/layui-vue': 1.0.7_vue@3.2.33
+  '@layui/layui-vue': 1.1.5_vue@3.2.33
   axios: 0.24.0
   pinia: 2.0.13_typescript@4.6.3+vue@3.2.33
   pinia-plugin-persist: 1.0.0_pinia@2.0.13+vue@3.2.33
@@ -130,7 +130,7 @@ packages:
     resolution: {integrity: sha512-km1YFZzm97DFduix0qhxPM+HDrxgiSnR4xo10dxOjvXHKfezAhp9CHtRcmyMxYq4ZqMrPVA8iM18PzmLe3VRxw==}
     dev: false
 
-  /@layui/layui-vue/1.0.7_vue@3.2.33:
+  /@layui/layui-vue/1.1.5_vue@3.2.33:
     resolution: {integrity: sha512-bWOp6xXHuRJMax5Me3tdn91igM5Bta//aYBpZR1WjfQn61dKXLJKufOV5K7D8NeW/csfK926lMNix/XLiWPoHQ==}
     dependencies:
       '@layui/icons-vue': 1.0.8
@@ -912,7 +912,7 @@ packages:
     engines: {node: '>= 0.10'}
     dev: true
 
-  /path-parse/1.0.7:
+  /path-parse/1.1.5:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
     dev: true
 
@@ -1077,7 +1077,7 @@ packages:
     hasBin: true
     dependencies:
       is-core-module: 2.8.1
-      path-parse: 1.0.7
+      path-parse: 1.1.5
       supports-preserve-symlinks-flag: 1.0.0
     dev: true
 

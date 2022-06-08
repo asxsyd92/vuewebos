@@ -20,13 +20,21 @@
         <lay-body>
             <div style="  border:1px dashed rgb(0 255 99);min-height: 200px;">
                 <header class="el-header _fc-m-tools">
-                    <button @click="generate()" type="button"
-                        class="layui-btn layui-btn-normal layui-btn-sm">从数据中生成表单</button>
-                    <button @click="attribute()" type="button"
-                        class="layui-btn layui-btn-normal layui-btn-sm">表单属性</button>
-                    <button @click="showfrom()" type="button"
-                        class="layui-btn layui-btn-normal layui-btn-sm">预览</button>
+                    <lay-tooltip content="从数据库中生成单个输入框，需要配置表单属性，生成后配置对应组件即可" :is-dark="false"> <button
+                            @click="generate()" type="button"
+                            class="layui-btn layui-btn-normal layui-btn-sm">从数据中生成表单</button></lay-tooltip>
+                    <lay-tooltip content="设置表单属性表单名称等信息" :is-dark="false">
+                        <button @click="attribute()" type="button"
+                            class="layui-btn layui-btn-normal layui-btn-sm">表单属性</button>
+                    </lay-tooltip>
+                    <lay-tooltip content="显示预览实际表单" :is-dark="false">
+                        <button @click="showfrom()" type="button"
+                            class="layui-btn layui-btn-normal layui-btn-sm">预览</button>
+                    </lay-tooltip>
+
                 </header>
+                <lay-field :title="confirm.form.name">
+           
                 <draggable :list="confirm" group="people">
                     <template #item="{ element, index }">
                         <div>
@@ -36,6 +44,7 @@
                         </div>
                     </template>
                 </draggable>
+                </lay-field>
             </div>
         </lay-body>
         <lay-side style="flex: 0 0 350px; width: 350px;border: 1px dashed rgb(0, 255, 99);overflow: auto;">
@@ -90,18 +99,41 @@ export default {
 
         }
         const attribute = () => {
+            debugger
+            if (confirm.value.form != null && confirm.value.form != undefined) {
+                needdata.value = confirm.value.form;
+            } else {
+                debugger
+                var obj = new Object() as any;
+                obj.table = "table";
+                obj.type = "table";
+                obj.name = "表单名称";
+                obj.style = "layui-form";
+                obj.url = "/api/";
+                needdata.value = obj;
+            }
 
         }
         const setdata = (val: any) => {
+            if (val.type == "table") {
 
-            needdata.value = {};
-            var con = confirm.value;
-            confirm.value = [];
-            setTimeout(function () {
-                confirm.value = con;
-            }, 100);
+                confirm.value['form'] = val;
+                layers.msg("更新成功", { icon: 1 });
+                needdata.value = {};
+            }
+            else {
+                console.log(confirm.value);
+                needdata.value = {};
+                var con = confirm.value;
 
-            layers.msg("更新成功", { icon: 1 });
+                confirm.value = [];
+                setTimeout(function () {
+                    confirm.value = con;
+                }, 100);
+
+                layers.msg("更新成功", { icon: 1 });
+            }
+
         }
         const showfrom = () => {
 
