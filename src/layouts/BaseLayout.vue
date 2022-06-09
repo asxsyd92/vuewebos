@@ -53,6 +53,7 @@
               <template #content>
                 <lay-dropdown-menu>
                   <lay-dropdown-menu-item>用户信息</lay-dropdown-menu-item>
+                  <lay-dropdown-menu-item>密码修改</lay-dropdown-menu-item>
                   <lay-dropdown-menu-item>注销登录</lay-dropdown-menu-item>
                 </lay-dropdown-menu>
               </template>

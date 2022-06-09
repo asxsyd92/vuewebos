@@ -22,7 +22,7 @@
           </lay-tooltip>
         </template>
     
-        <template #title> {{ms.title}} </template>
+        <template #title > {{ms.title}} </template>
 
       </lay-menu-item>
     </lay-sub-menu>
@@ -102,3 +102,8 @@
   })
 
 </script>
+<style>
+.layui-nav-light .layui-nav-child{
+    background-color:#eeeeee !important;
+}
+</style>
