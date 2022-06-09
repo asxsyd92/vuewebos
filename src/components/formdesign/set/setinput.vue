@@ -141,11 +141,27 @@ const setsubmit = () => {
     }
 
 
-  props.setdata(data.value);
+  props.setdata(data.value,"save");
 
 }
 const delsubmit = () => {
+  data.value.data = modle.value;
 
+    for (let key in data.value.data) {
+      if (key == "name") {
+        if (modle.value.required == true || modle.value.required == "true") {
+          var m = new Object();
+          var e = [{ required: true, errorMessage: modle.value.label +"不能为空"}];
+          m[data.value.data.name] = { rules: e }
+          data.value.rules=[];
+          data.value.rules.push(m);
+        }
+
+      }
+
+    }
+
+props.setdata(data.value,"del");
 }
 
   watch(modle.value, (newValue, oldValue)  => {

@@ -101,7 +101,7 @@ export default {
         const attribute = () => {
          needdata.value = confirm.value.form;
         }
-        const setdata = (val: any) => {
+        const setdata = (val: any,a:any) => {
             if (val.type == "table") {
 
                 confirm.value['form'] = val;
@@ -109,16 +109,32 @@ export default {
                 needdata.value = {};
             }
             else {
-                console.log(confirm.value);
-                needdata.value = {};
-                var con = confirm.value;
-
-                confirm.value = [];
-                setTimeout(function () {
-                    confirm.value = con;
-                }, 100);
-
-                layers.msg("更新成功", { icon: 1 });
+				if (a=="save"){
+					console.log(confirm.value);
+					needdata.value = {};
+					var con = confirm.value;
+					
+					confirm.value = [];
+					setTimeout(function () {
+					    confirm.value = con;
+					}, 100);
+					
+					layers.msg("更新成功", { icon: 1 });
+				}
+                
+				   else{
+					   debugger
+					   confirm.value = confirm.value.filter((item)=>{
+					       return item !== val;
+					   }); 
+					   //作：朵宝特工007 https://www.bilibili.com/read/cv16955268 出处：bilibili
+				// 	   confirm.value.forEach((item:any,index:Number) => {
+    // if (item.id === val.id) {
+    //    confirm.value.item=
+    // }
+  //});
+				   }
+			   
             }
 
         }
