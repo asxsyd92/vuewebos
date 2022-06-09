@@ -33,7 +33,7 @@
                     </lay-tooltip>
 
                 </header>
-                <lay-field :title="confirm.form.name">
+                <lay-field title="表单标题">
            
                 <draggable :list="confirm" group="people">
                     <template #item="{ element, index }">
@@ -99,20 +99,7 @@ export default {
 
         }
         const attribute = () => {
-            debugger
-            if (confirm.value.form != null && confirm.value.form != undefined) {
-                needdata.value = confirm.value.form;
-            } else {
-                debugger
-                var obj = new Object() as any;
-                obj.table = "table";
-                obj.type = "table";
-                obj.name = "表单名称";
-                obj.style = "layui-form";
-                obj.url = "/api/";
-                needdata.value = obj;
-            }
-
+         needdata.value = confirm.value.form;
         }
         const setdata = (val: any) => {
             if (val.type == "table") {
