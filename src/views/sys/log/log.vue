@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-  import http from "../../../utils/http";
+import http from "../../../utils/http";
 import { defineComponent, reactive, ref } from 'vue'
         import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
 
