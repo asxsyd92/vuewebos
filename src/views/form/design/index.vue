@@ -31,19 +31,22 @@
                         <button @click="showfrom()" type="button"
                             class="layui-btn layui-btn-normal layui-btn-sm">预览</button>
                     </lay-tooltip>
-
+                    <lay-tooltip content="发布到正式版" :is-dark="false">
+                        <button @click="publishfrom()" type="button"
+                            class="layui-btn layui-btn-normal layui-btn-sm">发布</button>
+                    </lay-tooltip>
                 </header>
                 <lay-field title="表单标题">
-           
-                <draggable :list="confirm" group="people">
-                    <template #item="{ element, index }">
-                        <div>
 
-                            <subdesign @dblclick="set(element, index)" class="list-group-item1" :data="element">
-                            </subdesign>
-                        </div>
-                    </template>
-                </draggable>
+                    <draggable :list="confirm" group="people">
+                        <template #item="{ element, index }">
+                            <div>
+
+                                <subdesign @dblclick="set(element, index)" class="list-group-item1" :data="element">
+                                </subdesign>
+                            </div>
+                        </template>
+                    </draggable>
                 </lay-field>
             </div>
         </lay-body>
@@ -62,6 +65,7 @@ import sets from '../../../components/formdesign/set.vue';
 import _ from 'lodash';
 import http from "../../../utils/http";
 import { watch, ref } from 'vue';
+import { useRouter, useRoute, RouteMeta } from 'vue-router';
 import toolsdata from '../../../assets/toolsdata';
 import { layer } from '@layui/layer-vue';
 const needdata = ref(new Object());
@@ -71,6 +75,8 @@ export default {
     },
     name: "designindex",
     setup() {
+        const router = useRouter();
+        const route = useRoute();
         const tools = ref(toolsdata.data);
         const groups = ref({ name: 'people', pull: 'clone', put: false });
 
@@ -99,9 +105,9 @@ export default {
 
         }
         const attribute = () => {
-         needdata.value = confirm.value.form;
+            needdata.value = confirm.value.form;
         }
-        const setdata = (val: any,a:any) => {
+        const setdata = (val: any, a: any) => {
             if (val.type == "table") {
 
                 confirm.value['form'] = val;
@@ -109,41 +115,54 @@ export default {
                 needdata.value = {};
             }
             else {
-				if (a=="save"){
-					console.log(confirm.value);
-					needdata.value = {};
-					var con = confirm.value;
-					
-					confirm.value = [];
-					setTimeout(function () {
-					    confirm.value = con;
-					}, 100);
-					
-					layers.msg("更新成功", { icon: 1 });
-				}
-                
-				   else{
-					   debugger
-					   confirm.value = confirm.value.filter((item)=>{
-					       return item !== val;
-					   }); 
-					   //作：朵宝特工007 https://www.bilibili.com/read/cv16955268 出处：bilibili
-				// 	   confirm.value.forEach((item:any,index:Number) => {
-    // if (item.id === val.id) {
-    //    confirm.value.item=
-    // }
-  //});
-				   }
-			   
+                if (a == "save") {
+                    console.log(confirm.value);
+                    needdata.value = {};
+                    var con = confirm.value;
+
+                    confirm.value = [];
+                    setTimeout(function () {
+                        confirm.value = con;
+                    }, 100);
+
+                    layers.msg("更新成功", { icon: 1 });
+                }
+
+                else {
+                    debugger
+                    confirm.value = confirm.value.filter((item: any) => {
+                        return item !== val;
+                    });
+
+                }
+
             }
 
         }
         const showfrom = () => {
 
+            var fromid: any;
+            if (route.query.fromid != null && route.query.fromid != undefined && route.query.fromid != "add") {
+                fromid = route.query.fromid;
+            }
+            http.post("api/form/saveFormJson", { key: fromid, tab: confirm.value.form.table, title: confirm.value.from.data.name, data: JSON.stringify(confirm.value) }, "正在保存").then(res => {
+                if (res.success) {
+                    layer.msg(res.msg, { icon: 1 });
+                } else {
+
+                    layer.msg(res.msg, { icon: 2 });
+                    return;
+                }
+            }).catch(ex => {
+                layer.msg("网络异常", { icon: 1 });
+            });
 
 
             console.log(confirm.value);
             layers.open({ title: "标题", content: JSON.stringify(confirm.value) });
+        }
+        const publishfrom = () => {
+
         }
         watch(confirm.value, (val: any) => {
 
@@ -155,7 +174,7 @@ export default {
 
         });
         return {
-            tools, log, groups, openKeys2, setdata, set, generate, attribute, showfrom, confirm, needdata, cloneDog
+           publishfrom, tools, log, groups, openKeys2, setdata, set, generate, attribute, showfrom, confirm, needdata, cloneDog
         }
 
 
