@@ -36,7 +36,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-
+ import chartlint from '@/components/chart/chartlint.vue'
 export default defineComponent({
   setup() {
 
