@@ -107,6 +107,18 @@ export const inRoutes =[
         meta: { title: '网站管理' },
       }
     ]
+  },{  
+      path: '/oa',
+  component: BaseLayout,
+  meta: { title: 'oa' },
+  children: [
+    {
+      path: '/oa/wait',
+      component: () => import('../views/oa/wait.vue'),
+      meta: { title: '待办事项' },
+    },
+  ]
+
   },{
     path: '/result',
     component: BaseLayout,
