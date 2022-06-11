@@ -2,10 +2,9 @@
 <div>
  
         <vxe-grid  ref="xGrid" v-bind="gridOptions" v-on="gridEvents"  
-         
+          
           :column-config="{isCurrent: true, isHover: true}"
-          :row-config="{isCurrent: true, isHover: true}"
-     >
+          :row-config="{isCurrent: true, isHover: true}" >
             <!--将表单放在工具栏中-->
           <template #toolbar_buttons>
             <vxe-form :data="formData" @submit="searchEvent" >
@@ -24,9 +23,9 @@
           </template>
 
        <template #operate="{ row }">
-        
+           <vxe-button icon="fa fa-eye" title="查看" circle @click="editRowEvent(row)"></vxe-button>
             <vxe-button icon="fa fa-trash" title="删除" circle @click="removeRowEvent(row)"></vxe-button>
-            <vxe-button icon="fa fa-eye" title="查看" circle></vxe-button>
+          
             <vxe-button icon="fa fa-gear" title="设置" circle></vxe-button>
           </template>
      </vxe-grid>
@@ -35,14 +34,17 @@
 </template>
 
 <script lang="ts">
-import http from "../../../utils/http";
-import { defineComponent, reactive, ref } from 'vue'
+  import http from "../../utils/http";
+  import { useRouter, useRoute,RouteMeta } from 'vue-router';
+
+ import { defineComponent, reactive, ref } from 'vue'
         import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
 
         export default defineComponent({
           setup () {
             const xGrid = ref<VxeGridInstance>()
-
+            const router = useRouter();
+            const route = useRoute();
             const gridOptions = reactive<VxeGridProps>({
               border: true,
               keepSource: true,
@@ -77,12 +79,12 @@ import { defineComponent, reactive, ref } from 'vue'
               columns: [
                 // { type: 'seq', width: 60 },
                 { type: 'checkbox', width: 50 },
-                { field: 'title', title: '标题', },
-                { field: 'type', title: '类型',  },
-                { field: 'username', title: '操作人',  },
-                { field: 'writetime', title: '发生时间', },
-                { field: 'contents', title: '详情', },
-                { title: '操作',fixed:"right", width: 200, slots: { default: 'operate' } }
+                { field: 'title', title: '标题'},
+                { field: 'sendername', title: '作者',  },
+                { field: 'stepname', title: '步骤', },
+                 { field: 'receivetime', title: '接收时间', },
+                
+                { title: '操作',fixed:"right", width: 150, slots: { default: 'operate' } }
               ],
               data: []
             })
@@ -94,22 +96,21 @@ import { defineComponent, reactive, ref } from 'vue'
 
             const findList = () => {
               gridOptions.loading = true;
-                    var page:any,limt:any;
+              var page:any,limt:any;
                   if (gridOptions.pagerConfig) {
                   page=gridOptions.pagerConfig.currentPage ;
                  limt= gridOptions.pagerConfig.pageSize ;
                 }
-           http.post("/api/log/getLogList", { page:page, limit: limt },"请稍等...").then(res => {
+           http.post("/api/workflowtasks/WaitList", { page:page,type:route.query.zhuanti, limit: limt },"请稍等...").then(res => {
             gridOptions.loading = false
-   
+      
             if (res.success) {
                  gridOptions.data=res.data;
-
-                if (gridOptions.pagerConfig) {
+      
+            if (gridOptions.pagerConfig) {
                   gridOptions.pagerConfig.total =res.count
                   }
             }});
-
             }
 
             const gridEvents: VxeGridListeners = {
@@ -133,10 +134,14 @@ import { defineComponent, reactive, ref } from 'vue'
             }
 
             const editRowEvent = (row: any) => {
-              const $grid = xGrid.value
-              if ($grid) {
-                $grid.setActiveRow(row)
-              }
+         
+              console.log(row);
+                        var query=new Object() as any;
+                        query.fromid = row.fromid;
+                        query.instanceid = row.instanceid;
+                        query.zhuanti = route.query.zhuanti;
+                        router.push({ path: "/formdesign/submitfrom", query: query })
+                    
             }
 
             const saveRowEvent = async () => {
@@ -165,7 +170,7 @@ import { defineComponent, reactive, ref } from 'vue'
             findList()
             const searchEvent = () => {
               const $grid = xGrid.value
-              //$grid.commitProxy('query')
+              //$grid?.commitProxy('query')
             }
 
             const formData = reactive({
