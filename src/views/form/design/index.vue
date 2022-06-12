@@ -64,7 +64,7 @@ import subdesign from '../../../components/formdesign/subdesign.vue';
 import sets from '../../../components/formdesign/set.vue';
 import _ from 'lodash';
 import http from "../../../utils/http";
-import { watch, ref } from 'vue';
+import { watch, ref, onMounted } from 'vue';
 import { useRouter, useRoute, RouteMeta } from 'vue-router';
 import toolsdata from '../../../assets/toolsdata';
 import { layer } from '@layui/layer-vue';
@@ -79,7 +79,8 @@ export default {
         const route = useRoute();
         const tools = ref(toolsdata.data);
         const groups = ref({ name: 'people', pull: 'clone', put: false });
-
+        const form = ref({}) as any;
+        const formdata = ref({}) as any;
         const confirm = ref([]) as any;
         const openKeys2 = ref("0");
 
@@ -88,6 +89,22 @@ export default {
 
         }
 
+        onMounted(() => {
+
+            if (route.query.fromid != null && route.query.fromid != undefined && route.query.fromid != "add") {
+                http.post("/api/form/getFormJsonById", { fromid: route.query.fromid }, "正在加载表单信息")
+                    .then(res => {
+                        if (res.success) {
+                            var f=JSON.parse(res.data.designhtml);
+                            form.value = f.form;
+                             confirm.value = f.data;
+                            //console.log(confirm.value);
+                        }
+                    }).catch(res => {
+                        layer.msg("网络错误", { icon: 2 });
+                    })
+            }
+        })
         const cloneDog = (obj: any) => {
 
             const newObj = Object.assign(_.cloneDeep(obj), { id: `${obj.id}_${new Date().getTime()}` });
@@ -105,14 +122,26 @@ export default {
 
         }
         const attribute = () => {
-            needdata.value = confirm.value.form;
+            if (form.value.table == null || form.value.table == undefined) {
+                var t = new Object() as any;
+                t.type = "table";
+                t.table = "";
+                t.style = "layui-form";
+                t.url = "/api/";
+                t.name = "这是表单名称";
+                needdata.value = t;
+            } else {
+                needdata.value = form.value;
+            }
+
         }
         const setdata = (val: any, a: any) => {
             if (val.type == "table") {
 
-                confirm.value['form'] = val;
+                form.value = val;
                 layers.msg("更新成功", { icon: 1 });
                 needdata.value = {};
+                layers.open({ title: "标题", content: JSON.stringify(form.value) });
             }
             else {
                 if (a == "save") {
@@ -140,12 +169,37 @@ export default {
 
         }
         const showfrom = () => {
-
+            var rules = new Object() as any;
+            if (form.value.table==undefined) {
+                layer.msg("请先设置表单属性", { icon: 2 });
+                return;
+            }
             var fromid: any;
             if (route.query.fromid != null && route.query.fromid != undefined && route.query.fromid != "add") {
                 fromid = route.query.fromid;
             }
-            http.post("api/form/saveFormJson", { key: fromid, tab: confirm.value.form.table, title: confirm.value.from.data.name, data: JSON.stringify(confirm.value) }, "正在保存").then(res => {
+
+            //规则处理
+            formdata.value["data"] = confirm.value;
+            formdata.value["form"] = form.value;
+         confirm.value.forEach((item:any) => {
+            for (let key in item.data) {
+
+                if (key == "name") {
+                    if (item.data.required == true || item.data.required == "true") {
+                        debugger;
+                        var m = new Object();
+                        var e = [{ required: true, errorMessage:item.data.label + "不能为空" }];
+                        m[item.data.name] = { rules: e }
+
+                        rules[item.data.name]=m;
+                    }
+
+                }
+                formdata.value["rules"] = rules;
+
+            }})
+            http.post("/api/form/saveFormJson", { key: fromid, tab: form.value.table, title: form.value.name, data: JSON.stringify(formdata.value) }, "正在保存").then(res => {
                 if (res.success) {
                     layer.msg(res.msg, { icon: 1 });
                 } else {
@@ -159,7 +213,7 @@ export default {
 
 
             console.log(confirm.value);
-            layers.open({ title: "标题", content: JSON.stringify(confirm.value) });
+            layers.open({ title: "标题", content: JSON.stringify(formdata.value) });
         }
         const publishfrom = () => {
 
@@ -174,7 +228,7 @@ export default {
 
         });
         return {
-           publishfrom, tools, log, groups, openKeys2, setdata, set, generate, attribute, showfrom, confirm, needdata, cloneDog
+            publishfrom, tools, log, groups, openKeys2, setdata, set, generate, attribute, showfrom, confirm, needdata, cloneDog
         }
 
 

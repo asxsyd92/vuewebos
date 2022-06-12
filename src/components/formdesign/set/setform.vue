@@ -56,7 +56,7 @@ debugger
 modle.value=data.value;
 console.log(modle.value);
 const setsubmit = () => {
-  data.value.data = modle.value;
+  data.value = modle.value;
 
 
   props.setdata(data.value);

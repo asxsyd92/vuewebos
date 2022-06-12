@@ -124,22 +124,8 @@ for (let keys in data.value.data) {
 };
 console.log(modle.value);
 const setsubmit = () => {
+  debugger
   data.value.data = modle.value;
-
-    for (let key in data.value.data) {
-      if (key == "name") {
-        if (modle.value.required == true || modle.value.required == "true") {
-          var m = new Object();
-          var e = [{ required: true, errorMessage: modle.value.label +"不能为空"}];
-          m[data.value.data.name] = { rules: e }
-          data.value.rules=[];
-          data.value.rules.push(m);
-        }
-
-      }
-
-    }
-
 
   props.setdata(data.value,"save");
 
@@ -147,19 +133,7 @@ const setsubmit = () => {
 const delsubmit = () => {
   data.value.data = modle.value;
 
-    for (let key in data.value.data) {
-      if (key == "name") {
-        if (modle.value.required == true || modle.value.required == "true") {
-          var m = new Object();
-          var e = [{ required: true, errorMessage: modle.value.label +"不能为空"}];
-          m[data.value.data.name] = { rules: e }
-          data.value.rules=[];
-          data.value.rules.push(m);
-        }
 
-      }
-
-    }
 
 props.setdata(data.value,"del");
 }
