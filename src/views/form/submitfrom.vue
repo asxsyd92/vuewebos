@@ -2,6 +2,8 @@
 
   <div class="layui-card">
     <div class="layui-container">
+      <br>
+       <lay-line border-style="dashed" border-width="3px">{{fromdata.name}}</lay-line>
       <lay-form :model="validateModel" ref="layFormRef" required>
         <div v-for="(item, index) in data" :key="index">
           <subform :data="item" :value="validateModel"></subform>
@@ -23,6 +25,7 @@
   import { layer } from '@layui/layer-vue'
   import { useRoute, useRouter } from "vue-router";
   import http from "../../utils/http";
+  import helptabs from "../../utils/helptabs";
   import subform from '../../components/formitem/subform.vue';
   export default {
     components: {subform },
@@ -31,7 +34,8 @@
       const router = useRouter();
       const route = useRoute();
       const data = ref([]);
-      const fromdata = ref([]);
+ 
+      const fromdata = ref({name:""}) as any;
       const validateModel = ref({});
       var datamodel = {};
 
@@ -40,17 +44,32 @@
       // 校验
       const validate = function () {
         layFormRef.value.validate((isValidate:any, model:any, errors:any) => {
-          console.log(model);
-          //     var index= layer.open({
-          //       type: 1,
-          //       title:"表单提交结果", 
-          //       content: "", 
-          //       shade: false,
-          //       isHtmlFragment: true,
-          //       btn : [{ text: '确认', callback() {  layer.close(index) }}],
-          //       area : '500px'
-          //     });
-          //   });
+          if(!isValidate){
+            errors.forEach((item:any) => {
+             layer.msg(item.message, { icon: 2, time: 1000 })
+            });
+        
+         
+            return;
+          }
+               http.post("/api/form/FormCommonTaskSave", { table: fromdata.value.table, data: JSON.stringify(model), istask: true, fromid:  route.query.fromid }).then(res => {
+            console.log(res);
+
+            if (res.success) {
+             // m.$claostabs(m);
+              layer.msg(res.msg, { icon : 1, time: 1000});
+            debugger;
+                  helptabs.close(route.fullPath,router);
+            } else {
+             layer.msg(res.msg, { icon : 2, time: 1000});
+          
+            }
+
+          }).catch(resp => {
+           layer.msg("网络错误", { icon : 2, time: 1000})
+          
+          })
+    
         })
       }
 
@@ -73,22 +92,24 @@
 
           if (res.success) {
             var k = JSON.parse(res.data.designhtml);
+            console.log(k);
             data.value = k.data;
-            fromdata.value = k.from.data;
+            fromdata.value = k.form;
             console.log(data.value);
             console.log(fromdata.value);
-            var obj = new Object();
-            k.data.forEach((item:any) => {
-              Object.defineProperty(obj, item.data.name, {
-                value: item.data.value,
-                writable: true,
-                enumerable: true,
-                configurable: true
-              });
+            // var obj = new Object();
+            // k.data.forEach((item:any) => {
+            //   Object.defineProperty(obj, item.data.name, {
+            //     value: item.data.value,
+            //     writable: true,
+            //     enumerable: true,
+            //     configurable: true
+            //   });
 
-            });
+            // }
+            // );
 
-            validateModel.value = reactive(obj);
+            validateModel.value = k.field;
           } else {
 
             //layer.msg(res.msg, { icon: 2 });

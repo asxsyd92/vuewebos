@@ -39,29 +39,34 @@ const radio=ref([]) as any;
 debugger
         //本地数据
     if(data.value.data.type='local'){
-       if(data.value.data.input!=null&&data.value.data.input!=undefined&&data.value.data.input!=""){
+       if(data.value.data.data!=null&&data.value.data.data!=undefined&&data.value.data.data!=""){
            try{
              
-            let s=   data.value.data.input.split(';');
+            let s=   data.value.data.data.split(';');
            s.forEach((item:string) => {
               var d=new Object() as any;
             let ss=item.split(",");
+            console.log(ss);
+            if(ss[0]==""){
+              return;
+            }
             d.title=ss[0];
             d.value=ss[1];
-            if(ss.length>2){
-              if(ss[2]=='false'){
-                  d.checked=false;
-              }else if(ss[2]=='true'){
-                d.checked=true;
-              }
+            // if(ss.length>2){
+            //   if(ss[2]=='false'){
+            //       d.checked=false;
+            //   }else if(ss[2]=='true'){
+            //     d.checked=true;
+            //   }
            
               
-              }
+            //   }
 
                radio.value.push(d);
              })
-     
+      console.log(value.value);
            }catch(e){
+           
              console.log(data.value.data.name+"radio配置不正确");
            }
         

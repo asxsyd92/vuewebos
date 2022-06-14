@@ -1,37 +1,37 @@
 <template>
 <div>
 
-<div v-if="data.type=='input'" :class="data.data.col"  :style="'display:'+data.data.display">
+<div v-if="data.type=='input'"   :style="'display:'+data.data.display">
 <div v-if="data.data.type=='number'">
-    <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name">
+    <lay-form-item  :label="data.data.label" :prop="data.data.name">
  
-  <lay-input-number v-model="value[data.data.name]" ></lay-input-number>
+  <lay-input-number v-model="value[data.data.name]"  :placeholder="data.data.placeholder" ></lay-input-number>
     </lay-form-item>
 
 </div>
 <div v-if="data.data.type=='password'">
-    <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name">
+    <lay-form-item   :label="data.data.label" :prop="data.data.name">
  
-   <lay-input-password v-model="value[data.data.name]" ></lay-input-password>
+   <lay-input-password v-model="value[data.data.name]"  :placeholder="data.data.placeholder" ></lay-input-password>
     </lay-form-item>
 
 </div>
 <div v-else-if="data.data.type=='date'">
-    <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name">
+    <lay-form-item   :label="data.data.label" :prop="data.data.name">
  
-       <lay-date-picker v-model="value[data.data.name]"></lay-date-picker>
+       <lay-date-picker v-model="value[data.data.name]" :placeholder="data.data.placeholder"></lay-date-picker>
     </lay-form-item>
 </div>
-<div v-else>
-    <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name">
+<div v-else-if="data.data.type=='text'">
+    <lay-form-item   :label="data.data.label" :prop="data.data.name">
  
-  <lay-input v-model="value[data.data.name]" ></lay-input>
+  <lay-input  v-model="value[data.data.name]" :placeholder="data.data.placeholder" ></lay-input>
     </lay-form-item>
 </div>
 </div>
-<div v-if="data.type=='textarea'" :class="data.data.col"  :style="'display:'+data.data.display">
-  <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item"  :label="data.data.label" :prop="data.data.name">
-      <lay-textarea v-model="value[data.data.name]" ></lay-textarea>
+<div v-if="data.data.type=='textarea'"   :style="'display:'+data.data.display">
+  <lay-form-item    :label="data.data.label" :prop="data.data.name">
+      <lay-textarea v-model="value[data.data.name]"  :placeholder="data.data.placeholder"></lay-textarea>
     </lay-form-item></div>
 </div>
 

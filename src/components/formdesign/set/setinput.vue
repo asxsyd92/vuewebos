@@ -51,6 +51,18 @@
         <lay-select-option value="layui-col-md10" label="layui-col-md10"></lay-select-option>
         <lay-select-option value="layui-col-md11" label="layui-col-md11"></lay-select-option>
         <lay-select-option value="layui-col-md12" label="layui-col-md12"></lay-select-option>
+        <lay-select-option value="layui-col-md13" label="layui-col-md13"></lay-select-option>
+        <lay-select-option value="layui-col-md14" label="layui-col-md14"></lay-select-option>
+        <lay-select-option value="layui-col-md15" label="layui-col-md15"></lay-select-option>
+        <lay-select-option value="layui-col-md16" label="layui-col-md16"></lay-select-option>
+        <lay-select-option value="layui-col-md17" label="layui-col-md17"></lay-select-option>
+        <lay-select-option value="layui-col-md18" label="layui-col-md18"></lay-select-option>
+        <lay-select-option value="layui-col-md19" label="layui-col-md19"></lay-select-option>
+        <lay-select-option value="layui-col-md20" label="layui-col-md20"></lay-select-option>
+        <lay-select-option value="layui-col-md21" label="layui-col-md21"></lay-select-option>
+        <lay-select-option value="layui-col-md22" label="layui-col-md22"></lay-select-option>
+        <lay-select-option value="layui-col-md23" label="layui-col-md23"></lay-select-option>
+        <lay-select-option value="layui-col-md24" label="layui-col-md24"></lay-select-option>
       </lay-select>
     </lay-form-item>
 
@@ -66,8 +78,8 @@
     </lay-form-item>
 
     <lay-form-item label="是否隐藏">
-      <lay-radio v-model="modle.display" label="true">是</lay-radio>
-      <lay-radio v-model="modle.display" label="false">否</lay-radio>
+      <lay-radio v-model="modle.display" label="none">是</lay-radio>
+      <lay-radio v-model="modle.display" label="unset">否</lay-radio>
 
     </lay-form-item>
     <lay-form-item label="是否必填">
@@ -89,7 +101,7 @@
 
       </div>
     </div>
-  <div class="setheight"></div>
+    <div class="setheight"></div>
   </div>
 </template>
 
@@ -105,7 +117,7 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import { ref,watch } from "vue";
+import { ref, watch } from "vue";
 interface IsetinputProps {
   data: any, setdata: Function
 }
@@ -124,26 +136,23 @@ for (let keys in data.value.data) {
 };
 console.log(modle.value);
 const setsubmit = () => {
-  debugger
   data.value.data = modle.value;
-
-  props.setdata(data.value,"save");
-
+  props.setdata(data.value, "save");
 }
 const delsubmit = () => {
   data.value.data = modle.value;
 
 
 
-props.setdata(data.value,"del");
+  props.setdata(data.value, "del");
 }
 
-  watch(modle.value, (newValue, oldValue)  => {
+watch(modle.value, (newValue, oldValue) => {
 
-       modle.value.name=  modle.value.id;
-         modle.value.placeholder= "请输入"+ modle.value.label;
+  modle.value.name = modle.value.id;
+  modle.value.placeholder = "请输入" + modle.value.label;
 
-  });
+});
 
 
 </script>
