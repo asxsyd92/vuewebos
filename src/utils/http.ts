@@ -65,12 +65,12 @@ class Http {
         return this.service.get(url, { params, ..._object })
     }
     /* POST 方法 */
-    post<T>(url: string, params?: object, _object = {},msg?:string,_msg=""): Promise<any> {
-        if(_msg!=""){
-            layerid= layer.msg(_msg, { icon : 16, time: 15000});
+    post<T>(url: string, params?: object,msg?:string): Promise<any> {
+        if(msg!=""&&msg!=null){
+            layerid= layer.msg(msg, { icon : 16, time: 15000});
         }
        
-        return this.service.post(url,Qs.stringify( params), _object)
+        return this.service.post(url,Qs.stringify( params),)
     }
     /* PUT 方法 */
     put<T>(url: string, params?: object, _object = {}): Promise<any> {

@@ -55,6 +55,7 @@ const close = function (path: string) {
     };
 
 watch(route, function () {
+  debugger;
   let bool = false;
   appStore.tabs.forEach((tab:any) => {
     if (tab.id === route.fullPath) {
@@ -63,7 +64,7 @@ watch(route, function () {
   });
   if (!bool) {
     // @ts-ignore
-    appStore.tabs.push({ id: route.fullPath, title: route.meta.title });
+    appStore.tabs.push({ id: route.fullPath, title: route.query.tabname });
 
        refresh();
   }else{

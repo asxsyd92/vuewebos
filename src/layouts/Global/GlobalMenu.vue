@@ -4,8 +4,8 @@
 
     <lay-sub-menu v-for="(m, index) in menu" :key="index" :id="index">
     
-       <template #icon>
-          <lay-tooltip :content="m.title ">
+       <template #icon  @click="zk">
+          <lay-tooltip :content="m.title " >
         <lay-icon type="layui-icon-right"></lay-icon>
         </lay-tooltip>
       </template>
@@ -16,9 +16,9 @@
 
       <lay-menu-item v-for="ms in m.children" :key="ms.id" :id="ms">
         
-        <template #icon>
+        <template #icon  @click="zk">
              <lay-tooltip :content="ms.title">
-          <lay-icon type="layui-icon-right"></lay-icon>
+          <lay-icon type="layui-icon-right"  ></lay-icon>
           </lay-tooltip>
         </template>
     
@@ -61,20 +61,29 @@
   const openKeys = ref(["0"]);
   const isTree = ref(true);
   const menu = ref([]) as any;
-  const title=ref("");
+const zk=()=>{
+  var top=top as any;
+  if(top.document.getElementsByClassName("layui-icon layui-icon-shrink-right").length>0){
+    top.document.getElementsByClassName("layui-icon layui-icon-shrink-right")[0].click()
+  }else{
+     top.document.getElementsByClassName("layui-icon layui-icon-spread-left")[0].click()
+  }
+}
    const url=ref("");
   watch(route, (val) => {
 
-    val.meta.title=title.value;
+    val.meta.title=val.query.tabname;
     selectKey.value = val;
 
 
   });
   watch(selectKey, (val:any) => {
     if(val.tag!=null&&val.tag!=undefined&&val.tab!=""){
-   title.value=val.title;
+
     url.value="/"+val.tag;
-     router.push(url.value);
+    //params:{tabname:row.title}
+     //router.push(url.value);
+    router.push({ path: url.value, query: {tabname:val.title},params:{tabname:val.title} })
     }
 
   });

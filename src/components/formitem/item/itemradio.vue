@@ -14,6 +14,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import { values } from 'xe-utils';
 export default {
   name: "itemradio",
 };
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<ItemradioProps>(), {
 
 const data = ref(props.data);
 const value = ref(props.value);
+
 const radio=ref([]) as any;
       onMounted(() => {
         render();
@@ -52,6 +54,9 @@ const radio=ref([]) as any;
             }
             d.title=ss[0];
             d.value=ss[1];
+            if(!Number.isNaN( d.value)){
+               d.value=Number.parseFloat(d.value);
+            }
             // if(ss.length>2){
             //   if(ss[2]=='false'){
             //       d.checked=false;
