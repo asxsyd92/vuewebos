@@ -79,11 +79,13 @@ const zk=()=>{
   });
   watch(selectKey, (val:any) => {
     if(val.tag!=null&&val.tag!=undefined&&val.tab!=""){
-
-    url.value="/"+val.tag;
+debugger
+    url.value="/"+val.tag+"&tabname="+val.title;
+   var q= http.getQuery(url.value);
+   console.log(q);
     //params:{tabname:row.title}
      //router.push(url.value);
-    router.push({ path: url.value, query: {tabname:val.title},params:{tabname:val.title} })
+    router.push({ path: url.value,query:q,params:{tabname:val.title} })
     }
 
   });

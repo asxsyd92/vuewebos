@@ -80,6 +80,18 @@ class Http {
     delete<T>(url: string, params?: any, _object = {}): Promise<any> {
         return this.service.delete(url, { params, ..._object })
     }
+     getQuery(url:any) {
+        const index = url.indexOf('?');
+        const obj = {};
+        if(index === -1) return obj;
+        const queryStr = url.slice(index + 1);
+        const arr = queryStr.split('&');
+        for(var item of arr) {
+          const keyValue = item.split('=');
+          obj[keyValue[0]] = keyValue[1]
+        }
+        return obj;
+      }
 }
 
 export default new Http(config)

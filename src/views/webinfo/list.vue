@@ -137,7 +137,7 @@
                         var query=new Object() as any;
                         query.fromid = row.fromid;
                         query.instanceid = row.instanceid;
-                        query.zhuanti = route.query.zhuanti;
+                        query.zhuanti = row.classid;
                         query.tabname =row.title;
                         router.push({ path: "/formdesign/submitfrom", query: query,params:{tabname:row.title} })
                     
