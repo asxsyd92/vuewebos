@@ -97,7 +97,7 @@ const options =reactive( {
         menuvisible.value = !menuvisible.value
     }
         const   pageChange= ({ currentPage, pageSize }:any)=> {
-            debugger
+         
                 if (options.page) {
                  options.page.current= currentPage
                  options.page.limit = pageSize

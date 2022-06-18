@@ -7,7 +7,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@layui/layui-vue": "^1.1.5",
+    "@layui/layui-vue": "^1.1.7",
     "@rollup/plugin-alias": "^3.1.9",
     "@types/qs": "^6.9.7",
     "axios": "^0.24.0",
@@ -18,7 +18,7 @@
     "linq": "^4.0.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.3",
-    "pinia": "^2.0.9",
+    "pinia": "^2.0.14",
     "pinia-plugin-persist": "^1.0.0",
     "qs": "^6.10.3",
     "vue": "^3.2.13",

@@ -1,6 +1,6 @@
 <template>
 
-  <div class="layui-card">
+  <div class="layui-card" ref="GlobalTab">
     <div class="layui-container">
       <br>
        <lay-line border-style="dashed" border-width="3px">{{fromdata.name}}</lay-line>
@@ -21,20 +21,24 @@
 
 <script lang="ts">
 
-  import { ref, reactive, onMounted,defineAsyncComponent  } from 'vue'
+  import { ref, reactive, onMounted,getCurrentInstance,withDefaults,defineProps   } from 'vue'
   import { layer } from '@layui/layer-vue'
   import { useRoute, useRouter } from "vue-router";
+import { useAppStore } from "../../store/app";
   import http from "../../utils/http";
-  import helptabs from "../../utils/helptabs";
+import HelpTabs from "../../utils/HelpTabs"
   import subform from '../../components/formitem/subform.vue';
+ 
+
   export default {
     components: {subform },
     setup() {
-
+      const appStore = useAppStore();
+      const instance = getCurrentInstance() as any;
       const router = useRouter();
       const route = useRoute();
       const data = ref([]);
- 
+
       const fromdata = ref({name:""}) as any;
       const validateModel = ref({});
       var datamodel = {};
@@ -56,10 +60,8 @@
             console.log(res);
 
             if (res.success) {
-             // m.$claostabs(m);
               layer.msg(res.msg, { icon : 1, time: 1000});
-            debugger;
-                  helptabs.close(route.fullPath,router);
+          HelpTabs.close(appStore,route.fullPath,router);
             } else {
              layer.msg(res.msg, { icon : 2, time: 1000});
           

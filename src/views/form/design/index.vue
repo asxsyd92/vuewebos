@@ -158,7 +158,7 @@ export default {
                 }
 
                 else {
-                    debugger
+                 
                     confirm.value = confirm.value.filter((item: any) => {
                         return item !== val;
                     });
@@ -187,7 +187,7 @@ export default {
 
                 if (key == "name") {
                     if (item.data.required == true || item.data.required == "true") {
-                        debugger;
+                     
                         var m = new Object();
                         var e = [{ required: true, errorMessage:item.data.label + "不能为空" }];
                         m[item.data.name] = { rules: e }

@@ -80,6 +80,7 @@
         <lay-body>
           <GlobalTab></GlobalTab>
           <GlobalContent></GlobalContent>
+        
         </lay-body>
         <lay-footer></lay-footer>
       </lay-layout>
@@ -131,6 +132,16 @@ export default {
         appStore.routerAlive = true;
       }, 500);
     };
+    const close = function (path) {
+
+  appStore.tabs = appStore.tabs.filter((ele) => ele.id != path);
+  var i=appStore.tabs.length-1 
+  if(i>0){
+    var id=appStore.tabs[i].id;
+     router.push(id); 
+  }
+
+};
       onMounted(() => {
         dateRender();
       });

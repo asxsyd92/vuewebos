@@ -51,7 +51,7 @@ const props = withDefaults(defineProps<IsetinputProps>(), {
 const data = ref(props.data);
 
 const modle = ref({}) as any;
-debugger
+
 //data.value.data.forEach((key:any) => {
 modle.value=data.value;
 console.log(modle.value);

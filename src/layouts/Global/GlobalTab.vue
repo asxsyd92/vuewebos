@@ -6,11 +6,12 @@
     :allowClose="allowClose"
     @close="close"
   >
-    <div :key="tab" v-for="tab in appStore.tabs">
+    <div :key="index" v-for="(tab,index) in appStore.tabs">
       <lay-tab-item
         :id="tab.id"
         :title="tab.title"
         :closable="tab.closable"
+ 
       ></lay-tab-item>
     </div>
   </lay-tab>
@@ -23,14 +24,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
+import { ref, watch  } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore } from "../../store/app";
 const router = useRouter();
 const route = useRoute();
 const appStore = useAppStore();
 const allowClose = ref(true);
-
 const change = function (id: string) {
   router.push(id);
 };
@@ -50,6 +50,7 @@ const close = function (path: string) {
       appStore.routerAlive = false;
       setTimeout(function () {
         appStore.routerAlive = true;
+     
       }, 500);
     };
 
@@ -63,9 +64,14 @@ watch(route, function () {
   if (!bool) {
     // @ts-ignore
     appStore.tabs.push({ id: route.fullPath, title: route.meta.title });
+
        refresh();
   }else{
        refresh();
   }
+
+
+
 });
+
 </script>

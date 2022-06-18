@@ -6,7 +6,8 @@ export const useAppStore = defineStore({
   state: () => {
     return {
       tab: true,
-      tabs:[{ title: "首页", id: "/console", closable: false }] as any,
+      tabs:[{ title: "首页", id: "/console", closable: false }],
+      current:"console",
       level: true,
       inverted: true,
       routerAlive: true,

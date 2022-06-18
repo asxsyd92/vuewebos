@@ -100,7 +100,7 @@ import { defineComponent, reactive, ref } from 'vue'
             gridOptions.loading = false
    
             if (res.success) {
-                debugger
+              
                  gridOptions.data=res.data;
 
                 if (gridOptions.pagerConfig) {

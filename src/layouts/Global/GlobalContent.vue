@@ -1,6 +1,6 @@
 <template>
     <div class="global-content">
-        <router-view v-if="appStore.routerAlive"></router-view>
+        <router-view v-if="appStore.routerAlive" ></router-view>
     </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
 import Vue from 'vue'
 import { useAppStore } from "../../store/app";
 const appStore = useAppStore();
-
+ 
 </script>
 
 <style scoped>

@@ -74,7 +74,7 @@
     if(val.tag!=null&&val.tag!=undefined&&val.tab!=""){
    title.value=val.title;
     url.value="/"+val.tag;
-   router.push(url.value);
+     router.push(url.value);
     }
 
   });

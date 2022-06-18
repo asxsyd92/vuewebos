@@ -36,7 +36,7 @@ const radio=ref([]) as any;
         render();
       });
     const render = function () {
-debugger
+
         //本地数据
     if(data.value.data.type='local'){
        if(data.value.data.data!=null&&data.value.data.data!=undefined&&data.value.data.data!=""){

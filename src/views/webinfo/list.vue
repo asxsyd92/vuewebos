@@ -132,13 +132,13 @@
             }
 
             const editRowEvent = (row: any) => {
-         
+         debugger
               console.log(row);
                         var query=new Object() as any;
                         query.fromid = row.fromid;
                         query.instanceid = row.instanceid;
                         query.zhuanti = route.query.zhuanti;
-                        router.push({ path: "/formdesign/submitfrom", query: query })
+                        router.push({ path: "/formdesign/submitfrom", query: query, hash:row.title})
                     
             }
 
