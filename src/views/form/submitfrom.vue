@@ -112,6 +112,8 @@ import HelpTabs from "../../utils/HelpTabs"
             // );
 
             validateModel.value = k.field;
+              console.log("sss");
+               console.log(k.field);
           } else {
 
             //layer.msg(res.msg, { icon: 2 });

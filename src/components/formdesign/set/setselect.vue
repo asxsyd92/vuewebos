@@ -21,7 +21,7 @@
         </lay-form-item>
         <lay-form-item label="数据源">
             <lay-textarea v-model="modle.data" placeholder="数据格式：数据项,值,是否选中true;数据项1,值1;"></lay-textarea>
-            数据格式：是,1,true;否,0;
+            数据格式：本地数据填写：是,1,true;否,0;字典数据请填写字典类型code
         </lay-form-item>
 
 

@@ -1,6 +1,6 @@
 <template>
   <lay-menu v-model:selectedKey="selectKey" theme="light" v-model:openKeys="openKeys" :collapse="collapse"
-    :tree="isTree" :level="appStore.level" :inverted="appStore.inverted">
+   collapse-transition="true" :tree="isTree" :level="appStore.level" :inverted="appStore.inverted">
 
     <lay-sub-menu v-for="(m, index) in menu" :key="index" :id="index">
     
@@ -80,7 +80,12 @@ const zk=()=>{
   watch(selectKey, (val:any) => {
     if(val.tag!=null&&val.tag!=undefined&&val.tab!=""){
 debugger
-    url.value="/"+val.tag+"&tabname="+val.title;
+if(val.tag.indexOf("?")>-1){
+      url.value="/"+val.tag+"&tabname="+val.title;
+}else{
+    url.value="/"+val.tag+"?tabname="+val.title;
+}
+
    var q= http.getQuery(url.value);
    console.log(q);
     //params:{tabname:row.title}

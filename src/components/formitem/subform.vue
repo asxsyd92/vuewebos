@@ -5,7 +5,7 @@
 <itemradio v-if="data.type=='radio'" :data="data" :value="value"></itemradio>
  <itemcolor v-if="data.type=='color'" :data="data" :value="value"></itemcolor>
   <itemicon v-if="data.type=='icon'" :data="data" :value="value"></itemicon>
-  <itemcheckbox v-if="data.type=='checkbox'||data.type=='select'||data.type=='xmselect'" :data="data" :value="value"></itemcheckbox>
+  <itemselect v-if="data.type=='select'||data.type=='xmselect'" :data="data" :value="value"></itemselect>
    <ueditor v-if="data.type=='ueditor'" :data="data" :value="value"></ueditor>
     <!-- <baiduuplod v-if="data.type=='color'" :data="data" :value="value"></baiduuplod>  -->
    <!-- <ueditor v-if="data.type=='ueditor'" :data="data"></ueditor>
