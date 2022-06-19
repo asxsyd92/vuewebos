@@ -1,22 +1,32 @@
 <template>
+<lay-panel class="submitfrom">
 
-  <div class="layui-card" ref="GlobalTab">
+  <div class="layui-card " ref="GlobalTab">
     <div class="layui-container">
-      <br>
-       <lay-line border-style="dashed" border-width="3px">{{fromdata.name}}</lay-line>
+ 
+        <div class="layui-input-block layui-footer">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm"  @click="validate">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm" @click="clearValidate">重置</button>
+            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" @click="reset" >关闭</button>
+          </div>
+
+  
+     
       <lay-form :model="validateModel" ref="layFormRef" required>
+        <lay-line border-style="dashed" border-width="6px" ><div style="font-size:large"> {{fromdata.name}}</div></lay-line>
         <div v-for="(item, index) in data" :key="index">
           <subform :data="item" :value="validateModel"></subform>
         </div>
-        <lay-form-item>
+        <!-- <lay-form-item>
           <lay-button @click="validate">提交</lay-button>
           <lay-button @click="clearValidate">清除校验</lay-button>
           <lay-button @click="reset">重置表单</lay-button>
-        </lay-form-item>
-      </lay-form>
+        </lay-form-item>-->
+      </lay-form> 
     </div>
+        <div class="setheight"></div>
   </div>
-
+</lay-panel>
 </template>
 
 <script lang="ts">
@@ -142,3 +152,28 @@ import HelpTabs from "../../utils/HelpTabs"
     }
   }
 </script>
+<style>
+.submitfrom {
+    top: 40px;
+    position: relative;
+}
+.global-content {
+    height: calc(100% - 42px);
+    position: relative;
+    top: 45px;
+    width: 99%;
+    overflow-y: auto;
+}
+  .global-content .layui-footer {
+    z-index: 400;
+    width: 100%;
+    position: fixed;
+    right: 0;
+    top: 100px;
+    height: 44px;
+    line-height: 22px;
+  background-color: #fff;
+    text-align: center;
+    padding: 10px 0;
+  }
+</style>

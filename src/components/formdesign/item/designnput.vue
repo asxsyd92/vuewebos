@@ -11,7 +11,7 @@
 
 
 </div>
-<div v-if="data.type=='textarea'"   >
+<div v-if="data.type=='textarea'||data.type=='ueditor'"   >
   <lay-form-item :placeholder="data.data.placeholder"  class="layui-form-item"  :label="data.data.label">
       <lay-textarea  v-model="data.data.col" disabled="disabled"></lay-textarea>
     </lay-form-item></div>

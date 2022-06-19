@@ -69,7 +69,7 @@
   padding: 0px 24px;
 }
 .layui-side {
-
+  z-index: 1000;
   width: 230px !important;
   /* background: rgb(34, 36, 37, 98%); */
   /* box-shadow: 2px 0 6px rgb(0 21 41 / 35%); */

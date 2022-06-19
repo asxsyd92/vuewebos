@@ -16,7 +16,7 @@
     </lay-form-item>
 
 </div>
-<div v-else-if="data.data.type=='date'">
+<div v-else-if="data.data.type=='date'||data.data.type=='datetime'">
     <lay-form-item   :label="data.data.label" :prop="data.data.name">
  
        <lay-date-picker v-model="value[data.data.name]" :placeholder="data.data.placeholder"></lay-date-picker>

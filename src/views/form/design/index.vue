@@ -1,5 +1,6 @@
 
 <template>
+<lay-panel>
     <lay-layout class="design">
         <lay-side>
             <lay-collapse v-model="openKeys2" accordion>
@@ -55,7 +56,7 @@
         </lay-side>
 
     </lay-layout>
-
+</lay-panel>
 </template>
 
 <script lang="ts">
@@ -212,8 +213,8 @@ export default {
             });
 
 
-            console.log(confirm.value);
-            layers.open({ title: "标题", content: JSON.stringify(formdata.value) });
+           
+          //  layers.open({ title: "标题", content: JSON.stringify(formdata.value) });
         }
         const publishfrom = () => {
 
