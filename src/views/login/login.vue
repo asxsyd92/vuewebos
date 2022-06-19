@@ -125,7 +125,8 @@
             }
 
           }).catch(data => {
-
+                getnewcode();
+              layer.msg("网络错误，请重试", { icon: 2 });
           })
         })
         //  var index=  layer.open({
