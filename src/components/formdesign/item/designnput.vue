@@ -1,7 +1,7 @@
 <template>
 <div>
 
-<div v-if="data.type=='input'"   >
+<div v-if="data.type=='input'||data.type=='color'||data.type=='icon'"   >
 
     <lay-form-item  :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label">
  

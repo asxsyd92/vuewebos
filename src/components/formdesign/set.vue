@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <setinput v-if="data.type == 'input' || data.type == 'textarea'" :data="data" :setdata="setdata"></setinput>
+    <setinput v-if="data.type == 'input' || data.type == 'textarea'||data.type=='color'||data.type=='icon'" :data="data" :setdata="setdata"></setinput>
     <setradio v-if="data.type == 'radio'" :data="data" :setdata="setdata"></setradio>
     <setselect v-if="data.type == 'select'" :data="data" :setdata="setdata"></setselect>
     <setcheckbox v-if="data.type == 'checkbox'" :data="data" :setdata="setdata"></setcheckbox>

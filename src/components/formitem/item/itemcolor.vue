@@ -6,7 +6,7 @@
 
     <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name">
 
-    <lay-color-picker v-model="color"  eyeDropper simple></lay-color-picker>
+    <lay-color-picker v-model="value[data.data.name]"  eyeDropper simple></lay-color-picker>
     </lay-form-item>
 
     </div>
@@ -15,6 +15,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import { indexOf } from 'xe-utils';
 export default {
   name: "itemcolor",
 };
@@ -25,13 +26,17 @@ interface ItemcolorProps {
   data: any;
   value:any;
 }
- const color = ref("#009688");
+
 const props = withDefaults(defineProps<ItemcolorProps>(), {
   data:Object, value:Object
 });
 
 const data = ref(props.data);
 const value = ref(props.value);
+if(value.value[data.value.data.name].indexOf("rgb")>-1){
+ value.value[data.value.data.name]="#fff";
+}
+
 // export default {
   
 //     name: "itemnput",
