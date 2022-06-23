@@ -122,6 +122,7 @@ if(val.tag.indexOf("?")>-1){
 </script>
 <style>
 .layui-nav-light .layui-nav-child{
-    background-color:#eeeeee !important;
+    background-color:#fff !important;
+    color: #000 !important;
 }
 </style>

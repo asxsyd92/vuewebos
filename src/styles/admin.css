@@ -111,7 +111,8 @@
   box-sizing:border-box;
   border-width:2px;
   border-style:solid;
-  border-color:rgba(32, 34, 42, 1);
+  background: linear-gradient(to left, #7c8ce4, #2196f3) !important;
+  color: #fff !important;
   border-left:0px;
   border-right:0px;
   border-bottom:0px;
@@ -123,6 +124,11 @@
   -moz-box-shadow:none;
   -webkit-box-shadow:none;
   box-shadow:none;
-  color:#383838;
   text-align:left;
+}
+
+ .layui-nav-child .layui-nav-item a:hover{
+  background: linear-gradient(to left, #7c8ce4, #2196f3) !important;
+  color: #fff !important;
+  border-color:  #7b4397 !important;
 }
