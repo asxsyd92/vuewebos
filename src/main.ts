@@ -11,7 +11,7 @@ import 'vxe-table/lib/style.css'
 import { useAppStore } from './store/app'
 import 'font-awesome/css/font-awesome.min.css'
 import VueUeditorWrap from "vue-ueditor-wrap";
-
+import print from "print-js";
 
 function useTable (app: App) {
     app.use(VXETable)
