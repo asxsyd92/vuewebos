@@ -53,7 +53,7 @@
           <vxe-column field="icon" title="图标"></vxe-column>
           <vxe-column title="操作" width="500">
             <template #default="{ row }">
-                         <vxe-button type="text" status="primary">插入节点</vxe-button>
+              <vxe-button type="text" status="primary">插入节点</vxe-button>
               <vxe-button type="text" status="primary" >顶部插入节点</vxe-button>
               <vxe-button type="text" status="primary">尾部插入子节点</vxe-button>
               <vxe-button type="text" status="primary" >删除节点</vxe-button>

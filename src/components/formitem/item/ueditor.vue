@@ -1,5 +1,5 @@
 <template>
-   <div class="layui-form-item layui-form-text">
+   <!-- <div class="layui-form-item layui-form-text">
     <label class="layui-form-label">{{data.data.label}}</label>
   
     <div class="layui-input-block">
@@ -15,9 +15,21 @@
                       >
     </vue-ueditor-wrap>
     </div>
-  </div>
+  </div> -->
 
-
+    <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name">
+ <vue-ueditor-wrap class="ueditor-ins"
+                      ref="ueditor" 
+                     :name="data.data.name"
+                      v-model="value[data.data.name]"
+                      :destroy="false" 
+                      :config="config" 
+        
+                      @ready="ready" 
+         
+                      >
+    </vue-ueditor-wrap>
+    </lay-form-item>
 </template>
 
 <script lang="ts">

@@ -16,4 +16,7 @@ html {
 .setheight{
   height: 250px;
 }
+.laymodle{
+  width: 99%;
+}
 </style>

@@ -169,11 +169,12 @@ import HelpTabs from "../../utils/HelpTabs"
     width: 100%;
     position: fixed;
     right: 0;
+    left: 120px;
     top: 100px;
     height: 44px;
     line-height: 22px;
-  background-color: #fff;
-    text-align: center;
+    background-color: #fff;
+    text-align: left;
     padding: 10px 0;
   }
 </style>

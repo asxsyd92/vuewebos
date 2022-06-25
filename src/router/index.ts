@@ -117,6 +117,16 @@ export const inRoutes =[
       component: () => import('../views/oa/wait.vue'),
       meta: { title: '待办事项' },
     },
+    {
+      path: '/oa/completed',
+      component: () => import('../views/oa/completed.vue'),
+      meta: { title: '已办事项' },
+    },
+    {
+      path: '/oa/workrun/index',
+      component: () => import('../views/oa/workrun/index.vue'),
+      meta: { title: '处理' },
+    },
   ]
 
   },{
