@@ -22,7 +22,7 @@
             <div class="setheight"></div>
         </div>
 
-        <lay-layer move="true" :btn="sendbtn" :closeBtn="false" :area="['80%', '50%']" :shadeClose="false"
+        <lay-layer move="true" :btn="sendbtn" :closeBtn="false" :area="['65%', '60%']" :shadeClose="false"
             @submit="submit" title="发送" v-model="sedvisible">
             <lay-panel class="laymodle">
                 <lay-card title="请选择处理人" v-if="nextstep.length > 0">
@@ -55,7 +55,7 @@ import { useAppStore } from "../../../store/app";
 import http from "../../../utils/http";
 import subform from '../../../components/formitem/subform.vue';
 import HelpTabs from "../../../utils/HelpTabs"
-import XEUtils from 'xe-utils'
+import XEUtils,{ values } from 'xe-utils'
 import { VXETable, VxeTableInstance, VxeTableEvents } from 'vxe-table'
 
 export default {
@@ -89,6 +89,15 @@ export default {
         const layFormRef = ref(null) as any;
         // 校验
         const validate = () => {
+                  layFormRef.value.validate((isValidate: any, model: any, errors: any) => {
+                    if (!isValidate) {
+                        errors.forEach((item: any) => {
+                            layer.msg(item.message, { icon: 2, time: 1000 })
+                        });
+
+
+                        return;
+                    }
             //如果没有下一个步骤直接完成流程
             if (nextstep.value.length > 0) {
                 http.post("/api/organiz/GetOrganizeById", { id: "" }, "正在获取...").then(res => {
@@ -104,15 +113,7 @@ export default {
 
             } else {
 
-                layFormRef.value.validate((isValidate: any, model: any, errors: any) => {
-                    if (!isValidate) {
-                        errors.forEach((item: any) => {
-                            layer.msg(item.message, { icon: 2, time: 1000 })
-                        });
-
-
-                        return;
-                    }
+          
                     var opts = new Object() as any;
                     opts.type = "completed";
                     opts.steps = [];
@@ -120,20 +121,20 @@ export default {
 
                         if (resp.success) {
 
-                          layer.msg(resp.msg, { icon: 1, time: 1000 });
-                              HelpTabs.close(appStore,route.fullPath,router);
+                            layer.msg(resp.msg, { icon: 1, time: 1000 });
+                            HelpTabs.close(appStore, route.fullPath, router);
                         } else {
-                          layer.msg(resp.msg, { icon: 2, time: 1000 });
+                            layer.msg(resp.msg, { icon: 2, time: 1000 });
                         }
                     }).catch(resp => {
-                                layer.msg("网络错误", { icon: 2, time: 1000 });
+                        layer.msg("网络错误", { icon: 2, time: 1000 });
                     });
-                })
+         
 
 
-                }
+            }
 
-
+        });
         }
 
 
@@ -142,7 +143,8 @@ export default {
         const sendbtn = [
             {
                 text: "确认",
-                callback: (e) => {
+                callback: () => {
+                    
                     submit();
                 },
             },
@@ -161,11 +163,49 @@ export default {
         }
 
         const submit = () => {
+        layFormRef.value.validate((isValidate: any, model: any, errors: any) => {
+                    if (!isValidate) {
+                        errors.forEach((item: any) => {
+                            layer.msg(item.message, { icon: 2, time: 1000 })
+                        });
+
+
+                        return;
+                    }
 
             const $table = selectuser.value as any;
             const selectRow = $table.getCheckboxRecords()
+           if(selectRow.length==0){
+             layer.msg("请选择处理人", { icon: 2, time: 1000 });
+             }
+                 console.log(stepselect.value);
+             if(stepselect.value.length==0){
+                  layer.msg("请选择处理步骤", { icon: 2, time: 1000 });
+             }
+             var   users=[] as any;
+               selectRow.forEach((key: any) => {
+                        users.push(key.id);
+               });
+              var opts = new Object() as any;
+                    opts.type = "submit";
+                    opts.steps = [];
+                    opts.steps.push({ id: stepselect.value, member: users.join(",") });
 
-            console.log(userchecked.value);
+                    http.post("/api/workflowtasks/sendTask", { table: fromdata.value.form.table, data: JSON.stringify(model), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
+
+                        if (resp.success) {
+
+                            layer.msg(resp.msg, { icon: 1, time: 1000 });
+                            HelpTabs.close(appStore, route.fullPath, router);
+                        } else {
+                            layer.msg(resp.msg, { icon: 2, time: 1000 });
+                        }
+                    }).catch(resp => {
+                        layer.msg("网络错误", { icon: 2, time: 1000 });
+                    });
+                })
+
+             
         }
 
         //渲染表单
@@ -208,7 +248,21 @@ export default {
                             var k = JSON.parse(res.formdata.designhtml);
                             fromdata.value = k;
                             nextstep.value = res.data;
-                            field.value = k.field;
+                            if (k.field == null) {
+                                var obj=new Object();
+                                fromdata.value.data.forEach((key: any) => {
+                                    for (let keys in key.data) {
+                                        if (keys == "name") {
+                                            //field.value = { [key.data[keys]]: "" };
+                                         obj[key.data[keys]]= key.data['value'] ;
+                                        }
+                                    }
+                                });
+                                console.log(obj);
+                                fromdata.value.field=obj;
+                               console.log(fromdata.value.field);
+                            }
+
 
                             console.log(field.value);
                             rules.value = k.rules;
@@ -234,14 +288,14 @@ export default {
                                 getcomment();
                             }
 
-                           // msgType.value = "top";
+                            // msgType.value = "top";
                             // message.value = res.msg;
                             // currentInstance.refs.popupMessage.open();
 
                             console.log("初始化成功");
                         } else {
-                              layer.confirm(res.msg);
-                              //layer.msg(res.msg, { icon: 2, time: 1000 });
+                            layer.confirm(res.msg);
+                            //layer.msg(res.msg, { icon: 2, time: 1000 });
                             //HelpTabs.close(appStore,route.fullPath,router);
                             // msgType.value = "top";
                             // message.value = res.msg;
@@ -288,7 +342,8 @@ export default {
             submit,
             userchecked,
             selectuser,
-            nextstep,query
+            nextstep, query,
+            stepselect
 
 
         }

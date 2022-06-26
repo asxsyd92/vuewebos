@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<ItemcolorProps>(), {
 
 const data = ref(props.data);
 const value = ref(props.value);
-if(value.value[data.value.data.name]==null){
+if(value.value[data.value.data.name]==null||value.value[data.value.data.name]==""){
  value.value[data.value.data.name]="#fff";
 }else if(value.value[data.value.data.name].indexOf("rgb")>-1){
    value.value[data.value.data.name]="#fff";

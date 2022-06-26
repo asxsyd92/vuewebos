@@ -38,6 +38,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import { values } from 'xe-utils';
 export default {
   name: "itemnput",
 };
@@ -54,6 +55,11 @@ const props = withDefaults(defineProps<ItemnputProps>(), {
 
 const data = ref(props.data);
 const value = ref(props.value);
+if(data.value.data.type=='date'||data.value.data.type=='datetime'){
+     if(value.value[data.value.data.name]==""){
+      value.value[data.value.data.name]=new Date();
+     }
 
+}
 
 </script>
