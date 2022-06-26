@@ -1,135 +1,199 @@
 <template>
-<div>
-    <!-- <lay-table :columns="options.cols" :dataSource="options.data" :page="options.page" @change="changepage">
-        <template v-slot:operator="{ data }">
-            <lay-button size="xs" @click="edit({ data })">修改</lay-button>
-            <lay-button size="xs" type="primary" @click="detele({ data })">删除</lay-button>
-        </template>
-    </lay-table>
- <lay-layer title="新增编辑" move="true" shade="false" v-model="menuvisible">
-     <lay-form :model="model" style="width:99%">
-    <lay-form-item label="标题" prop="username">
-      <lay-input v-model="model"></lay-input>
-    </lay-form-item>
-    <lay-form-item label="密码" prop="password">
-      <lay-input v-model="model" type="password"></lay-input>
-    </lay-form-item>
-       <lay-form-item>
-      <lay-button>提交</lay-button>
-    </lay-form-item>
-  </lay-form>  
-  </lay-layer> -->
-      <vxe-table
-          show-overflow
-          ref="xTable"
-          :tree-config="{children:'children'}"
-          :loading="options.loading"
-          :data="options.data"
-          :column-config="{isCurrent: true, isHover: true}"
-          :row-config="{isCurrent: true, isHover: true}"
-          
-          >
-                   <!--将表单放在工具栏中-->
-          <template #toolbar_buttons>
-            <!-- <vxe-form :data="formData" @submit="searchEvent" @reset="resetEvent">
-              <vxe-form-item field="name">
-                <template #default>
-                  <vxe-input v-model="formData.name" type="text" placeholder="请输入名称"></vxe-input>
-                </template>
-              </vxe-form-item>
-              <vxe-form-item>
-                <template #default>
-                  <vxe-button type="submit" status="primary" content="查询"></vxe-button>
-                  <vxe-button type="reset" content="重置"></vxe-button>
-                </template>
-              </vxe-form-item>
-            </vxe-form> -->
-          </template>
+  <div>
 
-       <vxe-column type="checkbox" width="60"></vxe-column>
-          <vxe-column field="title" title="标题"  tree-node></vxe-column>
-          <vxe-column field="tag" title="访问地址"></vxe-column>
-          <vxe-column field="color" title="颜色"></vxe-column>
-          <vxe-column field="icon" title="图标"></vxe-column>
-          <vxe-column title="操作" width="500">
-            <template #default="{ row }">
-              <vxe-button type="text" status="primary">插入节点</vxe-button>
-              <vxe-button type="text" status="primary" >顶部插入节点</vxe-button>
-              <vxe-button type="text" status="primary">尾部插入子节点</vxe-button>
-              <vxe-button type="text" status="primary" >删除节点</vxe-button>
-              <!-- <vxe-button type="text" status="primary" @click="insertRow(row, 'current')">插入节点</vxe-button>
-              <vxe-button type="text" status="primary" @click="insertRow(row, 'top')">顶部插入节点</vxe-button>
-              <vxe-button type="text" status="primary" @click="insertRow(row, 'bottom')">尾部插入子节点</vxe-button>
-              <vxe-button type="text" status="primary" @click="removeRow(row)">删除节点</vxe-button> -->
-            </template>
-          </vxe-column>
-        </vxe-table>
-          <vxe-pager
-            perfect
-             @page-change="pageChange"
-            :current-page="options.page.current"
-            :page-size="options.page.limit"
-            :total="options.page.total"
-            :page-sizes="[10, 20, 100, 200,500]"
-            :layouts="['PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'Sizes', 'FullJump', 'Total']">
-           
-          </vxe-pager>
-</div>
+    <vxe-table show-overflow ref="xTable" :tree-config="{ children: 'children' }" :loading="options.loading"
+      :data="options.data" :column-config="{ isCurrent: true, isHover: true }"
+      :row-config="{ isCurrent: true, isHover: true }">
+      <!--将表单放在工具栏中-->
+      <template #toolbar_buttons>
+
+      </template>
+
+      <vxe-column type="checkbox" width="60"></vxe-column>
+      <vxe-column field="title" title="标题" tree-node></vxe-column>
+      <vxe-column field="tag" title="访问地址"></vxe-column>
+      <vxe-column field="color" title="颜色"></vxe-column>
+      <vxe-column field="icon" title="图标"></vxe-column>
+      <vxe-column title="操作">
+        <template #default="{ row }">
+          <vxe-button icon="fa fa fa-pencil fa-fw" title="查看" circle @click="editRowEvent(row)"></vxe-button>
+          <vxe-button icon="fa fa-plus-square-o" title="添加" circle @click="addRowEvent(row)"></vxe-button>
+          <vxe-button icon="fa fa-trash" title="删除" circle @click="removeRowEvent(row)"></vxe-button>
+        </template>
+      </vxe-column>
+    </vxe-table>
+    <vxe-pager perfect @page-change="pageChange" :current-page="options.page.current" :page-size="options.page.limit"
+      :total="options.page.total" :page-sizes="[10, 20, 100, 200, 500]"
+      :layouts="['PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'Sizes', 'FullJump', 'Total']">
+
+    </vxe-pager>
+
+
+
+    <lay-layer move="true" :btn="menubtn" :closeBtn="false" :area="['50%', '80%']" :shadeClose="false" @submit="submit"
+      title="新增→修改" v-model="menuvisible">
+      <div class="laymodle">
+        <lay-form :model="menumodel">
+          <lay-form-item label="标题" prop="title">
+            <lay-input v-model="menumodel.title"></lay-input>
+          </lay-form-item>
+          <lay-form-item label="颜色" prop="color">
+            <lay-color-picker v-model="menumodel.color"></lay-color-picker>
+
+          </lay-form-item>
+          <lay-form-item label="路径" prop="tag">
+            <lay-input v-model="menumodel.tag"></lay-input>
+          </lay-form-item>
+          <lay-form-item label="id" prop="id" style="display:none">
+            <lay-input v-model="menumodel.id"></lay-input>
+          </lay-form-item>
+          <lay-form-item label="parentid" prop="parentid" style="display:none">
+            <lay-input v-model="menumodel.parentid"></lay-input>
+          </lay-form-item>
+          <lay-form-item label="参数" prop="params">
+            <lay-input v-model="menumodel.params"></lay-input>
+          </lay-form-item>
+          <lay-form-item label="图标" prop="icon">
+            <lay-icon-picker v-model="menumodel.icon" type="layui-icon-face-smile"></lay-icon-picker>
+
+          </lay-form-item>
+
+        </lay-form>
+
+
+      </div>
+    </lay-layer>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { ref ,reactive} from 'vue';
+import { ref, reactive } from 'vue';
 import http from "../../utils/http";
- import { VxeTableInstance,VxeTableListeners } from 'vxe-table'
-var model=new Object();
-const menuvisible=ref(false);
-const options =reactive( {
-    loading:false,
-    page: {
-        total: 0,
-        limit: 10,
-        current: 1,
-    },
-
-    data: [],
+import { layer } from '@layui/layer-vue'
+import { VxeTableInstance, VxeTableListeners, VXETable } from 'vxe-table'
+const xGrid = ref<VxeTableInstance>()
+var menumodel = ref({
+  title: "",
+  tag: "",
+  id: "",
+  icon: "",
+  color: "",
+  params: "",
+  roleid: "",
+  extend: "",
+  parentid: ''
 }) as any;
- const changemenuvisible= function() {
-        menuvisible.value = !menuvisible.value
-    }
-        const   pageChange= ({ currentPage, pageSize }:any)=> {
-         
-                if (options.page) {
-                 options.page.current= currentPage
-                 options.page.limit = pageSize
-                }
-                findList()
-              }
+const menuvisible = ref(false);
+const options = reactive({
+  loading: false,
+  page: {
+    total: 0,
+    limit: 10,
+    current: 1,
+  },
+
+  data: [],
+}) as any;
+const changemenuvisible = function () {
+  menuvisible.value = !menuvisible.value
+}
+const pageChange = ({ currentPage, pageSize }: any) => {
+
+  if (options.page) {
+    options.page.current = currentPage
+    options.page.limit = pageSize
+  }
+  findList()
+}
 
 const edit = function ({ data }: any) {
-    changemenuvisible();
-    console.log("编辑数据:" + JSON.stringify(data))
-}
-const detele = function ({ data }: any) {
-    console.log("删除数据:" + JSON.stringify(data))
+  changemenuvisible();
+  console.log("编辑数据:" + JSON.stringify(data))
 }
 
+const removeRowEvent = async (row: any) => {
+  const type = await VXETable.modal.confirm('您确定要删除该数据?')
+    if (type === 'confirm') {
+      http.post("/api/dictionary/delDictionary", { data: JSON.stringify(row) }).then(res => {
+        if (res.success) {
+          layer.msg(res.msg, { icon: 2, time: 1000 });
+          findList();
+        } else {
+          layer.msg(res.msg, { icon: 2, time: 1000 });
+        }
+      }).catch(resp => {
+        layer.msg("网络错误", { icon: 2, time: 1000 });
+      });
+
+    }
+
+}
+const addRowEvent = (row: any) => {
+  menumodel.value.id = "00000000-0000-0000-0000-000000000000";
+  menumodel.value.color = "#009688";
+  menumodel.value.roleid = row.roleid;
+  menumodel.value.parentid = row.parentid;
+  menuvisible.value = true;
+}
+const editRowEvent = (row: any) => {
+  menumodel.value.color = "#009688";
+  menumodel.value.title = row.title;
+  menumodel.value.tag = row.tag;
+  menumodel.value.id = row.id;
+  menumodel.value.icon = row.icon;
+
+  menumodel.value.params = row.params;
+  menumodel.value.roleid = row.roleid;
+  menumodel.value.parentid = row.parentid;
+  menuvisible.value = true;
+}
+const submit = () => {
+  console.log(menumodel);
+  http.post("/api/dictionary/AddDictionary", { data: JSON.stringify(menumodel.value) }).then(res => {
+    if (res.success) {
+      layer.msg(res.msg, { icon: 2, time: 1000 });
+      menuvisible.value = false;
+      findList();
+
+    } else {
+      layer.msg(res.msg, { icon: 2, time: 1000 });
+    }
+  }).catch(resp => {
+    layer.msg("网络错误", { icon: 2, time: 1000 });
+  });
+}
+
+const menubtn = [
+  {
+    text: "确认",
+    callback: () => {
+      submit();
+    },
+  },
+  {
+    text: "取消",
+    callback: () => {
+      menuvisible.value = false;
+    },
+  },
+];
 
 const findList = () => {
 
-    var page: any, limt: any;
+  var page: any, limt: any;
 
-    page = options.page.current;
-    limt = options.page.limit;
-    options.loading = true;
-    http.post("/api/users/getMenuList", { id:'00000000-0000-0000-0000-000000000000',page: page, limit: limt }, "请稍等...").then(res => {
-             options.loading=false;
+  page = options.page.current;
+  limt = options.page.limit;
+  options.loading = true;
+  http.post("/api/form/GetDictionaryByID", { id: '00000000-0000-0000-0000-000000000000', page: page, limit: limt }, "请稍等...").then(res => {
+    options.loading = false;
 
-        if (res.success) {
-            options.data = res.data;
-            options.page.total = res.count
+    if (res.success) {
+      options.data = res.data;
+      options.page.total = res.count
 
-        }
-    });
+    }
+  });
 
 }
 
