@@ -99,7 +99,7 @@ export default defineComponent({
         page = gridOptions.pagerConfig.currentPage;
         limt = gridOptions.pagerConfig.pageSize;
       }
-      http.post("/api/workflowtasks/WaitList", { page: page, type: route.query.zhuanti, limit: limt }, "请稍等...").then(res => {
+      http.post("/api/workflowtasks/WaitList", { page: page, type: route.query.zhuanti, limit: limt }).then(res => {
         gridOptions.loading = false
 
         if (res.success) {

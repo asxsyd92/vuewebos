@@ -2,8 +2,11 @@
 class HelpTabs {
  //这是页面中关闭   
 close(appStore: any,path:any,router:any) {
-debugger;
-  appStore.tabs = appStore.tabs.filter((ele:any) => ele.id != path);
+
+
+
+  appStore.tabs = appStore.tabs.filter((ele:any,iv:any) => ele.id != path);
+
   var i=appStore.tabs.length-1 
   if(i>0){
     var id=appStore.tabs[i].id;

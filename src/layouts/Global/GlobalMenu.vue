@@ -7,7 +7,7 @@
     
        <template #icon  @click="zk">
           <lay-tooltip :content="m.title " >
-        <lay-icon type="layui-icon-right"></lay-icon>
+        <lay-icon :style="'color:'+m.color+' !important;'"  :type="m.icon"></lay-icon>
         </lay-tooltip>
       </template>
    
@@ -19,7 +19,7 @@
         
         <template #icon  @click="zk">
              <lay-tooltip :content="ms.title">
-          <lay-icon type="layui-icon-right"  ></lay-icon>
+          <lay-icon :style="'color:'+ms.color+' !important;'"  :type="ms.icon"  ></lay-icon>
           </lay-tooltip>
         </template>
     

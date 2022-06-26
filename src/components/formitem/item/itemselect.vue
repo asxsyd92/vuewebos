@@ -51,7 +51,7 @@ onMounted(() => {
 })
 const createEvent = function () {
 
-  http.post("/api/form/GetDictionaryByCode", { id: data.value.data.data }, "请稍等").then(res => {
+  http.post("/api/form/GetDictionaryByCode", { id: data.value.data.data }).then(res => {
     if (res.success) {
       setdata(res.data);
 

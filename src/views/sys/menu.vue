@@ -54,8 +54,8 @@
             <lay-input v-model="menumodel.params"></lay-input>
           </lay-form-item>
           <lay-form-item label="图标" prop="icon">
-            <lay-icon-picker v-model="menumodel.icon" type="layui-icon-face-smile"></lay-icon-picker>
-
+            <lay-icon-picker v-model="menumodel.icon" type="layui-icon-face-smile" page showSearch></lay-icon-picker>
+           <lay-input v-model="menumodel.icon"></lay-input>
           </lay-form-item>
 
         </lay-form>
@@ -116,7 +116,7 @@ const removeRowEvent = async (row: any) => {
     if (type === 'confirm') {
       http.post("/api/users/delMenu", { data: JSON.stringify(row) }).then(res => {
         if (res.success) {
-          layer.msg(res.msg, { icon: 2, time: 1000 });
+          layer.msg(res.msg, { icon: 1, time: 1000 });
           findList();
         } else {
           layer.msg(res.msg, { icon: 2, time: 1000 });
@@ -151,7 +151,7 @@ const submit = () => {
   console.log(menumodel);
   http.post("/api/users/ddMenu", { data: JSON.stringify(menumodel.value) }).then(res => {
     if (res.success) {
-      layer.msg(res.msg, { icon: 2, time: 1000 });
+      layer.msg(res.msg, { icon: 1, time: 1000 });
       menuvisible.value = false;
       findList();
 
@@ -185,7 +185,7 @@ const findList = () => {
   page = options.page.current;
   limt = options.page.limit;
   options.loading = true;
-  http.post("/api/users/getMenuList", { id: '00000000-0000-0000-0000-000000000000', page: page, limit: limt }, "请稍等...").then(res => {
+  http.post("/api/users/getMenuList", { id: '00000000-0000-0000-0000-000000000000', page: page, limit: limt }).then(res => {
     options.loading = false;
 
     if (res.success) {

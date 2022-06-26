@@ -99,7 +99,7 @@ import { defineComponent, reactive, ref } from 'vue'
                   page=gridOptions.pagerConfig.currentPage ;
                  limt= gridOptions.pagerConfig.pageSize ;
                 }
-           http.post("/api/log/getLogList", { page:page, limit: limt },"请稍等...").then(res => {
+           http.post("/api/log/getLogList", { page:page, limit: limt }).then(res => {
             gridOptions.loading = false
    
             if (res.success) {

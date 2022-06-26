@@ -15,8 +15,9 @@
               </vxe-form-item>
               <vxe-form-item>
                 <template #default>
-                  <vxe-button type="submit" status="primary" content="查询"></vxe-button>
-                  <vxe-button type="reset" content="重置"></vxe-button>
+                  <vxe-button type="a_submit" status="primary" content="查询"></vxe-button>
+                   <vxe-button type="a_add" @click="a_add" status="primary" content="新增"></vxe-button>
+                  <vxe-button type="a_reset" content="重置"></vxe-button>
                 </template>
               </vxe-form-item>
             </vxe-form>
@@ -99,7 +100,7 @@
                   page=gridOptions.pagerConfig.currentPage ;
                  limt= gridOptions.pagerConfig.pageSize ;
                 }
-           http.post("/api/tasks/WaitList", { page:page,type:route.query.zhuanti, limit: limt },"请稍等...").then(res => {
+           http.post("/api/tasks/WaitList", { page:page,type:route.query.zhuanti, limit: limt }).then(res => {
             gridOptions.loading = false
       
             if (res.success) {
@@ -174,7 +175,15 @@
 
             const formData = reactive({
               name: ''
-            })
+            });
+            const a_add=()=>{
+                       var query=new Object() as any;
+                        query.fromid =route.query.fromid;
+                        query.instanceid = route.query.instanceid;
+                        query.zhuanti = route.query.classid;
+                        query.tabname ="新增"+route.query.tabname;
+                        router.push({ path: "/formdesign/submitfrom", query: query,params:{tabname:"新增"+route.query.tabname} })
+            }
             return {
               xGrid,
               sexList1,
@@ -185,7 +194,8 @@
               saveRowEvent,
               removeRowEvent,
               formData,
-              searchEvent
+              searchEvent,
+              a_add
             }
           }
         })
