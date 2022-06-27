@@ -22,13 +22,18 @@
             <div class="setheight"></div>
         </div>
 
-        <lay-layer move="true" :btn="sendbtn" :closeBtn="false" :area="['65%', '60%']" :shadeClose="false"
+        <lay-layer move="true" :btn="sendbtn" :closeBtn="false" :area="['40%', '50%']" :shadeClose="false"
             @submit="submit" title="发送" v-model="sedvisible">
             <lay-panel class="laymodle">
+                <lay-select v-model="users" multiple :disabled="true">
+                    <lay-select-option v-for="(item, index) in userslist" :key="index" :value="item.id"
+                        :label="item.title">
+                    </lay-select-option>
+                </lay-select>
                 <lay-card title="请选择处理人" v-if="nextstep.length > 0">
                     <vxe-table :tree-config="{ children: 'children' }" ref="selectuser" :data="userdata"
                         :column-config="{ isCurrent: true, isHover: true }"
-                        :row-config="{ isCurrent: true, isHover: true }">
+                        :row-config="{ isCurrent: true, isHover: true }" @checkbox-change="selectChangeEvent">
                         <vxe-column type="checkbox" title="选择" width="150" tree-node></vxe-column>
                         <vxe-column field="name" title="姓名"></vxe-column>
                     </vxe-table>
@@ -55,15 +60,12 @@ import { useAppStore } from "../../../store/app";
 import http from "../../../utils/http";
 import subform from '../../../components/formitem/subform.vue';
 import HelpTabs from "../../../utils/HelpTabs"
-import XEUtils,{ values } from 'xe-utils'
+import XEUtils, { values } from 'xe-utils'
 import { VXETable, VxeTableInstance, VxeTableEvents } from 'vxe-table'
 
 export default {
     components: { subform },
     setup() {
-        const msgType = ref("");
-
-        const currentInstance = getCurrentInstance();
         const query = ref(new Object()) as any;
         const isflow = ref(false);
         const step = ref([]) as any;
@@ -83,37 +85,40 @@ export default {
         const selectuser = ref<VxeTableInstance>();
         const fromdata = ref({ name: "" }) as any;
         const validateModel = ref({});
-        var datamodel = {};
-
+        const users = ref([]) as any;
+        const userslist = ref([]) as any;
 
         const layFormRef = ref(null) as any;
         // 校验
         const validate = () => {
-                  layFormRef.value.validate((isValidate: any, model: any, errors: any) => {
-                    if (!isValidate) {
-                        errors.forEach((item: any) => {
-                            layer.msg(item.message, { icon: 2, time: 1000 })
-                        });
+            layFormRef.value.validate((isValidate: any, model: any, errors: any) => {
+                if (!isValidate) {
+                    errors.forEach((item: any) => {
+                        layer.msg(item.message, { icon: 2, time: 1000 })
+                    });
 
 
-                        return;
-                    }
-            //如果没有下一个步骤直接完成流程
-            if (nextstep.value.length > 0) {
-                http.post("/api/organiz/GetOrganizeById", { id: "" }, "正在获取...").then(res => {
-                    if (res.success) {
-                        console.log(res.data);
-                        userdata.value = res.data;
-                        sedvisible.value = true;
-                    }
+                    return;
+                }
+                //如果没有下一个步骤直接完成流程
+                if (nextstep.value.length > 0) {
+                    // stepselect.value=[];
+                    // users.value=[];
+                    http.post("/api/organiz/GetOrganizeById", { id: "" }, "正在获取...").then(res => {
+                        if (res.success) {
+                            console.log(res.data);
+                            userdata.value = res.data;
+                            sedvisible.value = true;
+                            userslistadd(res.data);
+                        }
 
-                }).catch(res => {
+                    }).catch(res => {
 
-                });
+                    });
 
-            } else {
+                } else {
 
-          
+
                     var opts = new Object() as any;
                     opts.type = "completed";
                     opts.steps = [];
@@ -129,22 +134,30 @@ export default {
                     }).catch(resp => {
                         layer.msg("网络错误", { icon: 2, time: 1000 });
                     });
-         
 
 
-            }
 
-        });
+                }
+
+            });
         }
 
 
-
+        const userslistadd = (v: any) => {
+            v.forEach((item: any) => {
+                userslist.value.push(item);
+                if (item.children.length > 0) {
+                    userslistadd(item.children);
+                    //userslist.value.push(item);
+                }
+            });
+        }
         // 清除校验
         const sendbtn = [
             {
                 text: "确认",
                 callback: () => {
-                    
+
                     submit();
                 },
             },
@@ -163,49 +176,50 @@ export default {
         }
 
         const submit = () => {
-        layFormRef.value.validate((isValidate: any, model: any, errors: any) => {
-                    if (!isValidate) {
-                        errors.forEach((item: any) => {
-                            layer.msg(item.message, { icon: 2, time: 1000 })
-                        });
 
-
-                        return;
-                    }
-
-            const $table = selectuser.value as any;
-            const selectRow = $table.getCheckboxRecords()
-           if(selectRow.length==0){
-             layer.msg("请选择处理人", { icon: 2, time: 1000 });
-             }
-                 console.log(stepselect.value);
-             if(stepselect.value.length==0){
-                  layer.msg("请选择处理步骤", { icon: 2, time: 1000 });
-             }
-             var   users=[] as any;
-               selectRow.forEach((key: any) => {
-                        users.push(key.id);
-               });
-              var opts = new Object() as any;
-                    opts.type = "submit";
-                    opts.steps = [];
-                    opts.steps.push({ id: stepselect.value, member: users.join(",") });
-
-                    http.post("/api/workflowtasks/sendTask", { table: fromdata.value.form.table, data: JSON.stringify(model), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
-
-                        if (resp.success) {
-
-                            layer.msg(resp.msg, { icon: 1, time: 1000 });
-                            HelpTabs.close(appStore, route.fullPath, router);
-                        } else {
-                            layer.msg(resp.msg, { icon: 2, time: 1000 });
-                        }
-                    }).catch(resp => {
-                        layer.msg("网络错误", { icon: 2, time: 1000 });
+            layFormRef.value.validate((isValidate: any, model: any, errors: any) => {
+                if (!isValidate) {
+                    errors.forEach((item: any) => {
+                        layer.msg(item.message, { icon: 2, time: 1000 })
                     });
-                })
 
-             
+
+                    return;
+                }
+
+                const $table = selectuser.value as any;
+                const selectRow = $table.getCheckboxRecords()
+                if (users.value.length == 0) {
+                    layer.msg("请选择处理人", { icon: 2, time: 1000 });
+                      return;
+                }
+                console.log(stepselect.value);
+                if (stepselect.value.length == 0) {
+                    layer.msg("请选择处理步骤", { icon: 2, time: 1000 });
+                    return;
+                }
+
+
+                var opts = new Object() as any;
+                opts.type = "submit";
+                opts.steps = [];
+                opts.steps.push({ id: stepselect.value, member: users.value.join(",") });
+
+                http.post("/api/workflowtasks/sendTask", { table: fromdata.value.form.table, data: JSON.stringify(model), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
+
+                    if (resp.success) {
+
+                        layer.msg(resp.msg, { icon: 1, time: 1000 });
+                        HelpTabs.close(appStore, route.fullPath, router);
+                    } else {
+                        layer.msg(resp.msg, { icon: 2, time: 1000 });
+                    }
+                }).catch(resp => {
+                    layer.msg("网络错误", { icon: 2, time: 1000 });
+                });
+            })
+
+
         }
 
         //渲染表单
@@ -249,18 +263,18 @@ export default {
                             fromdata.value = k;
                             nextstep.value = res.data;
                             if (k.field == null) {
-                                var obj=new Object();
+                                var obj = new Object();
                                 fromdata.value.data.forEach((key: any) => {
                                     for (let keys in key.data) {
                                         if (keys == "name") {
                                             //field.value = { [key.data[keys]]: "" };
-                                         obj[key.data[keys]]= key.data['value'] ;
+                                            obj[key.data[keys]] = key.data['value'];
                                         }
                                     }
                                 });
                                 console.log(obj);
-                                fromdata.value.field=obj;
-                               console.log(fromdata.value.field);
+                                fromdata.value.field = obj;
+                                console.log(fromdata.value.field);
                             }
 
 
@@ -323,7 +337,14 @@ export default {
                 });
         };
 
-
+        const selectChangeEvent: VxeTableEvents.CheckboxChange = ({ $table }) => {
+            const records = $table.getCheckboxRecords();
+            users.value = [];
+            records.forEach((key: any) => {
+                users.value.push(key.id);
+            });
+            console.info(`勾选${records.length}个树形节点`, users.value)
+        }
         onMounted(() => {
             render();
         })
@@ -343,7 +364,10 @@ export default {
             userchecked,
             selectuser,
             nextstep, query,
-            stepselect
+            stepselect,
+            selectChangeEvent,
+            users,
+            userslist
 
 
         }
