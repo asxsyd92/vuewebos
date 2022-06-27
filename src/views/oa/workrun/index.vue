@@ -66,11 +66,11 @@ export default {
         const currentInstance = getCurrentInstance();
         const query = ref(new Object()) as any;
         const isflow = ref(false);
-        const step = ref([]);
+        const step = ref([]) as any;
         const currentdata = ref(new Object()) as any;
         const signature = ref(false);
         const userdata = ref([]);
-        const nextstep = ref([]);
+        const nextstep = ref([]) as any;
         const commentlist = ref([]);
         const field = ref([]) as any;
         const rules = ref({});

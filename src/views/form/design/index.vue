@@ -5,7 +5,7 @@
         <lay-side>
             <lay-collapse v-model="openKeys2" accordion>
                 <lay-collapse-item title="表单组件" id="1">
-                    <draggable :list="tools" animation="300" :add="add" :clone="cloneDog"
+                    <draggable :list="tools" animation="300"  :clone="cloneDog"
                         :group="{ name: 'people', pull: 'clone', put: false, sort: true, }" item-key="name">
                         <template #item="{ element }">
                             <div class="layui-col-xs3 layui-col-xs3 flyli">

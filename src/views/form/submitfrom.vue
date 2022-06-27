@@ -9,21 +9,13 @@
           <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm" @click="clearValidate">重置</button>
           <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" @click="reset">关闭</button>
         </div>
-
-
-
-        <lay-form :model="validateModel" ref="layFormRef" required>
+        <lay-form :model="fromdata.field" ref="layFormRef" required>
           <lay-line border-style="dashed" border-width="6px">
             <div style="font-size:large"> {{ fromdata.name }}</div>
           </lay-line>
-          <div v-for="(item, index) in data" :key="index">
-            <subform :data="item" :value="validateModel"></subform>
+          <div v-for="(item, index) in fromdata.data" :key="index">
+            <subform :data="item" :value="fromdata.field"></subform>
           </div>
-          <!-- <lay-form-item>
-          <lay-button @click="validate">提交</lay-button>
-          <lay-button @click="clearValidate">清除校验</lay-button>
-          <lay-button @click="reset">重置表单</lay-button>
-        </lay-form-item>-->
         </lay-form>
       </div>
       <div class="setheight"></div>
@@ -46,16 +38,10 @@ export default {
   components: { subform },
   setup() {
     const appStore = useAppStore();
-    const instance = getCurrentInstance() as any;
     const router = useRouter();
     const route = useRoute();
-    const data = ref([]);
-
     const fromdata = ref({ name: "" }) as any;
     const validateModel = ref({});
-    var datamodel = {};
-
-
     const layFormRef = ref(null) as any;
     // 校验
     const validate = function () {
@@ -107,8 +93,7 @@ export default {
         if (res.success) {
           var k = JSON.parse(res.data.designhtml);
           console.log(k);
-          data.value = k.data;
-          fromdata.value = k.form;
+          fromdata.value = k;
           if (k.field == null) {
             var obj = new Object();
             fromdata.value.data.forEach((key: any) => {
@@ -119,12 +104,12 @@ export default {
               }
             });
 
-            validateModel.value = obj;
+            fromdata.value.field = obj;
 
           }
 
 
-          console.log(k.field);
+          console.log( fromdata.value);
         } else {
 
           //layer.msg(res.msg, { icon: 2 });
@@ -147,7 +132,6 @@ export default {
       clearValidate,
       reset,
       subform,
-      data,
       fromdata
     }
   }
@@ -172,12 +156,11 @@ export default {
   width: 100%;
   position: fixed;
   right: 0;
-  left: 120px;
   top: 100px;
   height: 44px;
   line-height: 22px;
   background-color: #fff;
-  text-align: left;
+  text-align: center;
   padding: 10px 0;
 }
 </style>
