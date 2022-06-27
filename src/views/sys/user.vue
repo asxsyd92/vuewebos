@@ -153,7 +153,7 @@ const submit = () => {
     if (res.success) {
       layer.msg(res.msg, { icon: 1, time: 1000 });
       menuvisible.value = false;
-     // findList();
+      findList();
 
     } else {
       layer.msg(res.msg, { icon: 2, time: 1000 });

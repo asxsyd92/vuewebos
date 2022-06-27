@@ -94,6 +94,12 @@ export const inRoutes =[
         component: () => import('../views/sys/role.vue'),
         meta: { title: '角色管理' },
       }
+      ,
+      {
+        path: '/sys/user',
+        component: () => import('../views/sys/user.vue'),
+        meta: { title: '用户管理' },
+      }
     ]
   },{
     
