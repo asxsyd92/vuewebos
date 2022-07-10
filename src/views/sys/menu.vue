@@ -41,21 +41,35 @@
             <lay-color-picker v-model="menumodel.color"></lay-color-picker>
 
           </lay-form-item>
+          <lay-form-item label="图标" prop="icon">
+            <lay-icon-picker v-model="menumodel.icon" type="layui-icon-face-smile" page showSearch></lay-icon-picker>
+          </lay-form-item>
+
           <lay-form-item label="路径" prop="tag">
             <lay-input v-model="menumodel.tag"></lay-input>
           </lay-form-item>
           <lay-form-item label="id" prop="id" style="display:none">
             <lay-input v-model="menumodel.id"></lay-input>
           </lay-form-item>
-          <lay-form-item label="parentid" prop="parentid" style="display:none">
-            <lay-input v-model="menumodel.parentid"></lay-input>
+          <lay-form-item label="父级目录" prop="parentid">
+            <lay-select v-model="menumodel.parentid">
+              <lay-select-option value="00000000-0000-0000-0000-000000000000" label="根目录"></lay-select-option>
+              <lay-select-option :value="menumodel.parentid" label="当前目录"></lay-select-option>
+
+            </lay-select>
+
           </lay-form-item>
           <lay-form-item label="参数" prop="params">
             <lay-input v-model="menumodel.params"></lay-input>
           </lay-form-item>
-          <lay-form-item label="图标" prop="icon">
-            <lay-icon-picker v-model="menumodel.icon" type="layui-icon-face-smile" page showSearch></lay-icon-picker>
-           <lay-input v-model="menumodel.icon"></lay-input>
+          <lay-form-item label="菜单类型" prop="type">
+            <lay-radio v-model="menumodel.type" name="type" label="0">手机端</lay-radio>
+            <lay-radio v-model="menumodel.type" name="type" label="1">电脑端</lay-radio>
+          </lay-form-item>
+
+          <lay-form-item label="排序" prop="sort">
+            <lay-input-number v-model="menumodel.sort" position="right"></lay-input-number>
+
           </lay-form-item>
 
         </lay-form>
@@ -81,7 +95,9 @@ var menumodel = ref({
   params: "",
   roleid: "",
   extend: "",
-  parentid: ''
+  parentid: '',
+  sort: 1,
+  type: 0
 }) as any;
 const menuvisible = ref(false);
 const options = reactive({
@@ -113,26 +129,28 @@ const edit = function ({ data }: any) {
 
 const removeRowEvent = async (row: any) => {
   const type = await VXETable.modal.confirm('您确定要删除该数据?')
-    if (type === 'confirm') {
-      http.post("/api/users/delMenu", { data: JSON.stringify(row) }).then(res => {
-        if (res.success) {
-          layer.msg(res.msg, { icon: 1, time: 1000 });
-          findList();
-        } else {
-          layer.msg(res.msg, { icon: 2, time: 1000 });
-        }
-      }).catch(resp => {
-        layer.msg("网络错误", { icon: 2, time: 1000 });
-      });
+  if (type === 'confirm') {
+    http.post("/api/users/delMenu", { data: JSON.stringify(row) }).then(res => {
+      if (res.success) {
+        layer.msg(res.msg, { icon: 1, time: 1000 });
+        findList();
+      } else {
+        layer.msg(res.msg, { icon: 2, time: 1000 });
+      }
+    }).catch(resp => {
+      layer.msg("网络错误", { icon: 2, time: 1000 });
+    });
 
-    }
+  }
 
 }
 const addRowEvent = (row: any) => {
   menumodel.value.id = "00000000-0000-0000-0000-000000000000";
   menumodel.value.color = "#009688";
   menumodel.value.roleid = row.roleid;
-  menumodel.value.parentid = row.parentid;
+  menumodel.value.parentid = row.id;
+  menumodel.value.type = 1 + "";
+  menumodel.value.sort = 0;
   menuvisible.value = true;
 }
 const editRowEvent = (row: any) => {
@@ -141,10 +159,11 @@ const editRowEvent = (row: any) => {
   menumodel.value.tag = row.tag;
   menumodel.value.id = row.id;
   menumodel.value.icon = row.icon;
-
+  menumodel.value.type = row.type + "";
   menumodel.value.params = row.params;
   menumodel.value.roleid = row.roleid;
   menumodel.value.parentid = row.parentid;
+  menumodel.value.sort = row.sort;
   menuvisible.value = true;
 }
 const submit = () => {
@@ -153,7 +172,7 @@ const submit = () => {
     if (res.success) {
       layer.msg(res.msg, { icon: 1, time: 1000 });
       menuvisible.value = false;
-     // findList();
+      // findList();
 
     } else {
       layer.msg(res.msg, { icon: 2, time: 1000 });

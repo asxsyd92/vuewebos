@@ -5,16 +5,17 @@
       :row-config="{ isCurrent: true, isHover: true }">
       <!--将表单放在工具栏中-->
       <template #toolbar_buttons>
-        <vxe-form :data="formData" @submit="searchEvent">
+        <vxe-form :data="search" >
           <vxe-form-item field="name">
             <template #default>
-              <vxe-input v-model="formData.name" type="text" placeholder="请输入名称"></vxe-input>
+              <vxe-input v-model="search.name" type="text" placeholder="请输入名称"></vxe-input>
             </template>
           </vxe-form-item>
           <vxe-form-item>
             <template #default>
-              <vxe-button type="submit" status="primary" content="查询"></vxe-button>
-              <vxe-button type="reset" content="重置"></vxe-button>
+              <vxe-button  status="primary" @click="searchEvent" content="查询"></vxe-button>
+              <vxe-button  status="primary" @click="New" content="新增表单"></vxe-button>
+              <vxe-button  content="重置"></vxe-button>
             </template>
           </vxe-form-item>
         </vxe-form>
@@ -23,8 +24,8 @@
       <template #operate="{ row }">
         <vxe-button icon="fa fa-edit" title="编辑" circle @click="editRowEvent(row)"></vxe-button>
         <vxe-button icon="fa fa-trash-o" title="删除" circle @click="removeRowEvent(row)"></vxe-button>
-
-        <vxe-button icon="fa fa-gear" title="设置" circle></vxe-button>
+<!-- 
+        <vxe-button icon="fa fa-gear" title="设置" circle></vxe-button> -->
       </template>
     </vxe-grid>
 
@@ -39,6 +40,9 @@ import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-t
 
 export default defineComponent({
   setup() {
+        const search = ref({
+      name: ''
+    })
     const xGrid = ref<VxeGridInstance>()
     const router = useRouter();
     const gridOptions = reactive<VxeGridProps>({
@@ -93,7 +97,7 @@ export default defineComponent({
         page = gridOptions.pagerConfig.currentPage;
         limt = gridOptions.pagerConfig.pageSize;
       }
-      http.post("/api/common/GetCommonList", { tab: "SysFormDesign", page: page, limit: limt }, "请稍等...").then(res => {
+      http.post("/api/common/GetCommonList", { tab: "SysFormDesign", title: search.value.name, page: page, limit: limt }).then(res => {
         gridOptions.loading = false
 
         if (res.success) {
@@ -134,27 +138,30 @@ export default defineComponent({
       var query = new Object() as any;
       query.fromid = row.id;
       query.tabname = row.title;//这是tab显示的文本
-      router.push({ path: "/formdesign/index", query: query, params: { tabname:"表单管理："+ row.title } })
+      router.push({ path: "/formdesign/index", query: query, params: { tabname: "表单管理：" + row.title } })
 
 
     }
     findList()
     const searchEvent = () => {
-      const $grid = xGrid.value
-      //$grid.commitProxy('query')
+      findList();
+    }
+    const New = () => {
+      var query = new Object() as any;
+      query.tabname = "新增表单";//这是tab显示的文本
+      router.push({ path: "/formdesign/index", query: query, params: { tabname: "新增表单" } })
+
     }
 
-    const formData = reactive({
-      name: ''
-    })
     return {
       xGrid,
       gridOptions,
       gridEvents,
       removeRowEvent,
-      formData,
+      search,
       searchEvent,
-      editRowEvent
+      editRowEvent,
+      New
     }
   }
 })

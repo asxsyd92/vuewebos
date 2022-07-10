@@ -81,7 +81,7 @@
                 // { type: 'seq', width: 60 },
                 { type: 'checkbox', width: 50 },
                 { field: 'title', title: '标题'},
-                { field: 'sendername', title: '作者',  },
+                { field: 'username', title: '作者',  },
                 { field: 'addtime', title: '发表时间', },
                 { title: '操作',fixed:"right", width: 150, slots: { default: 'operate' } }
               ],
@@ -100,7 +100,7 @@
                   page=gridOptions.pagerConfig.currentPage ;
                  limt= gridOptions.pagerConfig.pageSize ;
                 }
-           http.post("/api/notice/GetNotecePage", { page:page,type:route.query.zhuanti, limit: limt }).then(res => {
+           http.post("/api/notice/GetNotecePage", { page:page,type:route.query.type, limit: limt }).then(res => {
             gridOptions.loading = false
       
             if (res.success) {

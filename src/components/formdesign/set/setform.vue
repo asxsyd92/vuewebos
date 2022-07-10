@@ -11,6 +11,7 @@
     </lay-form-item>
     <lay-form-item label="请求地址">
       <lay-input v-model="modle.url"></lay-input>
+         挂载流程时此配置不生效！
     </lay-form-item>
 
     <lay-form-item label="表单样式">

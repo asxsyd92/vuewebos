@@ -103,6 +103,18 @@ export const inRoutes =[
     ]
   },{
     
+    path: '/notice',
+    component: BaseLayout,
+    meta: { title: '网站管理' },
+    children: [
+      {
+        path: '/notice/list',
+        component: () => import('../views/notice/list.vue'),
+        meta: { title: '网站管理' },
+      }
+    ]
+  },{
+    
     path: '/webinfo',
     component: BaseLayout,
     meta: { title: '网站管理' },

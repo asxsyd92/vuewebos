@@ -12,7 +12,7 @@
                 </div>
                 <lay-form :model="fromdata.field" ref="layFormRef" required>
                     <lay-line border-style="dashed" border-width="6px">
-                        <div style="font-size:large"> {{ fromdata.name }}</div>
+                        <div style="font-size:large"> {{ fromdata.form==undefined?"":fromdata.form.name }}</div>
                     </lay-line>
                     <div v-for="(item, index) in fromdata.data" :key="index">
                         <subform :data="item" :value="fromdata.field"></subform>

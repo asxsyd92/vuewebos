@@ -54,7 +54,14 @@ export default {
 
           return;
         }
-        http.post("/api/form/FormCommonTaskSave", { table: fromdata.value.table, data: JSON.stringify(model), istask: true, fromid: route.query.fromid }).then(res => {
+        var url="";
+        debugger;
+        if(fromdata.value.form.url!=""&&fromdata.value.form.url!=undefined&&fromdata.value.form.url!=null){
+          url=fromdata.value.form.url;
+        }else{
+          url="/api/form/FormCommonTaskSave";
+        }
+        http.post(url, { table: fromdata.value.table, data: JSON.stringify(model), istask: true, fromid: route.query.fromid }).then(res => {
           console.log(res);
 
           if (res.success) {
