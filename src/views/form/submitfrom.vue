@@ -61,11 +61,11 @@ export default {
         }else{
           url="/api/form/FormCommonTaskSave";
         }
-        http.post(url, { table: fromdata.value.table, data: JSON.stringify(model), istask: true, fromid: route.query.fromid }).then(res => {
+        http.post(url, { table: fromdata.value.form.table, data: JSON.stringify(model), istask: true, fromid: route.query.fromid }).then(res => {
           console.log(res);
 
           if (res.success) {
-            layer.msg(res.msg, { icon: 1, time: 1000 });
+            layer.msg(res.msg, { icon: 1, time: 1000});
             HelpTabs.close(appStore, route.fullPath, router);
           } else {
             layer.msg(res.msg, { icon: 2, time: 1000 });

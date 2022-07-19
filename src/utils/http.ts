@@ -67,7 +67,7 @@ class Http {
     /* POST 方法 */
     post<T>(url: string, params?: object,msg?:string): Promise<any> {
         if(msg!=""&&msg!=null){
-            layerid= layer.msg(msg, { icon : 16, time: 15000});
+            layerid= layer.msg(msg, { icon : 16, time: 30000,shade:true });
         }
        
         return this.service.post(url,Qs.stringify( params),)
