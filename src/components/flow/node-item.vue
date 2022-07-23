@@ -50,10 +50,10 @@ export default {
   },
   methods: {
     showAnchor() {
-      this.mouseEnter = true
+      //this.mouseEnter = true
     },
     hideAnchor() {
-      this.mouseEnter = false
+     // this.mouseEnter = false
     },
     onContextmenu() {
       this.$contextmenu({
