@@ -91,11 +91,11 @@ const methods = {
         methods.addLine(evt)
       });
       //连线双击删除事件
-      instance.bind("dblclick", (conn, originalEvent) => {
+      instance.bind("dblclick", (conn:any, originalEvent:any) => {
         methods.confirmDelLine(conn)
       })
       //断开连线后，维护本地数据
-      instance.bind("connectionDetached", evt => {
+      instance.bind("connectionDetached", (evt:any) => {
         methods.deleLine(evt)
       })
       methods.loadEasyFlow();
@@ -129,7 +129,7 @@ const methods = {
         jsplumbConnectOptions
       );
     }
-    instance.bind("connection", evt => {
+    instance.bind("connection", (evt:any) => {
       let from = evt.source.id;
       let to = evt.target.id;
       data.lineList.push({
@@ -164,7 +164,7 @@ const methods = {
     console.log("alignForLine");
     console.log(data);
     let showXLine = false, showYLine = false
-    data.nodeList.some(el => {
+    data.nodeList.some((el : any)=> {
       if (el.id !== nodeId && el.left == position[0] + 'px') {
         auxiliaryLinePos.x = position[0] + 60;
         showYLine = true
@@ -246,7 +246,7 @@ const methods = {
       const { scale } = instance.pan.getTransform();
       scale1 = scale;
     } else {
-      const matrix = window.getComputedStyle(instance.getContainer()).transform;
+      const matrix = window.getComputedStyle(instance.getContainer()).transform as any;
       scale1 = matrix.split(", ")[3] * 1;
     }
     instance.setZoom(scale1);
@@ -291,7 +291,7 @@ const methods = {
       instance.mainContainerWrap = mainContainerWrap;
       instance.pan = pan;
       // 缩放时设置jsPlumb的缩放比率
-      pan.on("zoom", e => {
+      pan.on("zoom", (e:any) => {
         const { x, y, scale } = e.getTransform();
         instance.setZoom(scale);
         //根据缩放比例，缩放对齐辅助线长度和位置
@@ -300,7 +300,7 @@ const methods = {
         auxiliaryLinePos.offsetX = -(x / scale)
         auxiliaryLinePos.offsetY = -(y / scale)
       });
-      pan.on("panend", (e) => {
+      pan.on("panend", (e:any) => {
         const { x, y, scale } = e.getTransform();
         auxiliaryLinePos.width = (1 / scale) * 100 + '%'
         auxiliaryLinePos.height = (1 / scale) * 100 + '%'
