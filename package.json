@@ -15,9 +15,11 @@
     "echarts": "^5.3.2",
     "font-awesome": "^4.7.0",
     "jsencrypt": "^3.2.1",
+    "jsplumb": "^2.15.6",
     "linq": "^4.0.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.3",
+    "panzoom": "^9.4.3",
     "pinia": "^2.0.14",
     "pinia-plugin-persist": "^1.0.0",
     "print-js": "^1.6.0",
@@ -29,7 +31,8 @@
     "vuedraggable": "^4.1.0",
     "vuex": "^4.0.2",
     "vxe-table": "^4.2.4-beta.3",
-    "xe-utils": "^3.5.4"
+    "xe-utils": "^3.5.4",
+    "vue-click-outside": "^1.1.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.182",

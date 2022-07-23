@@ -67,7 +67,8 @@ export const inRoutes =[
             component: () => import('../views/form/submitfrom.vue')
         },
     ],
-},{
+}, 
+{
     path: '/sys',
     component: BaseLayout,
     meta: { title: '系统管理' },
@@ -145,6 +146,15 @@ export const inRoutes =[
       component: () => import('../views/oa/workrun/index.vue'),
       meta: { title: '处理' },
     },
+    {
+      path: '/oa/flow/list',
+      meta: { title: '流程管理' },
+      component: () => import('../views/oa/flow/list.vue')
+  }, {
+      path: '/oa/flow/design',
+      meta: { title: '流程设计' },
+      component: () => import('../views/oa/flow/design.vue')
+  }
   ]
 
   },{
