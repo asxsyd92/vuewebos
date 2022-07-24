@@ -20,7 +20,7 @@
         </div>
         <flowNode v-for="item in data.nodeList" :id="item.id" :key="item.id" :node="item"
           @setNodeName="methods.setNodeName" @deleteNode="methods.deleteNode"
-          @changeLineState="methods.changeLineState"></flowNode>
+          @changeLineState="methods.changeLineState" ></flowNode>
       </div>
     </div>
   </div>
@@ -152,6 +152,7 @@ const methods = {
 
       },
       stop: (params: any) => {
+  
         auxiliaryLine.isShowXLine = false
         auxiliaryLine.isShowYLine = false
         methods.changeNodePosition(nodeId, params.pos);
@@ -195,7 +196,7 @@ const methods = {
     currentItem.value = item;
   },
   drop(event: any) {
-    // console.log(PlumbsInstance);
+     console.log("drop");
     const containerRect = instance.getContainer().getBoundingClientRect();
     const scale = methods.getScale();
     let left = (event.pageX - containerRect.left - 60) / scale;
@@ -203,7 +204,7 @@ const methods = {
 
     var temp = {
       ...currentItem.value,
-      id: utils.GenNonDuplicateID(8),
+      id: utils.GenNonDuplicateID(32),
       top: (Math.round(top / 20)) * 20 + "px",
       left: (Math.round(left / 20)) * 20 + "px"
     };
@@ -216,7 +217,7 @@ const methods = {
       from: from,
       to: to,
       label: "连线名称",
-      id: utils.GenNonDuplicateID(8),
+      id: utils.GenNonDuplicateID(32),
       Remark: ""
     });
   },
@@ -310,17 +311,17 @@ const methods = {
 
       // 平移时设置鼠标样式
       mainContainerWrap.style.cursor = "grab";
-      mainContainerWrap.addEventListener("mousedown", function wrapMousedown(_this: any) {
+      mainContainerWrap.addEventListener("mousedown", function wrapMousedown() {
         mainContainerWrap.style.cursor = "grabbing";
 
-        mainContainerWrap.addEventListener("mouseout", function wrapMouseout(_this: any) {
+        mainContainerWrap.addEventListener("mouseout", function wrapMouseout() {
           mainContainerWrap.style.cursor = "grab";
-          console.log(mainContainerWrap);
+        
         });
       });
-      mainContainerWrap.addEventListener("mouseup", function wrapMouseup(_this: any) {
+      mainContainerWrap.addEventListener("mouseup", function wrapMouseup() {
         mainContainerWrap.style.cursor = "grab";
-        console.log(mainContainerWrap);
+
       });
     }
 
@@ -341,7 +342,7 @@ const methods = {
   deleteNode(node: any) {
     data.nodeList.some((v, index) => {
       if (v.id === node.id) {
-        debugger;
+     
         data.nodeList.splice(index, 1)
         instance.remove(v.id)
         return true

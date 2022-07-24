@@ -1,124 +1,116 @@
 <template>
+    <!-- v-click-outside="setNotActive" -->
+     <!-- :class="[(isActive || isSelected) ? 'active' : '']" -->
   <div class="node-item" ref="node"
     :class="[(isActive || isSelected) ? 'active' : '']"
-    :style="flowNodeContainer"
-    v-click-outside="setNotActive"
+    :style=" 'top: '+nodes.top+'; left:'+ nodes.left"
+ 
     @click="setActive"
     @mouseenter="showAnchor"
     @mouseleave="hideAnchor"
     @dblclick.prevent="editNode"
     @contextmenu.prevent="onContextmenu">
-    <div class="log-wrap">
-      <img :src="node.logImg" alt="">
-    </div>
-    <div class="nodeName">{{node.nodeName}}</div>
+    <!-- <div class="log-wrap">
+     <img :src="node.logImg" alt="">
+    </div> -->
+    <div class="nodeName">{{nodes.nodeName}}</div>
       <!--连线用--//触发连线的区域-->
-      <div class="node-anchor anchor-top" v-show="mouseEnter"></div>
-      <div class="node-anchor anchor-right" v-show="mouseEnter"></div>
-      <div class="node-anchor anchor-bottom" v-show="mouseEnter"></div>
-      <div class="node-anchor anchor-left" v-show="mouseEnter"></div>
+      <div v-show="mouseEnter">
+      <div class="node-anchor anchor-top" ></div>
+      <div class="node-anchor anchor-right" ></div>
+      <div class="node-anchor anchor-bottom" ></div>
+      <div class="node-anchor anchor-left" ></div>
+      </div>
+
   </div>
 </template>
 
-<script>
-import ClickOutside from 'vue-click-outside'
-export default {
-  name: "nodeItem",
-  props: {
-      node: Object
-  },
-  directives: {
-    ClickOutside
-  },
-  computed: {
-    // 节点容器样式
-    flowNodeContainer: {
-      get() {
-        return {
-          top: this.node.top,
-          left: this.node.left
-        };
-      }
+<script lang="ts" setup>
+
+  import { ref,onMounted } from "vue";
+  const emit = defineEmits(['changeLineState','deleteNode'])
+  interface INodeitemProps {
+    node: any;
+  }
+  const props= withDefaults(defineProps < INodeitemProps > (), {
+    node: Object
+  });
+  
+ const      mouseEnter=ref(true);
+const       isActive=ref( false);
+const      isSelected=ref(false);
+    const nodes = ref(props.node);
+ 
+  //  const flowNodeContainer=ref("top: "+nodes.top+"; left:"+ nodes.left);
+    onMounted (()=>{
+   
+         mouseEnter.value = false
+    });
+    const showAnchor=()=>{
+        console.log(nodes);
+   
+      mouseEnter.value=true;
     }
-  },
-  data() {
-    return {
-      mouseEnter: false,
-      isActive: false,
-      isSelected: false
-    };
-  },
-  methods: {
-    showAnchor() {
-      //this.mouseEnter = true
-    },
-    hideAnchor() {
-     // this.mouseEnter = false
-    },
-    onContextmenu() {
-      this.$contextmenu({
-        items: [{
-          label: '删除',
-          disabled: false,
-          icon: "",
-          onClick: () => {
-            this.deleteNode()
-          }
-        }],
-        event,
-        customClass: 'custom-class',
-        zIndex: 9999,
-        minWidth: 180
-      })
-    },
-    setActive() {
-      if(window.event.ctrlKey){
-        this.isSelected = !this.isSelected
-        return false
+        const hideAnchor=()=>{
+       
+    mouseEnter.value = false
+    }
+     const   setActive=()=> {
+      let win=window as any;
+      if(win.event?.ctrlKey){
+        isSelected.value= !isSelected.value;
+        return false;
       }
-      this.isActive = true
-      this.isSelected = false
+      isActive.value = true;
+      isSelected .value= false;
       setTimeout(() => {
-        this.$emit("changeLineState", this.node.id, true)
-      },0)
-    },
-    setNotActive() {
-      if(!window.event.ctrlKey){
-        this.isSelected = false
+        emit("changeLineState", nodes.id, true)
+      },1)
+    }
+
+
+    const setNotActive=()=> {
+      console.log('setNotActive');
+            let win=window as any;
+      if(!win.event.ctrlKey){
+        isSelected.value = false
       }
-      if(!this.isActive) {
+      if(!isActive.value) {
         return
       }
-      this.$emit("changeLineState", this.node.id, false)
-      this.isActive = false
-    },
-    editNode() {
-      this.newNodeName = this.node.nodeName
-      this.$Modal.confirm({
-        render: (h) => {
-          return h('Input', {
-              props: {
-                value: this.newNodeName,
-                autofocus: true
-              },
-              on: {
-                input: (val) => {
-                  this.newNodeName = val;
-                }
-              }
-          })
-        },
-        onOk: () => {
-          console.log(this.newNodeName)
-          this.$emit('setNodeName', this.node.id, this.newNodeName)
-        }
-      })
-    },
-    deleteNode() {
-      this.$emit("deleteNode", this.node)
+      emit("changeLineState", nodes.id, false)
+      isActive.value = false
     }
-  }
-};
+
+   const editNode=()=> {
+   //let   newNodeName = node.nodeName
+      // $Modal.confirm({
+      //   render: (h) => {
+      //     return h('Input', {
+      //         props: {
+      //           value: this.newNodeName,
+      //           autofocus: true
+      //         },
+      //         on: {
+      //           input: (val) => {
+      //             this.newNodeName = val;
+      //           }
+      //         }
+      //     })
+      //   },
+      //   onOk: () => {
+      //     console.log(this.newNodeName)
+      //     this.$emit('setNodeName', this.node.id, this.newNodeName)
+      //   }
+      // })
+    }
+   const deleteNode=()=> {
+    emit("deleteNode", nodes)
+    }
+   const onContextmenu=()=> {
+  
+    }
+
 </script>
 
 <style lang="less" scoped>
