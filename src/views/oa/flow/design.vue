@@ -18,7 +18,7 @@
         <div v-show="auxiliaryLine.isShowYLine" class="auxiliary-line-y"
           :style="{ height: auxiliaryLinePos.height, left: auxiliaryLinePos.x + 'px', top: auxiliaryLinePos.offsetY + 'px' }">
         </div>
-        <flowNode v-for="item in data.steps" :id="item.id" :key="item.id" :node="item" @setname="methods.setname"
+        <flowNode v-for="item in data.steps" :id="item.id" :key="item.id" :nodedata="item" @setname="methods.setname"
           @deleteNode="methods.deleteNode" @changeLineState="methods.changeLineState" @setflow="methods.setflow">
         </flowNode>
       </div>
@@ -80,6 +80,7 @@
 </template>
 <script lang="ts" setup>
 import http from "../../../utils/http";
+import { layer } from '@layui/layer-vue';
 import flowNode from "../../../components/flow/node-item.vue"
 import { ref, onMounted, nextTick, getCurrentInstance } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
@@ -117,7 +118,7 @@ const data=ref({}) as any;
 //       "valueField": ""
 //     },
 //     "buttons": [{
-//       "id": "3b271f67-0433-4082-ad1a-8df1b967b879",
+//       "id": "",
 //       "sort": 0
 //     }],
 //     "countersignature": 0,
@@ -158,11 +159,11 @@ const data=ref({}) as any;
 //   }],
 //   lines: [{
 //     "customMethod": "",
-//     "from": "d6f56e83-0e7b-4928-92c4-207e65b3d271",
-//     "id": "9cd635c5-360a-44b7-bda0-e31217d44269",
+//     "from": "",
+//     "id": "",
 //     "noaccordMsg": "",
 //     "sql": "",
-//     "to": "bd1eb25a-835f-4a4a-91b6-47a20b69620d"
+//     "to": ""
 //   }]
 // }
 const selectedList = null;
@@ -178,14 +179,7 @@ const initNodeTypeObj = () => {
     nodeTypeObj[v.type] = v
   })
 }
-const initNode = () => {
-  //data.lines = data.lines
-  // data.steps.map((v: any) => {
-  //   v.logImg = nodeTypeObj[v.type]?.logImg
-  //   v.log_bg_color = nodeTypeObj[v.type]?.log_bg_color
-  //   data.steps.push(v)
-  // })
-}
+
 
 // onMounted(() => {
   const initflow=()=>{
@@ -196,14 +190,9 @@ const initNode = () => {
       o.steps=res.steps;
         console.log(o);
       data.value=o;
-  // data.value.lines=res.lines;
-  // data.value.steps=res.steps;
 
-  //   initNodeTypeObj();
-  // initNode();
   methods.fixNodesPosition();
   nextTick(() => {
-    //console.log( currentInstance?.refs);
     methods.init();
   }) 
   
@@ -267,6 +256,8 @@ const methods = {
     // 初始化节点
     for (let i = 0; i < data.value.steps.length; i++) {
       let node = data.value.steps[i];
+      console.log(node);
+            console.log("node");
       // 设置源点，可以拖出线连接其他节点
       instance.makeSource(node.id, jsplumbSourceOptions);
       // // 设置目标点，其他源点拖出的线可以连接该节点
@@ -341,7 +332,7 @@ const methods = {
   changeNodePosition(nodeId: any, pos: any) {
     console.log(data);
     console.log(pos);
-    data.value.steps.some(v => {
+    data.value.steps.some((v:any) => {
       if (nodeId == v.id) {
         v.position.x = pos[0];
         v.position.y = pos[1];
@@ -358,15 +349,74 @@ const methods = {
     console.log("drop");
     const containerRect = instance.getContainer().getBoundingClientRect();
     const scale = methods.getScale();
-    let left = (event.pageX - containerRect.left - 60) / scale;
-    let top = (event.pageY - containerRect.top - 20) / scale;
-
-    var temp = {
-      ...currentItem.value,
-      id: utils.GenNonDuplicateID(),
-      top: (Math.round(top / 20)) * 20 + "px",
-      left: (Math.round(left / 20)) * 20 + "px"
-    };
+    let x = (event.pageX - containerRect.left - 60) / scale;
+    let y = (event.pageY - containerRect.top - 20) / scale;
+let temp= {
+    "archives": "0",
+    "archivesParams": "",
+    "behavior": {
+      "backModel": "1",
+      "backStep": "",
+      "backType": "0",
+      "copyFor": "",
+      "countersignature": "0",
+      "countersignaturePercentage": "",
+      "defaultHandler": "",
+      "flowType": "1",
+      "handlerStep": "",
+      "handlerType": "0",
+      "hanlderModel": "0",
+      "percentage": "",
+      "runSelect": "1",
+      "selectRange": "",
+      "valueField": ""
+    },
+    "buttons": [{
+      "id": "",
+      "sort": 0
+    }],
+    "countersignature": 0,
+    "event": {
+      "backAfter": "",
+      "backBefore": "",
+      "submitAfter": "",
+      "submitBefore": ""
+    },
+    "expiredPrompt": "1",
+    "fieldStatus": [{
+      "check": "0",
+      "field": "id",
+      "status": "0"
+    }],
+    "forms": [{
+      "id": "",
+      "name": "",
+      "srot": 0,
+      "type": ""
+    }],
+    "id": utils.GenNonDuplicateID(),
+    "limitTime": "",
+    "name": "新建步骤",
+    "note": "",
+    "opinionDisplay": "1",
+    "otherTime": "",
+    "position": {
+      "height": 50,
+      "width": 108,
+      "x": x,
+      "y": y
+    },
+    "signatureType": "0",
+    "type": "normal",
+    "workTime": ""
+  
+  };
+    // var temp = {
+    //   ...currentItem.value,
+    //   id: utils.GenNonDuplicateID(),
+    //   top: (Math.round(top / 20)) * 20 + "px",
+    //   left: (Math.round(left / 20)) * 20 + "px"
+    // };
     methods.addNode(temp);
   },
   addLine(line: any) {
@@ -488,7 +538,7 @@ const methods = {
   },
 
   setname(nodeId: any, name: any) {
-    data.value.steps.some((v) => {
+    data.value.steps.some((v:any) => {
       if (v.id === nodeId) {
         v.name = name
         return true
@@ -500,7 +550,7 @@ const methods = {
 
   //删除节点
   deleteNode(node: any) {
-    data.value.steps.some((v, index) => {
+    data.value.steps.some((v:any, index:any) => {
       if (v.id === node.id) {
 
         data.value.steps.splice(index, 1)
@@ -543,7 +593,7 @@ const methods = {
         bottom: 0
       }
       let fixTop = 0, fixLeft = 0;
-      data.value.steps.forEach(el => {
+      data.value.steps.forEach((el:any) => {
         let top = el.position.y;
         let left = el.position.x;
         maxLeft = left > maxLeft ? left : maxLeft

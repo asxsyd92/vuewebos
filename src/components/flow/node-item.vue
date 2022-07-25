@@ -27,16 +27,16 @@ import { layer } from '@layui/layer-vue'
 import { ref, onMounted } from "vue";
 const emit = defineEmits(['changeLineState', 'deleteNode',"setflow"])
 interface INodeitemProps {
-  node: any;
+  nodedata: any;
 }
 const props = withDefaults(defineProps<INodeitemProps>(), {
-  node: Object
+  nodedata: Object
 });
 
 const mouseEnter = ref(true);
 const isActive = ref(false);
 const isSelected = ref(false);
-const nodes = ref(props.node);
+const nodes = ref(props.nodedata);
 
 //  const flowNodeContainer=ref("top: "+nodes.top+"; left:"+ nodes.left);
 onMounted(() => {
@@ -60,7 +60,7 @@ const setActive = () => {
   isActive.value = true;
   isSelected.value = false;
   setTimeout(() => {
-    emit("changeLineState", nodes.id, true)
+    emit("changeLineState", nodes.value.id, true)
   }, 1)
 }
 
@@ -74,7 +74,7 @@ const setNotActive = () => {
   if (!isActive.value) {
     return
   }
-  emit("changeLineState", nodes.id, false)
+  emit("changeLineState", nodes.value.id, false)
   isActive.value = false
 }
 //编辑流程属性
@@ -111,7 +111,8 @@ const onContextmenu = () => {
   cursor: move;
   box-sizing: content-box;
   z-index: 9995;
-
+  background: white;
+  text-align: center;
   &:hover {
     z-index: 9998;
 
@@ -175,5 +176,7 @@ const onContextmenu = () => {
 .active {
   border: 1px dashed @labelColor;
   box-shadow: 0px 5px 9px 0px rgba(0, 0, 0, 0.5);
+  background: white;
+  text-align: center;
 }
 </style>
