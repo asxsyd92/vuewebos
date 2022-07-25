@@ -18,16 +18,71 @@
         <div v-show="auxiliaryLine.isShowYLine" class="auxiliary-line-y"
           :style="{ height: auxiliaryLinePos.height, left: auxiliaryLinePos.x + 'px', top: auxiliaryLinePos.offsetY + 'px' }">
         </div>
-        <flowNode v-for="item in data.nodeList" :id="item.id" :key="item.id" :node="item"
-          @setNodeName="methods.setNodeName" @deleteNode="methods.deleteNode"
-          @changeLineState="methods.changeLineState" ></flowNode>
+        <flowNode v-for="item in data.steps" :id="item.id" :key="item.id" :node="item" @setname="methods.setname"
+          @deleteNode="methods.deleteNode" @changeLineState="methods.changeLineState" @setflow="methods.setflow">
+        </flowNode>
       </div>
     </div>
+
+
+    <!-- 双击时打开步骤属性 -->
+    <lay-layer move="true" :btn="setflowbtn" :closeBtn="false" :area="['90%', '90%']" :shadeClose="false"
+      @submit="submit" title="步骤设置" v-model="setflowvisible">
+      <div class="laymodle">
+        <lay-tab type="brief" v-model="tabcurrent">
+          <lay-tab-item title="基本信息" id="1">
+            <lay-form :model="setflowmode">
+              <lay-form-item label="流程id：" prop="id">
+                <lay-input v-model="setflowmode.id"></lay-input>
+              </lay-form-item>
+              <lay-form-item label="流程名称：" prop="name">
+                <lay-input v-model="setflowmode.name"></lay-input>
+              </lay-form-item>
+              <lay-form-item label="工时" prop="workTime">
+                <lay-input v-model="setflowmode.worktime"></lay-input>
+              </lay-form-item>
+              <lay-form-item label="意见显示：" prop="opinionDisplay">
+                <lay-radio v-model="setflowmode.opinionDisplay" name="opinionDisplay" value="0" label="是"></lay-radio>
+                <lay-radio v-model="setflowmode.opinionDisplay" name="opinionDisplay" value="1" label="否"></lay-radio>
+              </lay-form-item>
+              <lay-form-item label="是否归档：" prop="countersignature">
+                <lay-radio v-model="setflowmode.archives" name="archives" value="0" label="是"></lay-radio>
+                <lay-radio v-model="setflowmode.archives" name="archives" value="1" label="否"></lay-radio>
+              </lay-form-item>
+              <lay-form-item label="审签类型：" prop="countersignature">
+                <lay-radio v-model="setflowmode.countersignature" name="countersignature" value="0" label="无签批意见栏">
+                </lay-radio>
+                <lay-radio v-model="setflowmode.countersignature" name="countersignature" value="1" label="有签批意见-无须签章">
+                </lay-radio>
+                <lay-radio v-model="setflowmode.countersignature" name="countersignature" value="2" label="有签批意见-须签章">
+                </lay-radio>
+              </lay-form-item>
+              <lay-form-item label="表单" >
+                <lay-select v-model="setflowmode.forms.id" :items="forms"></lay-select>
+              </lay-form-item>
+            </lay-form>
+          </lay-tab-item>
+          <lay-tab-item title="策略" id="2">
+            <div style="padding:20px">策略</div>
+          </lay-tab-item>
+          <lay-tab-item title="字段" id="3">
+            <div style="padding:20px">字段</div>
+          </lay-tab-item>
+          <lay-tab-item title="按钮" id="4">
+            <div style="padding:20px">按钮</div>
+          </lay-tab-item>
+        </lay-tab>
+
+
+      </div>
+    </lay-layer>
   </div>
 </template>
 <script lang="ts" setup>
+import http from "../../../utils/http";
 import flowNode from "../../../components/flow/node-item.vue"
 import { ref, onMounted, nextTick, getCurrentInstance } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import panzoom from "panzoom";
 import jsPlumb from 'jsPlumb';
 import utils from "../../../utils/utils";
@@ -36,12 +91,80 @@ import { nodeTypeList } from '../../../utils/flowinit';
 const $jsPlumbs = jsPlumb.jsPlumb;
 var instance = "" as any;
 const currentItem = ref(null) as any;
-
+const router = useRouter();
+const route = useRoute();
 const nodeTypeObj = [] as any;
-const data = {
-  nodeList: [{ "type": "start", "typeName": "开始", "nodeName": "开始", "id": "34v56ha2l9c000", "top": "160px", "left": "100px" }, { "type": "dataSet", "typeName": "文件", "nodeName": "文件", "id": "5sdjugrcqhc000", "top": "160px", "left": "315px" }, { "type": "encode", "typeName": "加密", "nodeName": "加密", "id": "3atqi5p6oa4000", "top": "80px", "left": "600px" }, { "type": "personService", "typeName": "个人服务", "nodeName": "个人服务", "id": "49vcu89p5q0000", "top": "245px", "left": "600px" }, { "type": "arrange", "typeName": "清洗", "nodeName": "清洗", "id": "1jhiilb0t2tc00", "top": "180px", "left": "880px" }, { "type": "end", "typeName": "结束", "nodeName": "结束", "id": "1ogr3wzy6zhc00", "top": "180px", "left": "1160px" }],
-  lineList: [{ "from": "34v56ha2l9c000", "to": "5sdjugrcqhc000", "label": "连线名称", "id": "5n6pp5xqd6s000", "Remark": "" }, { "from": "5sdjugrcqhc000", "to": "3atqi5p6oa4000", "label": "连线名称", "id": "2a0ya9j1kev400", "Remark": "" }, { "from": "5sdjugrcqhc000", "to": "49vcu89p5q0000", "label": "连线名称", "id": "zoisvo5gpvk00", "Remark": "" }, { "from": "3atqi5p6oa4000", "to": "1jhiilb0t2tc00", "label": "连线名称", "id": "4xkb3dju1g0000", "Remark": "" }, { "from": "49vcu89p5q0000", "to": "1jhiilb0t2tc00", "label": "连线名称", "id": "ldc917l47w000", "Remark": "" }, { "from": "1jhiilb0t2tc00", "to": "1ogr3wzy6zhc00", "label": "连线名称", "id": "478galw3u34000", "Remark": "" }]
-}
+const data=ref({}) as any;
+// const data = {
+//   steps: [{
+//     "archives": "0",
+//     "archivesParams": "",
+//     "behavior": {
+//       "backModel": "1",
+//       "backStep": "",
+//       "backType": "0",
+//       "copyFor": "",
+//       "countersignature": "0",
+//       "countersignaturePercentage": "",
+//       "defaultHandler": "",
+//       "flowType": "1",
+//       "handlerStep": "",
+//       "handlerType": "0",
+//       "hanlderModel": "0",
+//       "percentage": "",
+//       "runSelect": "1",
+//       "selectRange": "",
+//       "valueField": ""
+//     },
+//     "buttons": [{
+//       "id": "3b271f67-0433-4082-ad1a-8df1b967b879",
+//       "sort": 0
+//     }],
+//     "countersignature": 0,
+//     "event": {
+//       "backAfter": "",
+//       "backBefore": "",
+//       "submitAfter": "",
+//       "submitBefore": ""
+//     },
+//     "expiredPrompt": "1",
+//     "fieldStatus": [{
+//       "check": "0",
+//       "field": "id",
+//       "status": "0"
+//     }],
+//     "forms": [{
+//       "id": "",
+//       "name": "",
+//       "srot": 0,
+//       "type": ""
+//     }],
+//     "id": "",
+//     "limitTime": "",
+//     "name": "",
+//     "note": "",
+//     "opinionDisplay": "1",
+//     "otherTime": "",
+//     "position": {
+//       "height": 50,
+//       "width": 108,
+//       "x": 10,
+//       "y": 50
+//     },
+//     "signatureType": "0",
+//     "type": "normal",
+//     "workTime": ""
+  
+//   }],
+//   lines: [{
+//     "customMethod": "",
+//     "from": "d6f56e83-0e7b-4928-92c4-207e65b3d271",
+//     "id": "9cd635c5-360a-44b7-bda0-e31217d44269",
+//     "noaccordMsg": "",
+//     "sql": "",
+//     "to": "bd1eb25a-835f-4a4a-91b6-47a20b69620d"
+//   }]
+// }
 const selectedList = null;
 
 const currentInstance = getCurrentInstance() as any;
@@ -56,25 +179,59 @@ const initNodeTypeObj = () => {
   })
 }
 const initNode = () => {
-  data.lineList = data.lineList
-  data.nodeList.map((v: any) => {
-    v.logImg = nodeTypeObj[v.type].logImg
-    v.log_bg_color = nodeTypeObj[v.type].log_bg_color
-    data.nodeList.push(v)
-  })
+  //data.lines = data.lines
+  // data.steps.map((v: any) => {
+  //   v.logImg = nodeTypeObj[v.type]?.logImg
+  //   v.log_bg_color = nodeTypeObj[v.type]?.log_bg_color
+  //   data.steps.push(v)
+  // })
 }
-onMounted(() => {
 
-  initNodeTypeObj();
-  initNode();
+// onMounted(() => {
+  const initflow=()=>{
+  http.post('/api/workflow/GetJSON', { flowid: route.query.id }).then((res) => {
+      console.log(res);
+      let o=new Object() as any;
+      o.lines=res.lines;
+      o.steps=res.steps;
+        console.log(o);
+      data.value=o;
+  // data.value.lines=res.lines;
+  // data.value.steps=res.steps;
+
+  //   initNodeTypeObj();
+  // initNode();
   methods.fixNodesPosition();
   nextTick(() => {
     //console.log( currentInstance?.refs);
     methods.init();
-  })
-});
+  }) 
+  
+  }).catch((res) => { 
+
+  });
+  }
+
+// });
 const methods = {
   init() {
+    //加载表单
+    http.post("/api/common/GetCommonList", { tab: "SysFormDesign", page: 1, limit: 1000 }).then(res => {
+      if (res.success) {
+        forms.value = [];
+        res.data.forEach((tab: any) => {
+          var o = new Object() as any;
+          o.label = tab.title;
+          o.value = tab.id;
+          forms.value.push(o);
+        });
+       console.log(forms.value)
+      } else {
+        layer.msg(res.msg, { icon: 2 });
+      }
+    }).catch(res => {
+      layer.msg("网络错误，请重试", { icon: 2 });
+    })
 
     $jsPlumbs.getInstance().ready(() => {
       // 导入默认配置
@@ -91,13 +248,14 @@ const methods = {
         methods.addLine(evt)
       });
       //连线双击删除事件
-      instance.bind("dblclick", (conn:any, originalEvent:any) => {
+      instance.bind("dblclick", (conn: any, originalEvent: any) => {
         methods.confirmDelLine(conn)
       })
       //断开连线后，维护本地数据
-      instance.bind("connectionDetached", (evt:any) => {
+      instance.bind("connectionDetached", (evt: any) => {
         methods.deleLine(evt)
       })
+
       methods.loadEasyFlow();
       // 会使整个jsPlumb立即重绘。
       instance.setSuspendDrawing(false, true);
@@ -107,8 +265,8 @@ const methods = {
   // 加载流程图
   loadEasyFlow() {
     // 初始化节点
-    for (let i = 0; i < data.nodeList.length; i++) {
-      let node = data.nodeList[i];
+    for (let i = 0; i < data.value.steps.length; i++) {
+      let node = data.value.steps[i];
       // 设置源点，可以拖出线连接其他节点
       instance.makeSource(node.id, jsplumbSourceOptions);
       // // 设置目标点，其他源点拖出的线可以连接该节点
@@ -119,8 +277,8 @@ const methods = {
 
     // 初始化连线
     instance.unbind("connection"); //取消连接事件
-    for (let i = 0; i < data.lineList.length; i++) {
-      let line = data.lineList[i];
+    for (let i = 0; i < data.value.lines.length; i++) {
+      let line = data.value.lines[i];
       instance.connect(
         {
           source: line.from,
@@ -129,15 +287,16 @@ const methods = {
         jsplumbConnectOptions
       );
     }
-    instance.bind("connection", (evt:any) => {
+    instance.bind("connection", (evt: any) => {
       let from = evt.source.id;
       let to = evt.target.id;
-      data.lineList.push({
+      data.value.lines.push({
         from: from,
         to: to,
-        label: "连线名称",
-        id: utils.GenNonDuplicateID(8),
-        Remark: ""
+        noaccordMsg: "连线名称",
+        id: utils.GenNonDuplicateID(),
+        customMethod: "",
+        sql: ""
       });
     });
   },
@@ -152,7 +311,7 @@ const methods = {
 
       },
       stop: (params: any) => {
-  
+
         auxiliaryLine.isShowXLine = false
         auxiliaryLine.isShowYLine = false
         methods.changeNodePosition(nodeId, params.pos);
@@ -165,12 +324,12 @@ const methods = {
     console.log("alignForLine");
     console.log(data);
     let showXLine = false, showYLine = false
-    data.nodeList.some((el : any)=> {
-      if (el.id !== nodeId && el.left == position[0] + 'px') {
+    data.value.steps.some((el: any) => {
+      if (el.id !== nodeId && el.position.x == position[0] + 'px') {
         auxiliaryLinePos.x = position[0] + 60;
         showYLine = true
       }
-      if (el.id !== nodeId && el.top == position[1] + 'px') {
+      if (el.id !== nodeId && el.position.y == position[1] + 'px') {
         auxiliaryLinePos.y = position[1] + 20;
         showXLine = true
       }
@@ -182,10 +341,10 @@ const methods = {
   changeNodePosition(nodeId: any, pos: any) {
     console.log(data);
     console.log(pos);
-    data.nodeList.some(v => {
+    data.value.steps.some(v => {
       if (nodeId == v.id) {
-        v.left = pos[0] + 'px'
-        v.top = pos[1] + 'px'
+        v.position.x = pos[0];
+        v.position.y = pos[1];
         return true
       } else {
         return false
@@ -196,7 +355,7 @@ const methods = {
     currentItem.value = item;
   },
   drop(event: any) {
-     console.log("drop");
+    console.log("drop");
     const containerRect = instance.getContainer().getBoundingClientRect();
     const scale = methods.getScale();
     let left = (event.pageX - containerRect.left - 60) / scale;
@@ -204,7 +363,7 @@ const methods = {
 
     var temp = {
       ...currentItem.value,
-      id: utils.GenNonDuplicateID(32),
+      id: utils.GenNonDuplicateID(),
       top: (Math.round(top / 20)) * 20 + "px",
       left: (Math.round(left / 20)) * 20 + "px"
     };
@@ -213,12 +372,13 @@ const methods = {
   addLine(line: any) {
     let from = line.source.id;
     let to = line.target.id;
-    data.lineList.push({
+    data.value.lines.push({
       from: from,
       to: to,
-      label: "连线名称",
-      id: utils.GenNonDuplicateID(32),
-      Remark: ""
+      customMethod: "",
+      sql: "",
+      id: utils.GenNonDuplicateID(),
+      noaccordMsg: ""
     });
   },
   confirmDelLine(line: any) {
@@ -231,9 +391,9 @@ const methods = {
     // })
   },
   deleLine(line: any) {
-    data.lineList.forEach((item: any, index: any) => {
+    data.value.lines.forEach((item: any, index: any) => {
       if (item.from === line.sourceId && item.to === line.targetId) {
-        data.lineList.splice(index, 1)
+        data.value.lines.splice(index, 1)
       }
     })
   },
@@ -255,7 +415,7 @@ const methods = {
   },
   // 添加新的节点
   addNode(temp: any) {
-    data.nodeList.push(temp);
+    data.value.steps.push(temp);
     nextTick(() => {
       instance.makeSource(temp.id, jsplumbSourceOptions);
       instance.makeTarget(temp.id, jsplumbTargetOptions);
@@ -292,7 +452,7 @@ const methods = {
       instance.mainContainerWrap = mainContainerWrap;
       instance.pan = pan;
       // 缩放时设置jsPlumb的缩放比率
-      pan.on("zoom", (e:any) => {
+      pan.on("zoom", (e: any) => {
         const { x, y, scale } = e.getTransform();
         instance.setZoom(scale);
         //根据缩放比例，缩放对齐辅助线长度和位置
@@ -301,7 +461,7 @@ const methods = {
         auxiliaryLinePos.offsetX = -(x / scale)
         auxiliaryLinePos.offsetY = -(y / scale)
       });
-      pan.on("panend", (e:any) => {
+      pan.on("panend", (e: any) => {
         const { x, y, scale } = e.getTransform();
         auxiliaryLinePos.width = (1 / scale) * 100 + '%'
         auxiliaryLinePos.height = (1 / scale) * 100 + '%'
@@ -316,7 +476,7 @@ const methods = {
 
         mainContainerWrap.addEventListener("mouseout", function wrapMouseout() {
           mainContainerWrap.style.cursor = "grab";
-        
+
         });
       });
       mainContainerWrap.addEventListener("mouseup", function wrapMouseup() {
@@ -327,10 +487,10 @@ const methods = {
 
   },
 
-  setNodeName(nodeId: any, name: any) {
-    data.nodeList.some((v) => {
+  setname(nodeId: any, name: any) {
+    data.value.steps.some((v) => {
       if (v.id === nodeId) {
-        v.nodeName = name
+        v.name = name
         return true
       } else {
         return false
@@ -340,10 +500,10 @@ const methods = {
 
   //删除节点
   deleteNode(node: any) {
-    data.nodeList.some((v, index) => {
+    data.value.steps.some((v, index) => {
       if (v.id === node.id) {
-     
-        data.nodeList.splice(index, 1)
+
+        data.value.steps.splice(index, 1)
         instance.remove(v.id)
         return true
       } else {
@@ -371,7 +531,7 @@ const methods = {
   fixNodesPosition() {
     console.log("fixNodesPosition");
     console.log(data);
-    if (data.nodeList && currentInstance.refs.flowWrap) {
+    if (data.value.steps && currentInstance.refs.flowWrap) {
       const nodeWidth = 120
       const nodeHeight = 40
       let wrapInfo = currentInstance.refs.flowWrap.getBoundingClientRect()
@@ -383,9 +543,9 @@ const methods = {
         bottom: 0
       }
       let fixTop = 0, fixLeft = 0;
-      data.nodeList.forEach(el => {
-        let top = Number(el.top.substring(0, el.top.length - 2))
-        let left = Number(el.left.substring(0, el.left.length - 2))
+      data.value.steps.forEach(el => {
+        let top = el.position.y;
+        let left = el.position.x;
         maxLeft = left > maxLeft ? left : maxLeft
         minLeft = left < minLeft ? left : minLeft
         maxTop = top > maxTop ? top : maxTop
@@ -399,20 +559,48 @@ const methods = {
       fixTop = nodePoint.top !== nodePoint.bottom ? (nodePoint.bottom - nodePoint.top) / 2 : 0;
       fixLeft = nodePoint.left !== nodePoint.right ? (nodePoint.right - nodePoint.left) / 2 : 0;
 
-      data.nodeList.map((el: any) => {
-        let top = Number(el.top.substring(0, el.top.length - 2)) + fixTop;
-        let left = Number(el.left.substring(0, el.left.length - 2)) + fixLeft;
-        el.top = (Math.round(top / 20)) * 20 + 'px'
-        el.left = (Math.round(left / 20)) * 20 + 'px'
+      data.value.steps.map((el: any) => {
+        let top = el.position.y + fixTop;
+        let left = el.position.x + fixLeft;
+        el.position.y = (Math.round(top / 20)) * 20 + 'px'
+        el.position.x = (Math.round(left / 20)) * 20 + 'px'
       })
     }
   },
+  setflow(nodes: any) {
+    setflowmode.value = nodes.value;
+
+    setflowvisible.value = !setflowvisible.value
+  }
 }
 
 
 
 
+//流程设置
+const forms = ref([]) as any;
+const setflowmode = ref(null) as any;
+const setflowvisible = ref(false);
+const submit = () => {
 
+}
+const tabcurrent = ref("1");
+const setflowbtn = [
+  {
+    text: "确认",
+    callback: () => {
+      submit();
+    },
+  },
+  {
+    text: "取消",
+    callback: () => {
+      setflowvisible.value = false;
+    },
+  },
+];
+
+  initflow();
 </script>
 
 <style lang="less" scoped>

@@ -10,12 +10,19 @@ class Utils {
     }
 
     //生成guid
-    GenNonDuplicateID(randomLength:any) {
-        return Number(
-            Math.random()
-            .toString()
-            .substr(3, randomLength) + Date.now()
-        ).toString(36);
+    GenNonDuplicateID() {
+
+   
+            return (this.S4()+this.S4()+"-"+this.S4()+"-"+this.S4()+"-"+this.S4()+"-"+this.S4()+this.S4()+this.S4());
+       
+        // return Number(
+        //     Math.random()
+        //     .toString()
+        //     .substr(3, randomLength) + Date.now()
+        // ).toString(36);
+    }
+    S4(){
+        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
     }
 
 }

@@ -7,7 +7,7 @@ type TAxiosOption = {
 }
  
 const config = {
-    timeout: 5000,
+    timeout: 50000,
     baseURL: ""
 }
  var layerid: any;
