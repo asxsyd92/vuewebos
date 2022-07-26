@@ -1,5 +1,18 @@
 <template>
+<div class="design">
+ <lay-button-group>
+      <lay-button type="default" size="lg">流程属性</lay-button>
+      <lay-button type="default" size="lg">保存</lay-button>
+      <lay-button type="default" size="lg">发布</lay-button>
+    </lay-button-group>
+              <!-- <vxe-button type="a_submit"  content="流程属性"></vxe-button>
+              <vxe-button type="a_add"   content="保存"></vxe-button>
+              <vxe-button type="a_reset" content="发布"></vxe-button>
+               <vxe-button type="a_reset" content="安装"></vxe-button>
+              <vxe-button type="a_reset" content="卸载"></vxe-button> -->
   <div class="flow_region">
+
+
     <div class="nodes-wrap">
       <div v-for="item in nodeTypeList" :key="item.type" class="node" draggable="true"
         @dragstart="methods.drag(this, item)">
@@ -77,12 +90,13 @@
       </div>
     </lay-layer>
   </div>
+  </div>
 </template>
 <script lang="ts" setup>
 import http from "../../../utils/http";
 import { layer } from '@layui/layer-vue';
 import flowNode from "../../../components/flow/node-item.vue"
-import { ref, onMounted, nextTick, getCurrentInstance } from 'vue';
+import { ref, nextTick, getCurrentInstance } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import panzoom from "panzoom";
 import jsPlumb from 'jsPlumb';
@@ -96,78 +110,8 @@ const router = useRouter();
 const route = useRoute();
 const nodeTypeObj = [] as any;
 const data=ref({}) as any;
-// const data = {
-//   steps: [{
-//     "archives": "0",
-//     "archivesParams": "",
-//     "behavior": {
-//       "backModel": "1",
-//       "backStep": "",
-//       "backType": "0",
-//       "copyFor": "",
-//       "countersignature": "0",
-//       "countersignaturePercentage": "",
-//       "defaultHandler": "",
-//       "flowType": "1",
-//       "handlerStep": "",
-//       "handlerType": "0",
-//       "hanlderModel": "0",
-//       "percentage": "",
-//       "runSelect": "1",
-//       "selectRange": "",
-//       "valueField": ""
-//     },
-//     "buttons": [{
-//       "id": "",
-//       "sort": 0
-//     }],
-//     "countersignature": 0,
-//     "event": {
-//       "backAfter": "",
-//       "backBefore": "",
-//       "submitAfter": "",
-//       "submitBefore": ""
-//     },
-//     "expiredPrompt": "1",
-//     "fieldStatus": [{
-//       "check": "0",
-//       "field": "id",
-//       "status": "0"
-//     }],
-//     "forms": [{
-//       "id": "",
-//       "name": "",
-//       "srot": 0,
-//       "type": ""
-//     }],
-//     "id": "",
-//     "limitTime": "",
-//     "name": "",
-//     "note": "",
-//     "opinionDisplay": "1",
-//     "otherTime": "",
-//     "position": {
-//       "height": 50,
-//       "width": 108,
-//       "x": 10,
-//       "y": 50
-//     },
-//     "signatureType": "0",
-//     "type": "normal",
-//     "workTime": ""
-  
-//   }],
-//   lines: [{
-//     "customMethod": "",
-//     "from": "",
-//     "id": "",
-//     "noaccordMsg": "",
-//     "sql": "",
-//     "to": ""
-//   }]
-// }
 const selectedList = null;
-
+const flowjson = ref({}) as any;
 const currentInstance = getCurrentInstance() as any;
 const auxiliaryLine = { isShowXLine: false, isShowYLine: false };
 const auxiliaryLinePos = { width: '100%', height: '100%', offsetX: 0, offsetY: 0, x: 20, y: 20 };
@@ -180,15 +124,13 @@ const initNodeTypeObj = () => {
   })
 }
 
-
-// onMounted(() => {
   const initflow=()=>{
   http.post('/api/workflow/GetJSON', { flowid: route.query.id }).then((res) => {
       console.log(res);
+      flowjson.value=res;
       let o=new Object() as any;
-      o.lines=res.lines;
-      o.steps=res.steps;
-        console.log(o);
+      o.lines=flowjson.value.lines;
+      o.steps=flowjson.value.steps;
       data.value=o;
 
   methods.fixNodesPosition();
@@ -201,7 +143,6 @@ const initNodeTypeObj = () => {
   });
   }
 
-// });
 const methods = {
   init() {
     //加载表单
@@ -654,10 +595,15 @@ const setflowbtn = [
 </script>
 
 <style lang="less" scoped>
+.design{
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.797)
+}
 .flow_region {
   display: flex;
-  width: 90%;
-  height: 90%;
+  width: 99%;
+  height: 99%;
   margin: 20px auto;
   border: 1px solid #ccc;
 
@@ -665,7 +611,7 @@ const setflowbtn = [
     width: 150px;
     height: 100%;
     border-right: 1px solid #ccc;
-
+    background: white;
     .node {
       display: flex;
       height: 40px;

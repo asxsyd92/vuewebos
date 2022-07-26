@@ -34,8 +34,8 @@ const props = withDefaults(defineProps<INodeitemProps>(), {
 });
 
 const mouseEnter = ref(true);
-const isActive = ref(false);
-const isSelected = ref(false);
+const isActive = ref(true);
+const isSelected = ref(true);
 const nodes = ref(props.nodedata);
 
 //  const flowNodeContainer=ref("top: "+nodes.top+"; left:"+ nodes.left);

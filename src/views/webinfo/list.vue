@@ -135,7 +135,7 @@ export default defineComponent({
     }
 
     const editRowEvent = (row: any) => {
-      debugger
+   
       console.log(row);
       var query = new Object() as any;
       query.fromid = row.fromid;

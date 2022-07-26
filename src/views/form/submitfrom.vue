@@ -55,7 +55,7 @@ export default {
           return;
         }
         var url="";
-        debugger;
+   
         if(fromdata.value.form.url!=""&&fromdata.value.form.url!=undefined&&fromdata.value.form.url!=null){
           url=fromdata.value.form.url;
         }else{

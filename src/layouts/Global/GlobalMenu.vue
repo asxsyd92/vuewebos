@@ -81,7 +81,7 @@ watch(route, (val) => {
 });
 watch(selectKey, (val: any) => {
   if (val.tag != null && val.tag != undefined && val.tab != "") {
-    debugger
+
     if (val.tag.indexOf("?") > -1) {
       url.value = "/" + val.tag + "&tabname=" + val.title;
     } else {
