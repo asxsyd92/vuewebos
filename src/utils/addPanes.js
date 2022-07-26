@@ -1,1 +1,0 @@
-import {inRoutes} from "../router";

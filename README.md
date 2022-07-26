@@ -1,54 +1,20 @@
-# webos免开发版vue版
+# Vue 3 + Typescript + Vite
 
+layui风格开发集成
+layui-vue
+vxe-table
+包含表单设计
+小程序
+## Get Started
 
-## Build Setup
-``` bash 
-# 第一步：安装vue
-npm install -g vue-cli 
-``` bash
-# 初始项目
-vue create  webos 
-
-# 进入webos
-cd webos
-
-# 安装依赖
-$ npm install  //下载依赖包(一般启动前都需要的) 
-
-# 安装layui
-npm install  layui-src 
-npm install layui-src@1.2.0
-
-# 第五步：在main.js中import layui
- import layui from 'layui-src'
-# 第6步：安装vuedraggable用于拖拽实现拖拽表单
- npm i vuedraggable
-
- # 喜欢使用jquery可用安装
-npm install jquery    
- # 安装axios
-npm install --save axios
-
- # 安装vue-echarts
-npm install vue-echarts --save
-npm install --save @vue/composition-api
- # 安装字体
-npm i font-awesome
-
-#安装动画
-npm i animate
-npm i animate.css@3.5.0
-
-npm install --save crypto-js
-npm i linq
-
-#安装二维码插件
-npm i @styleofpicasso/qrcode
-
-npm install gojs --save
-
-
-npm i raphael
+```
+yarn install
 ```
 
+```
+npm run dev
+```
 
+```
+npm run build
+```

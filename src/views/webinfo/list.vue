@@ -1,192 +1,206 @@
 <template>
-    <div>
-        <script id="barwebinfo" type="text/html">
-    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn layui-btn-xs" lay-event="seo">SEO优化</a>
-    </script>
-        <script id="toolbarwebinfo" type="text/html">
-    <div class="layui-btn-container">
-        <input class="layui-btn layui-btn-normal  layui-btn-sm" type="text" name="title" id="title" placeholder="请输入表单名称" style="text-align: left;color: #009688; background-color: #fff;" />
+  <div>
 
-        <button class="layui-btn layui-btn-normal  layui-btn-sm" lay-event="a_search">查询</button>
-        <button class="layui-btn layui-btn-normal  layui-btn-sm" lay-event="a_add">新增</button>
-          <button class="layui-btn layui-btn-normal  layui-btn-sm" lay-event="a_seo">添加推送</button>
-        <!-- <button class="layui-btn layui-btn-normal  layui-btn-sm" lay-event="a_add">添加</button> -->
-    </div>
-    </script>
-        <table class="layui-hide" id="webinfolist" lay-filter="webinfolist"></table>
-    </div>
+    <vxe-grid ref="xGrid" v-bind="gridOptions" v-on="gridEvents" :column-config="{ isCurrent: true, isHover: true }"
+      :row-config="{ isCurrent: true, isHover: true }">
+      <!--将表单放在工具栏中-->
+      <template #toolbar_buttons>
+        <vxe-form :data="search" @submit="searchEvent">
+          <vxe-form-item field="name">
+            <template #default>
+              <vxe-input v-model="search.name" type="text" placeholder="请输入名称"></vxe-input>
+            </template>
+          </vxe-form-item>
+          <vxe-form-item>
+            <template #default>
+              <vxe-button type="a_submit" status="primary" @click="searchEvent" content="查询"></vxe-button>
+              <vxe-button type="a_add" @click="a_add" status="primary" content="新增"></vxe-button>
+              <vxe-button type="a_reset" content="重置"></vxe-button>
+            </template>
+          </vxe-form-item>
+        </vxe-form>
+      </template>
+
+      <template #operate="{ row }">
+        <vxe-button icon="fa fa-eye" title="查看" circle @click="editRowEvent(row)"></vxe-button>
+        <vxe-button icon="fa fa-trash" title="删除" circle @click="removeRowEvent(row)"></vxe-button>
+
+        <vxe-button icon="fa fa-gear" title="设置" circle></vxe-button>
+      </template>
+    </vxe-grid>
+
+  </div>
 </template>
-<script>
-    var $ = layui.$;
-    export default {
-        name: "webinfolist",
-        data() {
-            return {
-                table: null,
-                tableId: "_webinfolist"
-            }
-        },
-        created() { }
-        , watch: {
-            '$route'(to, from) { //监听路由是否变化
 
+<script lang="ts">
+import http from "../../utils/http";
+import { useRouter, useRoute, RouteMeta } from 'vue-router';
 
-                this.init();
+import { defineComponent, reactive, ref } from 'vue'
+import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
 
+export default defineComponent({
+  setup() {
+    const search = ref({
+      name: ''
+    });
+    const xGrid = ref<VxeGridInstance>()
+    const router = useRouter();
+    const route = useRoute();
+    const gridOptions = reactive<VxeGridProps>({
+      border: true,
+      keepSource: true,
+      showOverflow: true,
 
-            }
-        },
-        mounted() {
-            //初始化
-            this.init();
-            console.log("webinfo");
-
-        }, methods: {
-            init() {
-                var m = this;
-                m.table = layui.table;
-                //第一个实例
-                m.tablerender();
-                //监听工具条
-                m.tool();
-                //菜单搜索栏
-                m.toolbar();
-            },
-            tablerender() {
-                var m = this;
-                m.table.render({
-                    elem: '#webinfolist'
-                    , id: m.tableId
-                    , height: 'full'
-                    , method: "post"
-                    , toolbar: '#toolbarformdesign'
-                    , headers: { "Authorization": "bearer " + window.localStorage["_token"] }
-                    , url: m.host + '/api/tasks/WaitList?title=&type=' + m.$route.query.zhuanti + '&desc=AddTime desc'
-                    , page: { theme: '#1E9FFF' }
-                    , toolbar: '#toolbarwebinfo'
-                    , cols: [[
-                        { field: 'title', title: '标题' }
-                        , { field: 'sendername', title: '处理人' }
-                        , { field: 'addtime', title: '时间' }
-                        , { fixed: 'right', title: '操作', toolbar: '#barwebinfo' }
-                    ]]
-                });
-            },
-            toolbar() {
-                var m = this;
-                m.table.on('toolbar(webinfolist)', function (obj) {
-                    var checkStatus = m.table.checkStatus(obj.config.id);
-                    switch (obj.event) {
-                        case 'a_search':
-                            var title = $("#title").val();
-                            //搜索page设置为0
-                            m.table.reload(m.tableId, {
-                                url: m.host + '/api/tasks/WaitList'
-                                , where: { page: 1, type: m.$route.query.zhuanti,title:title } //设定异步数据接口的额外参数
-                            });
-                            $("#title").val(title);
-                            break;
-                        case 'a_add':// add(-1);
-                            if (m.$route.query.fromid == null || m.$route.query.fromid == undefined) {
-                                layui.layer.msg("未找到fromid", { icon: 2 });
-                                return false;
-                            }
-                            var query = new Object();
-                            query.fromid = m.$route.query.fromid;
-                            query.operation = 'add';
-                            query.zhuanti = m.$route.query.zhuanti;
-                            m.$router.push({ path: "/formdesign/showfrom", query: query })
-                            break;
-                        case 'a_seo':
-                            layui.layer.prompt({ title: '请输入本站可访问的地址' }, function (pass, index) {
-                                layui.layer.close(index);
-                                if(pass.indexOf("http")<=-1){
-                                 layui.layer.msg("输入地址不正确，请重试：http://asxsyd92.com", { icon: 2 });
-                                return false;
-                                }
-                                m.$post(m.host + "/api/portalsite/seo", { url: pass }, "正在处理预计10分钟后生效").then(res => {
-                                    console.log(res);
-                                }).catch(res => {
-
-                                    if (res.success) {
-                                        layui.layer.msg(res.msg, { icon: 1 });
-
-                                    } else {
-
-                                        layui.layer.msg(res.msg, { icon: 2 });
-                                        return;
-                                    }
-                                })
-                            });
-
-                    }
-                });
-            },
-            tool() {
-                var m = this;
-                m.table.on('tool(webinfolist)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-                    var data = obj.data; //获得当前行数据
-                    var layEvent = obj.event; //获得 lay-event 对应的值
-                    var tr = obj.tr; //获得当前行 tr 的DOM对象
-                    var ids = '';   //选中的Id
-                    $(data).each(function (index, item) {
-                        ids += item.id + ',';
-                    });
-                    if (layEvent === 'del') { //删除
-                        var msg = obj ? '确认删除【' + data.title + '】吗？' : '确认删除选中数据吗？';
-                        layui.layer.confirm(msg, { icon: 3, title: '删除' + data.title }, function (index) {
-                            layui.layer.close(index);
-                            //向服务端发送删除指令
-
-                            m.$post(m.host + '/api/tasks/DelFormData', { table: data.t_table, instanceid: data.instanceid, id: data.id }, "正在处理中..").then(res => {
-                            }).catch(resp => {
-
-                                if (resp.success) {
-                                    //obj.del(); //删除对应行（tr）的DOM结构
-                                    table.reload(m.tableId, {});
-                                    layui.layer.alert(resp.msg, { title: '温馨提示' });
-                                } else {
-                                    layui.layer.alert(resp.msg, { title: '温馨提示' });
-                                }
-
-
-                            });
-
-                        });
-                    }
-
-                    else if (layEvent === 'edit') { //编辑
-
-                        if (!data.id) return;
-                        var query = new Object();
-                        query.fromid = data.fromid;
-                        query.instanceid = data.instanceid;
-                        query.zhuanti = m.$route.query.zhuanti;
-                        m.$router.push({ path: "/formdesign/showfrom", query: query })
-
-                    } else if (layEvent === "seo") {
-
-                        m.$post(m.host + "/api/portalsite/seo", { url:  "http://asxsyd92.com/news/newsdetail?id=" + data.instanceid }, "正在处理预计10分钟后生效").then(res => {
-                            console.log(res);
-                        }).catch(res => {
-
-                            if (res.success) {
-                                layui.layer.msg(res.msg, { icon: 1 });
-
-                            } else {
-
-                                layui.layer.msg(res.msg, { icon: 2 });
-                                return;
-                            }
-                        })
-                    }
-
-
-                });
-            }
-
+      loading: false,
+      columnConfig: {
+        resizable: true,
+        isCurrent: true,
+        isHover: true,
+      },
+      pagerConfig: {
+        total: 0,
+        currentPage: 1,
+        pageSize: 10,
+        pageSizes: [10, 20, 50, 100, 200, 500]
+      },
+      editConfig: {
+        trigger: 'manual',
+        mode: 'row',
+        showStatus: true,
+        icon: 'fa fa-file-text-o'
+      },
+      toolbarConfig: {
+        export: true,
+        print: true,
+        custom: true,
+        slots: {
+          buttons: 'toolbar_buttons'
         }
+      },
+      columns: [
+        // { type: 'seq', width: 60 },
+        { type: 'checkbox', width: 50 },
+        { field: 'title', title: '标题' },
+        { field: 'sendername', title: '作者', },
+        { field: 'addtime', title: '发表时间', },
+        { title: '操作', fixed: "right", width: 150, slots: { default: 'operate' } }
+      ],
+      data: []
+    })
+
+    const sexList1 = ref([
+      { value: '1', label: '男' },
+      { value: '0', label: '女' }
+    ])
+
+    const findList = () => {
+      gridOptions.loading = true;
+      var page: any, limt: any;
+      if (gridOptions.pagerConfig) {
+        page = gridOptions.pagerConfig.currentPage;
+        limt = gridOptions.pagerConfig.pageSize;
+      }
+      http.post("/api/tasks/WaitList", { type: route.query.zhuanti, title: search.value.name, page: page, limit: limt }).then(res => {
+        gridOptions.loading = false
+
+        if (res.success) {
+          gridOptions.data = res.data;
+
+          if (gridOptions.pagerConfig) {
+            gridOptions.pagerConfig.total = res.count
+          }
+        }
+      });
     }
+
+    const gridEvents: VxeGridListeners = {
+      pageChange({ currentPage, pageSize }) {
+        if (gridOptions.pagerConfig) {
+          gridOptions.pagerConfig.currentPage = currentPage
+          gridOptions.pagerConfig.pageSize = pageSize
+        }
+        findList()
+      }
+    }
+
+    const formatSex = (value: any) => {
+      if (value === '1') {
+        return '男'
+      }
+      if (value === '0') {
+        return '女'
+      }
+      return ''
+    }
+
+    const editRowEvent = (row: any) => {
+   
+      console.log(row);
+      var query = new Object() as any;
+      query.fromid = row.fromid;
+      query.instanceid = row.instanceid;
+      query.zhuanti = row.classid;
+      query.tabname = row.title;
+      router.push({ path: "/formdesign/submitfrom", query: query, params: { tabname: row.title } })
+
+    }
+
+    const saveRowEvent = async () => {
+      const $grid = xGrid.value
+      if ($grid) {
+        await $grid.clearActived()
+        gridOptions.loading = true
+        // 模拟异步保存
+        setTimeout(() => {
+          gridOptions.loading = false
+          VXETable.modal.message({ content: '保存成功！', status: 'success' })
+        }, 300)
+      }
+    }
+
+    const removeRowEvent = async (row: any) => {
+      const type = await VXETable.modal.confirm('您确定要删除该数据?')
+      const $grid = xGrid.value
+      if ($grid) {
+        if (type === 'confirm') {
+          await $grid.remove(row)
+        }
+      }
+    }
+
+    findList()
+    const searchEvent = () => {
+      findList();
+    }
+
+    const formData = reactive({
+      name: ''
+    });
+    const a_add = () => {
+      var query = new Object() as any;
+      query.fromid = route.query.fromid;
+      query.instanceid = route.query.instanceid;
+      query.zhuanti = route.query.classid;
+      query.tabname = "新增" + route.query.tabname;
+      router.push({ path: "/formdesign/submitfrom", query: query, params: { tabname: "新增" + route.query.tabname } })
+    }
+    return {
+      xGrid,
+      sexList1,
+      gridOptions,
+      formatSex,
+      gridEvents,
+      editRowEvent,
+      saveRowEvent,
+      removeRowEvent,
+      formData,
+      searchEvent,
+      a_add,
+      search
+    }
+  }
+})
+
+
 </script>

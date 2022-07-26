@@ -1,125 +1,200 @@
 <template>
-    <div>
-        <script id="barformdesign" type="text/html">
-    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    </script>
-        <script id="toolbarformdesign" type="text/html">
-    <div class="layui-btn-container">
-        <input class="layui-btn layui-btn-normal  layui-btn-sm" type="text" name="title" id="title" placeholder="请输入表单名称" style="text-align: left;color: #009688; background-color: #fff;" />
-        <button class="layui-btn layui-btn-normal  layui-btn-sm" lay-event="a_search">查询</button>
-        <button class="layui-btn layui-btn-normal  layui-btn-sm" lay-event="a_add">添加</button>
-    </div>
-    </script>
-        <table class="layui-hide" id="formdesign" lay-filter="formdesign"></table>
-    </div>
+  <div>
+
+    <vxe-grid ref="xGrid" v-bind="gridOptions" v-on="gridEvents" :column-config="{ isCurrent: true, isHover: true }"
+      :row-config="{ isCurrent: true, isHover: true }">
+      <!--将表单放在工具栏中-->
+      <template #toolbar_buttons>
+        <vxe-form :data="formData" @submit="searchEvent">
+          <vxe-form-item field="name">
+            <template #default>
+              <vxe-input v-model="formData.name" type="text" placeholder="请输入名称"></vxe-input>
+            </template>
+          </vxe-form-item>
+          <vxe-form-item>
+            <template #default>
+              <vxe-button type="submit" status="primary" content="查询"></vxe-button>
+              <vxe-button type="reset" content="重置"></vxe-button>
+            </template>
+          </vxe-form-item>
+        </vxe-form>
+      </template>
+
+      <template #operate="{ row }">
+        <vxe-button icon="fa fa-eye" title="查看" circle @click="editRowEvent(row)"></vxe-button>
+        <vxe-button icon="fa fa-trash" title="删除" circle @click="removeRowEvent(row)"></vxe-button>
+
+        <vxe-button icon="fa fa-gear" title="设置" circle></vxe-button>
+      </template>
+    </vxe-grid>
+
+  </div>
 </template>
-<script>
-    var $ = layui.$;
-    export default {
-        name: "formdesignlist",
-        created() { },
-        watch: {
-            '$route'(to, from) { //监听路由是否变化
-                console.log(this);
-                if (to.fullPath.indexOf("showfrom") > 0) {
-                    this.init();
-                }
 
-            }
-        }, methods: {
-            init() {
-                   let m = this;
-                var table = layui.table;
-                var tableId = "formdesignlist";
-                //第一个实例
-                table.render({
-                    elem: '#formdesign'
-                    , id: tableId
-                    , height: 'full'
-                    , toolbar: '#toolbarformdesign'
-                    , headers: { "Authorization": "bearer " + window.localStorage["_token"] }
-                    , url: m.host + '/api/common/GetCommonList?tab=SysFormDesign&' //数据接口
-                    , page: { theme: '#1E9FFF' }
-                    , cols: [[ //表头
-                        //{ field: 'ID', title: 'ID', width: 80, sort: true, fixed: 'left' }
-                        { field: 'title', title: '名称' },
-                        { field: 'datetime', title: '填加时间' },
-                        { field: 'tab', title: '存储表明' }
-                        ,
-                        { field: 'url', title: '访问路径' }
-                        , { fixed: 'right', title: '操作', toolbar: '#barformdesign' }
-                    ]]
-                });
-                //监听工具条
-                table.on('tool(formdesign)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-                    var data = obj.data; //获得当前行数据
-                    var layEvent = obj.event; //获得 lay-event 对应的值
-                    var tr = obj.tr; //获得当前行 tr 的DOM对象
-                    var ids = '';   //选中的Id
-                    $(data).each(function (index, item) {
-                        ids += item.id + ',';
-                    });
-                    if (layEvent === 'del') { //删除
-                        var msg = obj ? '确认删除【' + data.title + '】吗？' : '确认删除选中数据吗？';
-                        layui.layer.confirm(msg, { icon: 3, title: '删除' + data.title }, function (index) {
-                            layer.close(index);
-                            //向服务端发送删除指令
-                            var lay = layui.layer.msg('正在处理中..', { icon: 16, shade: 0.5, time: 20000000 });
-                            m.$post(m.host + '/api/form/FormDel', { id: data.id }).then(res => {
-                                console.log(res);
-                            }).catch(resp => {
-                                layui.layer.close(lay);
-                                if (resp.success) {
-                                    //obj.del(); //删除对应行（tr）的DOM结构
-                                    table.reload(tableId, {});
-                                    layui.layer.alert(resp.msg, { title: '温馨提示' });
-                                } else {
-                                    layui.layer.alert(resp.msg, { title: '温馨提示' });
-                                }
+<script lang="ts">
+import http from "../../utils/http";
+import { useRouter, useRoute, RouteMeta } from 'vue-router';
 
+import { defineComponent, reactive, ref } from 'vue'
+import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
 
-                            });
+export default defineComponent({
+  setup() {
+    const xGrid = ref<VxeGridInstance>()
+    const router = useRouter();
+    const route = useRoute();
+    const gridOptions = reactive<VxeGridProps>({
+      border: true,
+      keepSource: true,
+      showOverflow: true,
 
-                        });
-                    }
-
-                    else if (layEvent === 'edit') { //编辑
-                        console.log("edit");
-                        if (!data.id) return;
-                        // m.$taber.open({  name:'formdesign', params: {    key:data.id   }});
-                        m.$router.push({ path: "/formdesign/formdesign/" + data.id, })
-                    }
-
-
-                });
-                table.on('toolbar(formdesign)', function (obj) {
-                    var checkStatus = table.checkStatus(obj.config.id);
-                    switch (obj.event) {
-                        case 'a_search':
-                            var title = $("#title").val();
-                            //搜索page设置为0
-                            table.reload(tableId, {
-                                url: m.host + '/api/common/GetCommonList?tab=SysFormDesign&title=' + title
-                                , where: { page: 1 } //设定异步数据接口的额外参数
-                            });
-                            $("#title").val(title);
-                            break;
-                        case 'a_add':// add(-1);
-                            m.$router.push({ path: "/formdesign/formdesign/_" })
-                            //   m.$taber.open({  name:'formdesign', params: { }})
-                            //  top.xadmin.open('添加角色',  m.host+'/webos/page/base/addSysFormDesign.html?appid=' + appid, 500, 600);
-                            break;
-
-                    }
-                });
-            }
-        },
-        mounted() {
-
-         var m=this;
-           m.init();
-
+      loading: false,
+      columnConfig: {
+        resizable: true,
+        isCurrent: true,
+        isHover: true,
+      },
+      pagerConfig: {
+        total: 0,
+        currentPage: 1,
+        pageSize: 10,
+        pageSizes: [10, 20, 50, 100, 200, 500]
+      },
+      editConfig: {
+        trigger: 'manual',
+        mode: 'row',
+        showStatus: true,
+        icon: 'fa fa-file-text-o'
+      },
+      toolbarConfig: {
+        export: true,
+        print: true,
+        custom: true,
+        slots: {
+          buttons: 'toolbar_buttons'
         }
+      },
+      columns: [
+        // { type: 'seq', width: 60 },
+        { type: 'checkbox', width: 50 },
+        { field: 'title', title: '标题' },
+        { field: 'sendername', title: '作者', },
+        { field: 'stepname', title: '步骤', },
+        { field: 'receivetime', title: '接收时间', },
+
+        { title: '操作', fixed: "right", width: 150, slots: { default: 'operate' } }
+      ],
+      data: []
+    })
+
+    const sexList1 = ref([
+      { value: '1', label: '男' },
+      { value: '0', label: '女' }
+    ])
+
+    const findList = () => {
+      gridOptions.loading = true;
+      var page: any, limt: any;
+      if (gridOptions.pagerConfig) {
+        page = gridOptions.pagerConfig.currentPage;
+        limt = gridOptions.pagerConfig.pageSize;
+      }
+      http.post("/api/workflowtasks/CompletedList", { page: page, type: route.query.zhuanti, limit: limt }).then(res => {
+        gridOptions.loading = false
+
+        if (res.success) {
+          gridOptions.data = res.data;
+
+          if (gridOptions.pagerConfig) {
+            gridOptions.pagerConfig.total = res.count
+          }
+        }
+      });
     }
+
+    const gridEvents: VxeGridListeners = {
+      pageChange({ currentPage, pageSize }) {
+        if (gridOptions.pagerConfig) {
+          gridOptions.pagerConfig.currentPage = currentPage
+          gridOptions.pagerConfig.pageSize = pageSize
+        }
+        findList()
+      }
+    }
+
+    const formatSex = (value: any) => {
+      if (value === '1') {
+        return '男'
+      }
+      if (value === '0') {
+        return '女'
+      }
+      return ''
+    }
+
+    const editRowEvent = (row: any) => {
+
+      console.log(row);
+      var query = new Object() as any;
+      // query.fromid = row.fromid;
+      // query.instanceid = row.instanceid;
+      // query.zhuanti = route.query.zhuanti;
+      query.instanceid = row.instanceid;
+      query.taskid = row.id;
+      query.groupid = row.groupid;
+      query.flowid = row.flowid;
+      query.stepid = row.stepid;
+      query.tabname = row.title;
+      router.push({ path: "/oa/workrun/index", query: query })
+
+    }
+
+    const saveRowEvent = async () => {
+      const $grid = xGrid.value
+      if ($grid) {
+        await $grid.clearActived()
+        gridOptions.loading = true
+        // 模拟异步保存
+        setTimeout(() => {
+          gridOptions.loading = false
+          VXETable.modal.message({ content: '保存成功！', status: 'success' })
+        }, 300)
+      }
+    }
+
+    const removeRowEvent = async (row: any) => {
+      const type = await VXETable.modal.confirm('您确定要删除该数据?')
+      const $grid = xGrid.value
+      if ($grid) {
+        if (type === 'confirm') {
+          await $grid.remove(row)
+        }
+      }
+    }
+
+    findList()
+    const searchEvent = () => {
+      const $grid = xGrid.value
+      //$grid?.commitProxy('query')
+    }
+
+    const formData = reactive({
+      name: ''
+    })
+    return {
+      xGrid,
+      sexList1,
+      gridOptions,
+      formatSex,
+      gridEvents,
+      editRowEvent,
+      saveRowEvent,
+      removeRowEvent,
+      formData,
+      searchEvent
+    }
+  }
+})
+
+
 </script>
