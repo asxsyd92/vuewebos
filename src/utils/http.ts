@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios'
 import { layer } from "@layui/layer-vue"
+
 import Qs from 'qs'
 type TAxiosOption = {
     timeout: number;
@@ -22,7 +23,9 @@ class Http {
         this.service.interceptors.request.use((config: AxiosRequestConfig) => {
       
             if (localStorage.getItem('token')) {
-                (config.headers as AxiosRequestHeaders).Authorization ="bearer "+ localStorage.getItem('token') as string
+                var t=localStorage.getItem('token') as string;
+                let token=JSON.parse(t);
+                (config.headers as AxiosRequestHeaders).Authorization ="bearer "+ token.token as string
  
             }
             return config

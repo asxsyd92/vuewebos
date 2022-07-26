@@ -49,7 +49,8 @@
   </div>
 </template>
 
-<script >
+<script>
+  import { useUserStore } from "../../store/user";
   import { ref, reactive, onMounted } from 'vue'
   import { useRouter, useRoute } from 'vue-router';
   import { layer } from '@layui/layer-vue'
@@ -61,7 +62,7 @@
 
   export default {
     setup() {
-
+     const userStore = useUserStore();
       const codeimg = ref("");
       const layFormRef = ref(null);
        const router = useRouter();
@@ -109,15 +110,15 @@
           http.post("/api/login/Login", { user: user, pw: password, code: code }, "正在登陆...").then(res => {
             console.log(res);
             if (res.success) {
-              window.localStorage["user"] = res.name;
-              window.localStorage["userid"] = res.userid;
-              window.localStorage["orname"] = res.orname;
-              window.localStorage["orid"] = res.orid;
-              window.localStorage["token"] = res.access_token;
-              window.localStorage["tokenKey"] = res.userid;
-              window.localStorage["account"] = res.account;
-              window.localStorage["picture"] = res.picture;
-              localStorage.setItem('isLogin', true);
+              userStore.userInfo.name=res.user;
+              userStore.token=res.access_token;
+               userStore.userInfo.userid=res.userid;
+               userStore.userInfo.orname=res.orname;
+               userStore.userInfo.orid=res.orid;
+               userStore.userInfo.account=res.account;
+               userStore.userInfo.picture=res.picture;
+              userStore.userInfo.isLogin=res.isLogin;
+    
               router.push('/');
             } else {
               getnewcode();

@@ -26,6 +26,8 @@ export default {
 import { ref, reactive, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import http from "../../../utils/http";
+import utils from "../../../utils/utils";
+
 interface ItemcolorProps {
   data: any;
   value: any;
@@ -53,7 +55,8 @@ const createEvent = function () {
 
   http.post("/api/form/GetDictionaryByCode", { id: data.value.data.data }).then(res => {
     if (res.success) {
-      setdata(res.data);
+     items.value= utils.TreeTtoList(res.data);
+      //setdata(res.data);
 
       setTimeout(() => {
 
@@ -77,16 +80,7 @@ const createEvent = function () {
     }
   });
 }
-const setdata = (da: Array<any>) => {
-  da.forEach((item: any) => {
-    if (item.children.length > 0) {
-      setdata(item.children);
-    }
-    items.value.push(item);
-  })
 
-
-}
 
 
 

@@ -34,6 +34,9 @@
       title="新增→修改" v-model="menuvisible">
       <div class="laymodle">
         <lay-form :model="menumodel">
+         <lay-form-item label="字典id" prop="id" >
+            <lay-input v-model="menumodel.id" disabled="disabled"></lay-input>
+          </lay-form-item>
           <lay-form-item label="标题" prop="title">
             <lay-input v-model="menumodel.title"></lay-input>
           </lay-form-item>
@@ -44,8 +47,8 @@
           <lay-form-item label="路径" prop="tag">
             <lay-input v-model="menumodel.tag"></lay-input>
           </lay-form-item>
-          <lay-form-item label="id" prop="id" style="display:none">
-            <lay-input v-model="menumodel.id"></lay-input>
+          <lay-form-item label="Code" prop="code">
+            <lay-input v-model="menumodel.code"></lay-input>
           </lay-form-item>
           <lay-form-item label="parentid" prop="parentid" style="display:none">
             <lay-input v-model="menumodel.parentid"></lay-input>
