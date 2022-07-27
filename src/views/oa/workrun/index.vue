@@ -4,7 +4,7 @@
             <div class="layui-container">
     <lay-button-group>
       <lay-button type="default" size="sm" @click="validate">立即提交</lay-button>
-      <lay-button type="default" size="sm" @click="clearValidate">重置</lay-button>
+    
     </lay-button-group>
                 <!-- <div class="layui-input-block layui-footer">
                     <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm"
