@@ -5,7 +5,7 @@
 <div  :class="data.data.col"  :style="'display:'+data.data.display">
 
     <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name">
-    <lay-radio v-for=" li in radio" :key="li.value" v-model="value[data.data.name]"   :label="li.value" >{{li.title}} </lay-radio>
+    <lay-radio v-for=" (li,index) in radio" :key="index" v-model="value[data.data.name]"   :label="li.value" >{{li.title}} </lay-radio>
     </lay-form-item>
 
 </div>
@@ -14,7 +14,6 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { values } from 'xe-utils';
 export default {
   name: "itemradio",
 };

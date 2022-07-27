@@ -1,14 +1,17 @@
 <template>
-  <lay-panel class="submitfrom">
+  <lay-panel>
 
     <div class="layui-card " ref="GlobalTab">
       <div class="layui-container">
-
-        <div class="layui-input-block layui-footer">
+    <lay-button-group>
+      <lay-button type="default" size="sm" @click="validate">立即提交</lay-button>
+      <lay-button type="default" size="sm" @click="clearValidate">重置</lay-button>
+    </lay-button-group>
+        <!-- <div class="layui-input-block layui-footer">
           <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" @click="validate">立即提交</button>
           <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm" @click="clearValidate">重置</button>
           <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" @click="reset">关闭</button>
-        </div>
+        </div> -->
         <lay-form :model="fromdata.field" ref="layFormRef" required>
           <lay-line border-style="dashed" border-width="6px">
             <div style="font-size:large"> {{ fromdata.name }}</div>
@@ -160,10 +163,7 @@ export default {
 }
 </script>
 <style>
-.submitfrom {
-  top: 40px;
-  position: relative;
-}
+
 
 .global-content {
   height: calc(100% - 42px);
