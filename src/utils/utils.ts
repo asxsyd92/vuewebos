@@ -25,16 +25,16 @@ class Utils {
         return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
     }
 
-    TreeTtoList(da: Array<any>){
-       let items=[] as any;
- 
+    TreeTtoList(da: Array<any>,data: Array<any>){
+   
+
         da.forEach((item: any) => {
             if (item.children.length > 0) {
-                this.TreeTtoList(item.children);
+                this.TreeTtoList(item.children,data);
             }
-            items.push(item);
+            data.push(item);
           });
-          return items;
+          return data;
     }
 
 }

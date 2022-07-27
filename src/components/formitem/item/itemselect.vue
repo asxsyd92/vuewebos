@@ -55,8 +55,9 @@ const createEvent = function () {
 
   http.post("/api/form/GetDictionaryByCode", { id: data.value.data.data }).then(res => {
     if (res.success) {
-     items.value= utils.TreeTtoList(res.data);
-      //setdata(res.data);
+      console.log(res.data);
+     items.value= utils.TreeTtoList(res.data,[]);
+console.log(items.value);
 
       setTimeout(() => {
 

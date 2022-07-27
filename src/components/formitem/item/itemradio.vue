@@ -4,8 +4,8 @@
 
 <div  :class="data.data.col"  :style="'display:'+data.data.display">
 
-    <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name">
-    <lay-radio v-for=" li in radio" :key="li.value" v-model="value[data.data.name]"   :label="li.value" >{{li.title}} </lay-radio>
+    <lay-form-item  class="layui-form-item" :label="data.data.label" :prop="data.data.name">
+    <lay-radio v-for=" (li,index) in radio" :key="index" v-model="value[data.data.name]" :name="data.data.name"  :value="li.value" >{{li.title}} </lay-radio>
     </lay-form-item>
 
 </div>
@@ -14,14 +14,13 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { values } from 'xe-utils';
 export default {
   name: "itemradio",
 };
 </script>
 <script lang="ts" setup>
     import http from "../../../utils/http";
-    import { ref,reactive ,onMounted  } from "vue";
+    import { ref,reactive  } from "vue";
 interface ItemradioProps {
   data: any;
   value:any;
@@ -34,9 +33,9 @@ const data = ref(props.data);
 const value = ref(props.value);
 
 const radio=ref([]) as any;
-      onMounted(() => {
-        render();
-      });
+   
+     
+   
     const render = function () {
 
         //本地数据
@@ -92,6 +91,8 @@ const radio=ref([]) as any;
 
     }
     }
+
+       render();
 // import { ref,reactive ,onMounted,toRefs  } from "vue";
 // interface Data {
 //     [key:string]:null
