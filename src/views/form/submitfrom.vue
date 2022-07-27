@@ -48,7 +48,11 @@ export default {
       layFormRef.value.validate((isValidate: any, model: any, errors: any) => {
         if (!isValidate) {
           errors.forEach((item: any) => {
-            layer.msg(item.message, { icon: 2, time: 1000 })
+                  layer.notifiy({
+                        title: "温馨提示",
+                        content:item.message
+                    });
+            //layer.msg(item.message, { icon: 2, time: 1000 })
           });
 
 
@@ -65,15 +69,26 @@ export default {
           console.log(res);
 
           if (res.success) {
-            layer.msg(res.msg, { icon: 1, time: 1000});
+              layer.notifiy({
+                        title: "温馨提示",
+                        content:res.msg
+                    });
             HelpTabs.close(appStore, route.fullPath, router);
           } else {
-            layer.msg(res.msg, { icon: 2, time: 1000 });
+              layer.notifiy({
+                        title: "温馨提示",
+                        content:res.msg
+                    });
+          
 
           }
 
         }).catch(resp => {
-          layer.msg("网络错误", { icon: 2, time: 1000 })
+            layer.notifiy({
+                        title: "温馨提示",
+                        content:"网络错误"
+                    });
+    
 
         })
 

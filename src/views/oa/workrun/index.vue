@@ -12,7 +12,7 @@
                 </div>
                 <lay-form :model="fromdata.field" ref="layFormRef" required>
                     <lay-line border-style="dashed" border-width="6px">
-                        <div style="font-size:large"> {{ fromdata.form==undefined?"":fromdata.form.name }}</div>
+                        <div style="font-size:large"> {{ fromdata.form == undefined ? "" : fromdata.form.name }}</div>
                     </lay-line>
                     <div v-for="(item, index) in fromdata.data" :key="index">
                         <subform :data="item" :value="fromdata.field"></subform>
@@ -125,14 +125,21 @@ export default {
                     http.post("/api/workflowtasks/sendTask", { table: fromdata.value.table, data: JSON.stringify(model), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
 
                         if (resp.success) {
-
-                            layer.msg(resp.msg, { icon: 1, time: 1000 });
+                            layer.notifiy({
+                                title: "温馨提示",
+                                content: resp.msg
+                            })
+                            //  layer.msg(resp.msg, { icon: 1, time: 1000 });
                             HelpTabs.close(appStore, route.fullPath, router);
                         } else {
                             layer.msg(resp.msg, { icon: 2, time: 1000 });
                         }
                     }).catch(resp => {
-                        layer.msg("网络错误", { icon: 2, time: 1000 });
+                        layer.notifiy({
+                            title: "温馨提示",
+                            content: "网络错误"
+                        })
+                        // layer.msg("网络错误", { icon: 2, time: 1000 });
                     });
 
 
@@ -191,7 +198,7 @@ export default {
                 const selectRow = $table.getCheckboxRecords()
                 if (users.value.length == 0) {
                     layer.msg("请选择处理人", { icon: 2, time: 1000 });
-                      return;
+                    return;
                 }
                 console.log(stepselect.value);
                 if (stepselect.value.length == 0) {
@@ -208,14 +215,21 @@ export default {
                 http.post("/api/workflowtasks/sendTask", { table: fromdata.value.form.table, data: JSON.stringify(model), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
 
                     if (resp.success) {
+                        layer.notifiy({
+                            title: "温馨提示",
+                            content: resp.msg
+                        });
 
-                        layer.msg(resp.msg, { icon: 1, time: 1000 });
                         HelpTabs.close(appStore, route.fullPath, router);
                     } else {
                         layer.msg(resp.msg, { icon: 2, time: 1000 });
                     }
                 }).catch(resp => {
-                    layer.msg("网络错误", { icon: 2, time: 1000 });
+                    layer.notifiy({
+                        title: "温馨提示",
+                        content: "网络错误"
+                    });
+
                 });
             })
 
@@ -308,7 +322,12 @@ export default {
 
                             console.log("初始化成功");
                         } else {
-                            layer.confirm(res.msg);
+                            layer.notifiy({
+                                title: "温馨提示",
+                                content: res.msg
+                            });
+
+
                             //layer.msg(res.msg, { icon: 2, time: 1000 });
                             //HelpTabs.close(appStore,route.fullPath,router);
                             // msgType.value = "top";

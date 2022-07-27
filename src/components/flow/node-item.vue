@@ -4,7 +4,7 @@
   <!-- v-click-outside="setNotActive" -->
   <!-- :class="[(isActive || isSelected) ? 'active' : '']" -->
   <div class="node-item" ref="node" :class="[(isActive || isSelected) ? 'active' : '']"
-    :style="'top: ' + nodes.position.y + '; left:' + nodes.position.x" @click="setActive" @mouseenter="showAnchor"
+    :style="'top: ' + nodes.position.y + 'px; left:' + nodes.position.x+'px'" @click="setActive" @mouseenter="showAnchor"
     @mouseleave="hideAnchor" @dblclick.prevent="editNode" @contextmenu.prevent="onContextmenu">
     <!-- <div class="log-wrap">
      <img :src="node.logImg" alt="">

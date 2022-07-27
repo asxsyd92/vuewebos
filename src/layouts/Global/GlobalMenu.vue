@@ -1,5 +1,5 @@
 <template>
-  <lay-panel>
+
     <lay-menu v-model:selectedKey="selectKey" theme="light" v-model:openKeys="openKeys" :collapse="collapse"
       collapse-transition="true" :tree="isTree" :level="appStore.level" :inverted="appStore.inverted">
 
@@ -28,7 +28,7 @@
         </lay-menu-item>
       </lay-sub-menu>
     </lay-menu>
-  </lay-panel>
+
 </template>
 
 <script lang="ts">
