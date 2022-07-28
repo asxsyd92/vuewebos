@@ -1,7 +1,7 @@
 <template>
   <lay-panel>
 
-    <div class="layui-card " ref="GlobalTab">
+    <div class="layui-card " ref="submitfrom">
       <div class="layui-container">
     <lay-button-group>
       <lay-button type="default" size="sm" @click="validate">立即提交</lay-button>
@@ -28,7 +28,7 @@
 
 <script lang="ts">
 
-import { ref, reactive, onMounted, getCurrentInstance, withDefaults, defineProps } from 'vue'
+import { ref, onMounted} from 'vue'
 import { layer } from '@layui/layer-vue'
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore } from "../../store/app";

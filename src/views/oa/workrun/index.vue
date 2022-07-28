@@ -1,6 +1,6 @@
 <template>
     <lay-panel>
-        <div class="layui-card " ref="GlobalTab">
+        <div class="layui-card " ref="workrunindex">
             <div class="layui-container">
     <lay-button-group>
       <lay-button type="default" size="sm" @click="validate">立即提交</lay-button>
