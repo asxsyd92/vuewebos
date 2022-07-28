@@ -144,7 +144,8 @@ export default defineComponent({
       query.groupid = row.groupid;
       query.flowid = row.flowid;
       query.stepid = row.stepid;
-      query.tabname = row.title;
+      query.tabname =encodeURIComponent(row.title);
+    
       router.push({ path: "/oa/workrun/index", query: query })
 
     }

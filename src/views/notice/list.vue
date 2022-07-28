@@ -140,8 +140,8 @@ export default defineComponent({
       var query = new Object() as any;
       query.fromid = route.query.fromid;
       query.instanceid = row.id;
+    query.tabname =encodeURIComponent( row.title);
 
-      query.tabname = row.title;
       router.push({ path: "/formdesign/submitfrom", query: query, params: { tabname: row.title } })
 
     }
@@ -192,7 +192,8 @@ export default defineComponent({
       query.fromid = route.query.fromid;
       query.instanceid = route.query.instanceid;
       query.zhuanti = route.query.classid;
-      query.tabname = "新增" + route.query.tabname;
+       query.tabname =encodeURIComponent("新增"+route.query.tabname);
+     
       router.push({ path: "/formdesign/submitfrom", query: query, params: { tabname: "新增" + route.query.tabname } })
     }
     return {

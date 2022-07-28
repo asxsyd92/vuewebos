@@ -137,7 +137,8 @@ export default defineComponent({
     const editRowEvent = async (row: any) => {
       var query = new Object() as any;
       query.fromid = row.id;
-      query.tabname = row.title;//这是tab显示的文本
+        query.tabname =encodeURIComponent( row.title);
+   
       router.push({ path: "/formdesign/index", query: query, params: { tabname: "表单管理：" + row.title } })
 
 
@@ -148,7 +149,8 @@ export default defineComponent({
     }
     const New = () => {
       var query = new Object() as any;
-      query.tabname = "新增表单";//这是tab显示的文本
+            query.tabname =encodeURIComponent( "新增表单");
+
       router.push({ path: "/formdesign/index", query: query, params: { tabname: "新增表单" } })
 
     }

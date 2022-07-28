@@ -64,7 +64,7 @@ watch(route, function () {
   });
   if (!bool) {
     // @ts-ignore
-    appStore.tabs.push({ id: route.fullPath, title: route.query.tabname });
+    appStore.tabs.push({ id: route.fullPath, title:decodeURIComponent( route.query.tabname) });
 
        refresh();
   }else{

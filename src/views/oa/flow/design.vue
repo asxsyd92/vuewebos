@@ -416,7 +416,12 @@ const initflow = () => {
       flowjson.value.debugUsers = user.userInfo.userid;
       flowjson.value.manager = user.userInfo.userid;
       let o = new Object() as any;
-      o.lines = flowjson.value.lines;
+      if(flowjson.value.lines==null||flowjson.value.lines==undefined||flowjson.value.lines==''){
+       o.lines=[];
+      }else{
+       o.lines= flowjson.value.lines;
+      }
+     
       o.steps = flowjson.value.steps;
       data.value = o;
       methods.fixNodesPosition();
@@ -887,7 +892,7 @@ const methods = {
     flowvisible.value = !flowvisible.value
   },
   save(op: String) {
-
+    flowjson.value.lines=data.value.lines;
     http.post("/api/workflow/Save", { json: JSON.stringify(flowjson.value), op: op }, "正在保存").then(res => {
       if (res.success) {
         layer.notifiy({

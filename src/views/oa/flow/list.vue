@@ -137,7 +137,8 @@ export default defineComponent({
     const editRowEvent = (row: any) => {
       var query = new Object() as any;
       query.id = row.id;
-      query.tabname = row.name;
+            query.tabname =encodeURIComponent(row.name);
+ 
       router.push({ path: "/oa/flow/design", query: query, params: { tabname: row.name } })
 
     }
@@ -185,11 +186,9 @@ export default defineComponent({
     });
     const a_add = () => {
       var query = new Object() as any;
-      query.fromid = route.query.fromid;
-      query.instanceid = route.query.instanceid;
-      query.zhuanti = route.query.classid;
-      query.tabname = "新增" + route.query.tabname;
-      router.push({ path: "/formdesign/submitfrom", query: query, params: { tabname: "新增" + route.query.tabname } })
+
+      query.tabname =encodeURIComponent( "新增流程");
+      router.push({ path: "/oa/flow/design", query: query})
     }
     return {
       xGrid,
