@@ -161,7 +161,7 @@ export default defineComponent({
       const $grid = xGrid.value
       if ($grid) {
         if (type === 'confirm') {
-          http.post("/api/notice/DelNotice", { id: row.id }).then((res: any) => {
+          http.post("/api/workflow/Delinfo", { id: row.id }).then((res: any) => {
             if (res.success) {
               $grid.remove(row);
             } else {

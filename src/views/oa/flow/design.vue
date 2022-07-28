@@ -345,25 +345,25 @@
             </div>
             <div class="layui-col-md12">
               <lay-form-item label="连接：" prop="links">
-                <lay-input v-model="flowjson.databases[0].link"></lay-input>
+                <lay-input v-model="flowjson.databases.link"></lay-input>
               </lay-form-item>
 
             </div>
             <div class="layui-col-md12">
               <lay-form-item label="连接名称：" prop="linkName">
-                <lay-input v-model="flowjson.databases[0].linkName"></lay-input>
+                <lay-input v-model="flowjson.databases.linkName"></lay-input>
               </lay-form-item>
 
             </div>
             <div class="layui-col-md12">
               <lay-form-item label="主键：" prop="primaryKey">
-                <lay-input v-model="flowjson.databases[0].primaryKey"></lay-input>
+                <lay-input v-model="flowjson.databases.primaryKey"></lay-input>
               </lay-form-item>
 
             </div>
             <div class="layui-col-md12">
               <lay-form-item label="表：" prop="table">
-                <lay-input v-model="flowjson.databases[0].table"></lay-input>
+                <lay-input v-model="flowjson.databases.table"></lay-input>
               </lay-form-item>
 
             </div>
@@ -381,7 +381,7 @@ import { useUserStore } from "../../../store/user";
 
 import { layer } from '@layui/layer-vue';
 import flowNode from "../../../components/flow/node-item.vue"
-import { ref, nextTick, getCurrentInstance, h } from 'vue';
+import { ref, nextTick, getCurrentInstance } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import panzoom from "panzoom";
 import jsPlumb from 'jsPlumb';
@@ -407,6 +407,35 @@ const initNodeTypeObj = () => {
 }
 
 const initflow = () => {
+  //新增
+  if(route.query.id==null||route.query.id==undefined||route.query.id==''){
+
+
+      let newjson="{\"databases\":{\"link\":\"\",\"linkName\":\"\",\"primaryKey\":\"\",\"table\":\"\"},\"debug\":\"0\",\"debugUsers\":\"\",\"id\":\"\",\"instanceManager\":\"\",\"lines\":[],\"manager\":\"\",\"name\":\"\",\"note\":\"\",\"removeCompleted\":\"0\",\"steps\":[],\"titleField\":{\"field\":\"\",\"link\":\"\",\"table\":\"\"},\"type\":\"\"}";
+      flowjson.value = JSON.parse(newjson);;
+      flowjson.value.instanceManager = user.userInfo.userid;
+      flowjson.value.debugUsers = user.userInfo.userid;
+      flowjson.value.manager = user.userInfo.userid;
+      let o = new Object() as any;
+      if(flowjson.value.lines==null||flowjson.value.lines==undefined||flowjson.value.lines==''){
+       o.lines=[];
+      }else{
+       o.lines= flowjson.value.lines;
+      }
+     
+      o.steps = flowjson.value.steps;
+      data.value = o;
+      methods.fixNodesPosition();
+      nextTick(() => {
+        methods.init();
+      })
+ 
+
+
+  }
+  //编辑
+  else{
+
   http.post('/api/workflow/GetJSON', { flowid: route.query.id }).then((res) => {
     console.log(res);
     if (res.success) {
@@ -444,48 +473,16 @@ const initflow = () => {
       content: "网络错误"
     })
   });
+  }
 }
 
 const methods = {
   init() {
     //加载表单
-    http.post("/api/common/GetCommonList", { tab: "SysFormDesign", page: 1, limit: 1000 }).then(res => {
-      if (res.success) {
-        forms.value = [];
-        res.data.forEach((tab: any) => {
-          var o = new Object() as any;
-          o.label = tab.title;
-          o.value = tab.id;
-          forms.value.push(o);
-        });
-        console.log(forms.value)
-      } else {
-        layer.msg(res.msg, { icon: 2 });
-      }
-    }).catch(res => {
-      layer.msg("网络错误，请重试", { icon: 2 });
-    })
-
+     this.addfom();
+     
     //加载流程分类
-    http.post("/api/form/GetDictionaryByCode", { id: "FlowTypes" }).then(res => {
-      if (res.success) {
-        flowtype.value = [];
-
-        flowtype.value = utils.TreeTtoList(res.data,[]);
-        // res.data.forEach((tab: any) => {
-        //   var o = new Object() as any;
-        //   o.label = tab.name;
-        //   o.value = tab.id;
-        //   flowtype.value.push(o);
-        // });
-        console.log(forms.value)
-      } else {
-        layer.msg(res.msg, { icon: 2 });
-      }
-    }).catch(res => {
-      layer.msg("网络错误，请重试", { icon: 2 });
-    })
-
+    this.adddictionary();
     $jsPlumbs.getInstance().ready(() => {
       // 导入默认配置
       console.log(jsplumbSetting);
@@ -909,14 +906,14 @@ const methods = {
     });
   },
   resetfield(v:any) {
-    if (flowjson.value.databases[0].table == null || flowjson.value.databases[0].table == "" || flowjson.value.databases[0].table == undefined) {
+    if (flowjson.value.databases.table == null || flowjson.value.databases.table == "" || flowjson.value.databases.table == undefined) {
       layer.notifiy({
         title: "温馨提示",
         content: "请先在流程基础信息中配置表"
       });
       return;
     }
-    http.post("/api/workflow/GetFields", { table: flowjson.value.databases[0].table }, "正在保存").then(res => {
+    http.post("/api/workflow/GetFields", { table: flowjson.value.databases.table }, "正在保存").then(res => {
       if (res.success) {
         var fields = [];
         console.log(res);
@@ -940,6 +937,46 @@ const methods = {
       }
 
     });
+  },
+  addfom(){
+      //加载表单
+    http.post("/api/common/GetCommonList", { tab: "SysFormDesign", page: 1, limit: 1000 }).then(res => {
+      if (res.success) {
+        forms.value = [];
+        res.data.forEach((tab: any) => {
+          var o = new Object() as any;
+          o.label = tab.title;
+          o.value = tab.id;
+          forms.value.push(o);
+        });
+      } else {
+        layer.msg(res.msg, { icon: 2 });
+      }
+    }).catch(res => {
+      layer.msg("网络错误，请重试", { icon: 2 });
+    })
+  },
+  adddictionary(){
+
+    http.post("/api/form/GetDictionaryByCode", { id: "FlowTypes" }).then(res => {
+      if (res.success) {
+        flowtype.value = [];
+
+        flowtype.value = utils.TreeTtoList(res.data,[]);
+        // res.data.forEach((tab: any) => {
+        //   var o = new Object() as any;
+        //   o.label = tab.name;
+        //   o.value = tab.id;
+        //   flowtype.value.push(o);
+        // });
+        console.log(forms.value)
+      } else {
+        layer.msg(res.msg, { icon: 2 });
+      }
+    }).catch(res => {
+      layer.msg("网络错误，请重试", { icon: 2 });
+    })
+
   }
 }
 
