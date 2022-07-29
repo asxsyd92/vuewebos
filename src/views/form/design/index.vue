@@ -183,7 +183,7 @@ export default {
             //规则处理
             formdata.value["data"] = confirm.value;
             formdata.value["form"] = form.value;
-         confirm.value.forEach((item:any) => {
+            confirm.value.forEach((item:any) => {
             for (let key in item.data) {
 
                 if (key == "name") {

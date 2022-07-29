@@ -37,7 +37,7 @@ import http from "../../../utils/http";
 import { useRouter, useRoute, RouteMeta } from 'vue-router';
 import { layer } from '@layui/layer-vue'
 import { defineComponent, reactive, ref } from 'vue'
-import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
+import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps,VxeColumnPropTypes } from 'vxe-table'
 
 export default defineComponent({
   setup() {
@@ -47,6 +47,23 @@ export default defineComponent({
     const xGrid = ref<VxeGridInstance>()
     const router = useRouter();
     const route = useRoute();
+    
+  
+   const formatstatus :VxeColumnPropTypes.Formatter=({ cellValue, column, row }) => {
+      if(cellValue==1){
+        return "设计中";
+      }
+        if(cellValue==2){
+        return "已安装";
+      }
+        if(cellValue==3){
+        return "已卸载";
+      }
+        if(cellValue==4){
+        return "已删除";
+      }
+         return "未知";
+     }
     const gridOptions = reactive<VxeGridProps>({
       border: true,
       keepSource: true,
@@ -78,21 +95,19 @@ export default defineComponent({
           buttons: 'toolbar_buttons'
         }
       },
+      //(({ cellValue, row, column }) => string) | any[] | string
       columns: [
         // { type: 'seq', width: 60 },
         { type: 'checkbox', width: 50 },
         { field: 'name', title: '标题' },
-        { field: 'status', title: '状态', },
+        { field: 'status', title: '状态',formatter:formatstatus},
         { field: 'createdate', title: '发表时间', },
         { title: '操作', fixed: "right", width: 150, slots: { default: 'operate' } }
       ],
-      data: []
+      data: [],
+      
     })
 
-    const sexList1 = ref([
-      { value: '1', label: '男' },
-      { value: '0', label: '女' }
-    ])
 
     const findList = () => {
       gridOptions.loading = true;
@@ -124,15 +139,6 @@ export default defineComponent({
       }
     }
 
-    const formatSex = (value: any) => {
-      if (value === '1') {
-        return '男'
-      }
-      if (value === '0') {
-        return '女'
-      }
-      return ''
-    }
 
     const editRowEvent = (row: any) => {
       var query = new Object() as any;
@@ -192,9 +198,7 @@ export default defineComponent({
     }
     return {
       xGrid,
-      sexList1,
       gridOptions,
-      formatSex,
       gridEvents,
       editRowEvent,
       saveRowEvent,
@@ -202,7 +206,8 @@ export default defineComponent({
       formData,
       searchEvent,
       a_add,
-      search 
+      search ,
+      formatstatus
     }
   }
 })
