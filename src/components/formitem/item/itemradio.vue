@@ -2,7 +2,7 @@
     <template>
 
 
-<div  :class="data.data.col"  :style="'display:'+data.data.display">
+<div  :class="data.data.col"  :style="'display:'+data.data.display" :required="data.data.required ">
 
     <lay-form-item  class="layui-form-item" :label="data.data.label" :prop="data.data.name">
     <lay-radio v-for=" (li,index) in radio" :key="index" v-model="value[data.data.name]" :name="data.data.name"  :value="li.value" >{{li.title}} </lay-radio>

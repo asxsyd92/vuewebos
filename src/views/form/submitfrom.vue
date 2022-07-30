@@ -12,7 +12,7 @@
           <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm" @click="clearValidate">重置</button>
           <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" @click="reset">关闭</button>
         </div> -->
-        <lay-form :model="fromdata.field" ref="layFormRef" required>
+        <lay-form :model="fromdata.field" ref="layFormRef">
           <lay-line border-style="dashed" border-width="6px">
             <div style="font-size:large"> {{ fromdata.name }}</div>
           </lay-line>

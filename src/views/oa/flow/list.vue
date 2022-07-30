@@ -49,7 +49,7 @@ export default defineComponent({
     const route = useRoute();
     
   
-   const formatstatus :VxeColumnPropTypes.Formatter=({ cellValue, column, row }) => {
+   const formatstatus :VxeColumnPropTypes.Formatter=({ cellValue}) => {
       if(cellValue==1){
         return "设计中";
       }

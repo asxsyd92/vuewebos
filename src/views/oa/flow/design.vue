@@ -243,7 +243,18 @@
             <lay-tab-item title="字段" id="3">
               <!-- 字段 -->
               <lay-button type="default" size="sm" @click="methods.resetfield(setflowmode)">重置</lay-button>
-              <div class="layui-col-md12" v-for="(item, index) in setflowmode.fieldStatus" :key="index">
+              <lay-table :columns="fieldcolumns" :data-source="fieldSource" >
+
+       
+               <template v-slot:eoperator="{ data }">
+                 <lay-switch v-model="data.status" onswitch-value="0" unswitch-value="1" onswitch-text="编辑"  unswitch-text="只读"></lay-switch>
+              
+               </template>
+             <template v-slot:doperator="{ data }">
+                <lay-switch v-model="data.check" onswitch-value="0" unswitch-value="1" onswitch-text="不检查"  unswitch-text="检查"></lay-switch>
+               </template>
+    </lay-table>
+              <!-- <div class="layui-col-md12" v-for="(item, index) in setflowmode.fieldStatus" :key="index">
                 <lay-form-item :label="item.field">
 
                   <lay-radio v-model="item.status" value="0" label="编辑">
@@ -255,7 +266,7 @@
                   <lay-radio v-model="item.check" value="1" label="检查">
                   </lay-radio>
                 </lay-form-item>
-              </div>
+              </div> -->
             </lay-tab-item>
             <lay-tab-item title="按钮" id="4">
               <div style="padding:20px">按钮</div>
@@ -878,11 +889,15 @@ const methods = {
       })
     }
   },
-  setflow(nodes: any) {
-    setflowmode.value = nodes.value;
-
+  //设置步骤
+  setflow(d: any) {
+    setflowmode.value = d.value;
+     fieldSource.value= d.value.fieldStatus;
+    console.log(d.value);
+    //res.data.forEach((tab: any) => {}
     setflowvisible.value = !setflowvisible.value
   },
+  //设置流程属性
   flow() {
     // flowmode.value = nodes.value;
 
@@ -916,6 +931,8 @@ const methods = {
     http.post("/api/workflow/GetFields", { table: flowjson.value.databases.table }, "正在保存").then(res => {
       if (res.success) {
         var fields = [];
+        //重置表字段
+        fieldSource.value=[];
         console.log(res);
         for (var i = 0; i < res.data.length; i++) {
           var o = new Object() as any;
@@ -923,6 +940,8 @@ const methods = {
           o.status = "0";
           o.field = res.data[i].f_name.toLowerCase();
           fields.push(o);
+          o.value=res.data[i].value;
+          fieldSource.value.push(o);
         }
         v.fieldStatus= fields;
         layer.notifiy({
@@ -999,17 +1018,21 @@ const setflowbtn = [
   {
     text: "确定",
     callback: () => {
+      console.log(setflowmode.value.fieldStatus);
+      setflowmode.value.fieldStatus=fieldSource.value;
+      console.log(setflowmode.value);
       setflowvisible.value = false;
     },
   },
 ];
-//流程属性
+//步骤属性
 const flowmode = ref(null) as any;
 const flowvisible = ref(false);
 const flowsubmit = () => {
 
 }
-
+const fieldcolumns= ref([ {title:"字段名称", width:"20%", key:"field"}, {title:"描述", width:"20%", key:"value"},{title:"编辑", width:"10%", customSlot:"eoperator",key:"eoperator" },{title:"只读", width:"10%", customSlot:"doperator",key:"doperator" }]);
+const fieldSource=ref([]);
 const flowbtn = [
   {
     text: "确定",

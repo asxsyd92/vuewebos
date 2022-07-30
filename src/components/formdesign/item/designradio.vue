@@ -3,9 +3,9 @@
 <div >
 
     <lay-form-item :label="data.data.label">
-      <lay-radio  name="specialty" label="1" disabled="disabled" >写作</lay-radio>
-      <lay-radio  name="specialty" label="2" disabled="disabled">画画</lay-radio>
-      <lay-radio  name="specialty" label="3" disabled="disabled">编码</lay-radio>
+      <lay-radio  name="specialty" value="1" disabled="disabled" >写作</lay-radio>
+      <lay-radio  name="specialty" value="2" disabled="disabled">画画</lay-radio>
+      <lay-radio  name="specialty" value="3" disabled="disabled">编码</lay-radio>
     </lay-form-item>
 </div>
 

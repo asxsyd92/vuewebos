@@ -67,29 +67,29 @@
     </lay-form-item>
 
     <lay-form-item label="文本框样式">
-      <lay-radio v-model="modle.inputclass" label="layui-input">layui-input</lay-radio>
-      <lay-radio v-model="modle.inputclass" label="layui-inline">layui-inline</lay-radio>
+      <lay-radio v-model="modle.inputclass" value="layui-input">layui-input</lay-radio>
+      <lay-radio v-model="modle.inputclass" value="layui-inline">layui-inline</lay-radio>
 
     </lay-form-item>
     <lay-form-item label="文本显示">
-      <lay-radio v-model="modle.showtext" label="true">是</lay-radio>
-      <lay-radio v-model="modle.showtext" label="false">否</lay-radio>
+      <lay-radio v-model="modle.showtext" value="true">是</lay-radio>
+      <lay-radio v-model="modle.showtext" value="false">否</lay-radio>
 
     </lay-form-item>
 
     <lay-form-item label="是否隐藏">
-      <lay-radio v-model="modle.display" label="none">是</lay-radio>
-      <lay-radio v-model="modle.display" label="unset">否</lay-radio>
+      <lay-radio v-model="modle.display" value="none">是</lay-radio>
+      <lay-radio v-model="modle.display" value="block">否</lay-radio>
 
     </lay-form-item>
     <lay-form-item label="是否必填">
-      <lay-radio v-model="modle.required" label="true">是</lay-radio>
-      <lay-radio v-model="modle.required" label="false">否</lay-radio>
+      <lay-radio v-model="modle.required" value="true">是</lay-radio>
+      <lay-radio v-model="modle.required" value="false">否</lay-radio>
 
     </lay-form-item>
     <lay-form-item label="是否编辑">
-      <lay-radio v-model="modle.disabled" label="true">是</lay-radio>
-      <lay-radio v-model="modle.disabled" label="false">否</lay-radio>
+      <lay-radio v-model="modle.disabled" value="disabled">是</lay-radio>
+      <lay-radio v-model="modle.disabled" value="block">否</lay-radio>
 
     </lay-form-item>
     <div class="layui-form-item">
@@ -107,7 +107,7 @@
 
 <script lang="ts">
 
-import { values, keys } from 'xe-utils';
+import { values, keys, debounce } from 'xe-utils';
 import { functionDeclaration } from '@babel/types';
 export default {
   name: "setinput",
@@ -124,6 +124,7 @@ interface IsetinputProps {
 const props = withDefaults(defineProps<IsetinputProps>(), {
   data: Object, setdata: Function
 });
+;
 const data = ref(props.data);
 
 const modle = ref({}) as any;

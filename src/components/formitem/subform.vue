@@ -1,7 +1,7 @@
 <template>
 <div>
 
-  <itemnput v-if="data.type=='input'" :data="data" :value="value"></itemnput>
+  <itemnput v-if="data.type=='input'||data.type=='textarea'" :data="data" :value="value"></itemnput>
 <itemradio v-if="data.type=='radio'" :data="data" :value="value"></itemradio>
  <itemcolor v-if="data.type=='color'" :data="data" :value="value"></itemcolor>
   <itemicon v-if="data.type=='icon'" :data="data" :value="value"></itemicon>

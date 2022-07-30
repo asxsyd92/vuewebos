@@ -26,7 +26,7 @@
                       :config="config" 
         
                       @ready="ready" 
-         
+              :required="data.data.required "
                       >
     </vue-ueditor-wrap>
     </lay-form-item>

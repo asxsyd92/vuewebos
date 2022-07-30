@@ -4,7 +4,7 @@
 
 <div  :class="data.data.col"  :style="'display:'+data.data.display">
 
-    <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name">
+    <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name" :required="data.data.required ">
 <lay-icon-picker v-model="value[data.data.name]" type="layui-icon-face-smile" page showSearch></lay-icon-picker>
 
     </lay-form-item>

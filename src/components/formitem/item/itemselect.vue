@@ -4,7 +4,7 @@
 
   <div :class="data.data.col" :style="'display:' + data.data.display">
 
-    <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label">
+    <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :required="data.data.required ">
       <lay-select @change="change" v-model="selected" :items="items" :create="true" @create="createEvent" multiple>
       </lay-select>
       <lay-input style="display:none" v-model="value[data.data.name]" :placeholder="data.data.placeholder"></lay-input>
