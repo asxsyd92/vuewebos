@@ -79,7 +79,7 @@ export default {
         const signature = ref(false);
         const userdata = ref([]);
         const nextstep = ref([]) as any;
-        const commentlist = ref([]);
+        const commentlist = ref([]) as any;
         const field = ref([]) as any;
         const rules = ref({});
         const userchecked = ref([]);
@@ -93,7 +93,7 @@ export default {
         const validateModel = ref({});
         const users = ref([]) as any;
         const userslist = ref([]) as any;
-        const comment=ref('');
+        const comment=ref('') as any;
         const layFormRef = ref(null) as any;
         // 校验
         const validate = () => {

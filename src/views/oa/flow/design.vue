@@ -920,7 +920,7 @@ const methods = {
       if (res.success) {
         var fields = [];
         //重置表字段
-        fieldSource.value=[];
+        fieldSource.value=[] ;
         console.log(res);
         for (var i = 0; i < res.data.length; i++) {
           var o = new Object() as any;
@@ -1020,7 +1020,7 @@ const flowsubmit = () => {
 
 }
 const fieldcolumns= ref([ {title:"字段名称", width:"20%", key:"field"}, {title:"描述", width:"20%", key:"value"},{title:"编辑", width:"10%", customSlot:"eoperator",key:"eoperator" },{title:"只读", width:"10%", customSlot:"doperator",key:"doperator" }]);
-const fieldSource=ref([]);
+const fieldSource=ref([]) as any;
 const flowbtn = [
   {
     text: "确定",
