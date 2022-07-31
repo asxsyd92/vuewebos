@@ -25,6 +25,7 @@ interface ItemradioProps {
   data: any;
   value:any;
 }
+
 const props = withDefaults(defineProps<ItemradioProps>(), {
   data:Object, value:Object
 });
@@ -52,10 +53,8 @@ const radio=ref([]) as any;
               return;
             }
             d.title=ss[0];
-            d.value=ss[1];
-            if(!Number.isNaN( d.value)){
-               d.value=Number.parseFloat(d.value);
-            }
+            d.value=ss[1].toString();
+          
             // if(ss.length>2){
             //   if(ss[2]=='false'){
             //       d.checked=false;

@@ -90,8 +90,6 @@
 </template>
 <script lang="ts">
 
-import { values, keys } from 'xe-utils';
-import { functionDeclaration } from '@babel/types';
 export default {
     name: "setselect",
     mounted() {

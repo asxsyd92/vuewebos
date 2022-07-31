@@ -110,7 +110,7 @@
           http.post("/api/login/Login", { user: user, pw: password, code: code }, "正在登陆...").then(res => {
             console.log(res);
             if (res.success) {
-              userStore.userInfo.name=res.user;
+              userStore.userInfo.name=res.name;
               userStore.token=res.access_token;
                userStore.userInfo.userid=res.userid;
                userStore.userInfo.orname=res.orname;
@@ -118,7 +118,7 @@
                userStore.userInfo.account=res.account;
                userStore.userInfo.picture=res.picture;
               userStore.userInfo.isLogin=res.isLogin;
-    
+              userStore.userInfo.community=res.community;
               router.push('/');
             } else {
               getnewcode();

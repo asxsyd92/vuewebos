@@ -52,9 +52,9 @@
             <lay-input v-model="menumodel.id"></lay-input>
           </lay-form-item>
           <lay-form-item label="父级目录" prop="parentid">
-            <lay-select v-model="menumodel.parentid">
-              <lay-select-option value="00000000-0000-0000-0000-000000000000" label="根目录"></lay-select-option>
-              <lay-select-option :value="menumodel.parentid" label="当前目录"></lay-select-option>
+            <lay-select v-model="menumodel.parentid" :items="parentlist" >
+              <!-- <lay-select-option value="00000000-0000-0000-0000-000000000000" label="根目录"></lay-select-option>
+              <lay-select-option :value="menumodel.parentid" label="当前目录"></lay-select-option> -->
 
             </lay-select>
 
@@ -63,8 +63,8 @@
             <lay-input v-model="menumodel.params"></lay-input>
           </lay-form-item>
           <lay-form-item label="菜单类型" prop="type">
-            <lay-radio v-model="menumodel.type" name="type" label="0">手机端</lay-radio>
-            <lay-radio v-model="menumodel.type" name="type" label="1">电脑端</lay-radio>
+            <lay-radio v-model="menumodel.type" name="type" value="0">手机端</lay-radio>
+            <lay-radio v-model="menumodel.type" name="type" value="1">电脑端</lay-radio>
           </lay-form-item>
 
           <lay-form-item label="排序" prop="sort">
@@ -83,9 +83,11 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
 import http from "../../utils/http";
+import utils from "../../utils/utils";
 import { layer } from '@layui/layer-vue'
 import { VxeTableInstance, VxeTableListeners, VXETable } from 'vxe-table'
-const xGrid = ref<VxeTableInstance>()
+const xGrid = ref<VxeTableInstance>();
+const parentlist=ref([]) as any;
 var menumodel = ref({
   title: "",
   tag: "",
@@ -208,11 +210,17 @@ const findList = () => {
     options.loading = false;
 
     if (res.success) {
-      options.data = res.data;
-      options.page.total = res.count
 
-    }
-  });
+      options.data = res.data;
+     parentlist.value= utils.TreeTtoList( res.data,[]);
+      parentlist.value.push({label:"根目录",value:'00000000-0000-0000-0000-000000000000'});
+  parentlist.value.forEach((item: any) => {
+    var o=new Object() as any;
+    o.label=item.title;
+    o.value=item.id;
+     parentlist.value.push(o);});
+      options.page.total = res.count
+  }});
 
 }
 

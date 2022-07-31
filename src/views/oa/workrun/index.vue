@@ -13,7 +13,7 @@
                         @click="clearValidate">重置</button> 
                     <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" @click="reset">关闭</button>
                 </div> -->
-                <lay-form :model="fromdata.field" ref="layFormRef" required>
+                <lay-form :model="fromdata.field" ref="layFormRef" >
                     <lay-line border-style="dashed" border-width="6px">
                         <div style="font-size:large"> {{ fromdata.form == undefined ? "" : fromdata.form.name }}</div>
                     </lay-line>
@@ -45,7 +45,7 @@
                 <lay-card v-if="nextstep.length > 0" title="请选择处理步骤">
                     <!-- <lay-checkbox name="like" skin="primary" v-model="stepselect" label="1">写作</lay-checkbox> -->
                     <div v-for="(item, index) in nextstep" :key="index">
-                        <lay-radio v-model="stepselect" name="step" :label="item.id">{{ item.name }}</lay-radio>
+                        <lay-radio v-model="stepselect" name="step" :value="item.id">{{ item.name }}</lay-radio>
                     </div>
 
                 </lay-card>

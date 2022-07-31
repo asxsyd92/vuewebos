@@ -6,7 +6,7 @@ export const useUserStore = defineStore({
   state: () => {
     return {
       token: {},
-      userInfo: {name:"",userid:"",orname:"",orid:"",account:"",picture:"",isLogin:""},
+      userInfo: {name:"",userid:"",orname:"",orid:"",account:"",picture:"",isLogin:"",community:""},
     }
   },
   persist: {

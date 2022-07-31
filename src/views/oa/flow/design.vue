@@ -84,13 +84,13 @@
                 </div>
 
                 <div class="layui-col-md24">
-                  <lay-form-item label="审签类型：" prop="countersignature">
-                    <lay-radio v-model="setflowmode.countersignature" name="countersignature" value="0" label="无签批意见栏">
+                  <lay-form-item label="审签类型：" prop="signatureType">
+                    <lay-radio v-model="setflowmode.signatureType" name="signatureType" value="0" label="无签批意见栏">
                     </lay-radio>
-                    <lay-radio v-model="setflowmode.countersignature" name="countersignature" value="1"
+                    <lay-radio v-model="setflowmode.signatureType" name="signatureType" value="1"
                       label="有签批意见-无须签章">
                     </lay-radio>
-                    <lay-radio v-model="setflowmode.countersignature" name="countersignature" value="2"
+                    <lay-radio v-model="setflowmode.signatureType" name="signatureType" value="2"
                       label="有签批意见-须签章">
                     </lay-radio>
                   </lay-form-item>
@@ -254,19 +254,7 @@
                 <lay-switch v-model="data.check" onswitch-value="0" unswitch-value="1" onswitch-text="不检查"  unswitch-text="检查"></lay-switch>
                </template>
     </lay-table>
-              <!-- <div class="layui-col-md12" v-for="(item, index) in setflowmode.fieldStatus" :key="index">
-                <lay-form-item :label="item.field">
-
-                  <lay-radio v-model="item.status" value="0" label="编辑">
-                  </lay-radio>
-                  <lay-radio v-model="item.status" value="1" label="只读">
-                  </lay-radio>
-                  <lay-radio v-model="item.check" value="0" label="不检查">
-                  </lay-radio>
-                  <lay-radio v-model="item.check" value="1" label="检查">
-                  </lay-radio>
-                </lay-form-item>
-              </div> -->
+      
             </lay-tab-item>
             <lay-tab-item title="按钮" id="4">
               <div style="padding:20px">按钮</div>
@@ -660,12 +648,12 @@ const methods = {
         "field": "id",
         "status": "0"
       }],
-      "forms": [{
+      "forms": {
         "id": "",
         "name": "",
         "srot": 0,
         "type": ""
-      }],
+      },
       "id": utils.GenNonDuplicateID(),
       "limitTime": "",
       "name": "新建步骤",
@@ -928,7 +916,7 @@ const methods = {
       });
       return;
     }
-    http.post("/api/workflow/GetFields", { table: flowjson.value.databases.table }, "正在保存").then(res => {
+    http.post("/api/workflow/GetFields", { table: flowjson.value.databases.table }, "请稍等...").then(res => {
       if (res.success) {
         var fields = [];
         //重置表字段
