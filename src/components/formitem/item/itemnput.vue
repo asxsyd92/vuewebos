@@ -107,19 +107,16 @@ if (data.value.data.type == 'number') {
     value.value[data.value.data.name] = 1;
   }
 }
+
 //
 console.log(data.value.data.value)
 if (data.value.data.type == 'date' || data.value.data.type == 'datetime') {
   if (value.value[data.value.data.name] == "") {
     value.value[data.value.data.name] = new Date();
+  }else{
+    value.value[data.value.data.name] = moment(value.value[data.value.data.name]).format('YYYY/MM/DD');
   }
 
 }
 
 </script>
-
-<style>
-.showtext {
-  line-height: 38px;
-}
-</style>

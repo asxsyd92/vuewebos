@@ -17,6 +17,9 @@ html {
   height: 250px;
 }
 .laymodle{
-  width: 99%;
+  width: 95%;
+}
+.showtext {
+  line-height: 38px;
 }
 </style>

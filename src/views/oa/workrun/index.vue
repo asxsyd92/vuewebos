@@ -2,18 +2,15 @@
     <lay-panel>
         <div class="layui-card " ref="workrunindex">
             <div class="layui-container">
-    <lay-button-group>
-      <lay-button type="default" size="sm" @click="validate">立即提交</lay-button>
-    
-    </lay-button-group>
-                <!-- <div class="layui-input-block layui-footer">
-                    <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm"
-                        @click="validate">立即提交</button>
-                   <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm"
-                        @click="clearValidate">重置</button> 
-                    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" @click="reset">关闭</button>
-                </div> -->
-                <lay-form :model="fromdata.field" ref="layFormRef" >
+                <lay-button-group>
+                    <lay-button type="default" size="sm" @click="validate">立即提交</lay-button>
+
+                </lay-button-group>
+                <div v-if="signature">   
+                <lay-input  placeholder="请输入处理意见" v-model="comment"></lay-input>
+                </div>
+      
+                <lay-form :model="fromdata.field" ref="layFormRef">
                     <lay-line border-style="dashed" border-width="6px">
                         <div style="font-size:large"> {{ fromdata.form == undefined ? "" : fromdata.form.name }}</div>
                     </lay-line>
@@ -22,10 +19,16 @@
                     </div>
                 </lay-form>
             </div>
-            <div class="setheight"></div>
+         
         </div>
-
-        <lay-layer move="true" :btn="sendbtn" :closeBtn="false" :area="['40%', '50%']" :shadeClose="false"
+               <lay-panel>
+              <lay-timeline>
+              <div v-for="(item,index) in commentlist" :key="index">
+              <lay-timeline-item v-if="item.comment!=''"  :title="item.comment" simple></lay-timeline-item>
+              </div>
+             </lay-timeline>
+            </lay-panel>
+        <lay-layer move="true" :btn="sendbtn" :closeBtn="false" :area="['80%', '85%']" :shadeClose="false"
             @submit="submit" title="发送" v-model="sedvisible">
             <lay-panel class="laymodle">
                 <lay-select v-model="users" multiple :disabled="true">
@@ -90,14 +93,25 @@ export default {
         const validateModel = ref({});
         const users = ref([]) as any;
         const userslist = ref([]) as any;
-
+        const comment=ref('');
         const layFormRef = ref(null) as any;
         // 校验
         const validate = () => {
+              if(comment.value.toString().trim().length==0){
+                         layer.notifiy({
+                            title: "温馨提示",
+                            content: "请填写处理意见！"
+                        }) 
+                 return;
+                  }
             layFormRef.value.validate((isValidate: any, model: any, errors: any) => {
                 if (!isValidate) {
                     errors.forEach((item: any) => {
-                        layer.msg(item.message, { icon: 2, time: 1000 })
+                           layer.notifiy({
+                            title: "温馨提示",
+                            content: item.message
+                        }) 
+                   
                     });
 
 
@@ -135,7 +149,11 @@ export default {
                             //  layer.msg(resp.msg, { icon: 1, time: 1000 });
                             HelpTabs.close(appStore, route.fullPath, router);
                         } else {
-                            layer.msg(resp.msg, { icon: 2, time: 1000 });
+                                   layer.notifiy({
+                                title: "温馨提示",
+                                content:resp.msg
+                            })
+                
                         }
                     }).catch(resp => {
                         layer.notifiy({
@@ -167,7 +185,7 @@ export default {
             {
                 text: "确认",
                 callback: () => {
-
+                
                     submit();
                 },
             },
@@ -200,12 +218,20 @@ export default {
                 const $table = selectuser.value as any;
                 const selectRow = $table.getCheckboxRecords()
                 if (users.value.length == 0) {
-                    layer.msg("请选择处理人", { icon: 2, time: 1000 });
+                    layer.notifiy({
+                        title: "温馨提示",
+                        content: "请选择处理人"
+                    });
+
                     return;
                 }
                 console.log(stepselect.value);
                 if (stepselect.value.length == 0) {
-                    layer.msg("请选择处理步骤", { icon: 2, time: 1000 });
+                    layer.notifiy({
+                        title: "温馨提示",
+                        content: "请选择处理步骤"
+                    });
+
                     return;
                 }
 
@@ -214,7 +240,7 @@ export default {
                 opts.type = "submit";
                 opts.steps = [];
                 opts.steps.push({ id: stepselect.value, member: users.value.join(",") });
-
+                   query.value.comment=comment.value;
                 http.post("/api/workflowtasks/sendTask", { table: fromdata.value.form.table, data: JSON.stringify(model), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
 
                     if (resp.success) {
@@ -225,7 +251,11 @@ export default {
 
                         HelpTabs.close(appStore, route.fullPath, router);
                     } else {
-                        layer.msg(resp.msg, { icon: 2, time: 1000 });
+                          layer.notifiy({
+                        title: "温馨提示",
+                        content: resp.msg
+                    });
+                       
                     }
                 }).catch(resp => {
                     layer.notifiy({
@@ -271,8 +301,8 @@ export default {
                             console.log(res);
                             currentdata.value = res.currentdata;
                             if (
-                                currentdata.value.signatureType == 0 ||
-                                currentdata.value.signatureType == "0"
+                                currentdata.value.signatureType == 1 ||
+                                currentdata.value.signatureType == "1"
                             ) {
                                 signature.value = true;
                             }
@@ -379,16 +409,20 @@ export default {
             subform,
             fromdata,
             getcomment,
+            comment,
             userdata,
             sedvisible,
             sendbtn,
             submit,
             userchecked,
             selectuser,
-            nextstep, query,
+            nextstep, 
+            query,
+            commentlist,
             stepselect,
             selectChangeEvent,
             users,
+            signature,
             userslist
 
 
@@ -397,8 +431,6 @@ export default {
 }
 </script>
 <style>
-
-
 .global-content {
     height: calc(100% - 42px);
     position: relative;
