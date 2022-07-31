@@ -21,13 +21,13 @@
             </div>
          
         </div>
-               <lay-panel>
+           
               <lay-timeline>
               <div v-for="(item,index) in commentlist" :key="index">
               <lay-timeline-item v-if="item.comment!=''"  :title="item.comment" simple></lay-timeline-item>
               </div>
              </lay-timeline>
-            </lay-panel>
+       
         <lay-layer move="true" :btn="sendbtn" :closeBtn="false" :area="['80%', '85%']" :shadeClose="false"
             @submit="submit" title="发送" v-model="sedvisible">
             <lay-panel class="laymodle">
