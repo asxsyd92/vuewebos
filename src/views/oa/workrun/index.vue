@@ -97,7 +97,7 @@ export default {
         const layFormRef = ref(null) as any;
         // 校验
         const validate = () => {
-              if(comment.value.toString().trim().length==0){
+              if(comment.value.toString().trim().length==0&&signature.value){
                          layer.notifiy({
                             title: "温馨提示",
                             content: "请填写处理意见！"
@@ -139,6 +139,7 @@ export default {
                     var opts = new Object() as any;
                     opts.type = "completed";
                     opts.steps = [];
+                    query.value.comment=comment.value;
                     http.post("/api/workflowtasks/sendTask", { table: fromdata.value.table, data: JSON.stringify(model), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
 
                         if (resp.success) {
@@ -240,7 +241,7 @@ export default {
                 opts.type = "submit";
                 opts.steps = [];
                 opts.steps.push({ id: stepselect.value, member: users.value.join(",") });
-                   query.value.comment=comment.value;
+                query.value.comment=comment.value;
                 http.post("/api/workflowtasks/sendTask", { table: fromdata.value.form.table, data: JSON.stringify(model), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
 
                     if (resp.success) {
@@ -341,7 +342,7 @@ export default {
                             console.log(step.value);
 
                             if (
-                                isflow &&
+                                isflow.value &&
                                 query.value.instanceid != null &&
                                 query.value.instanceid != undefined &&
                                 query.value.instanceid != ""

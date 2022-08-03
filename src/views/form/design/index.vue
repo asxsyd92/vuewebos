@@ -247,11 +247,9 @@ export default {
                 if (key == "name") {
                     if (item.data.required == true || item.data.required == "true") {
 
-                        var m = new Object();
+                        //var m = new Object();
                         var e = [{ required: true, errorMessage: item.data.label + "不能为空" }];
-                        m[item.data.name] = { rules: e }
-
-                        rules[item.data.name] = m;
+                        rules[item.data.name] = { rules: e }
                     }
 
                 }

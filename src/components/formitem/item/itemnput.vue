@@ -31,14 +31,14 @@
       </div>
       <div v-else-if="data.data.type == 'date' || data.data.type == 'datetime'" :style="'display:' + data.data.display">
         <lay-form-item :label="data.data.label" :prop="data.data.name" :required="required">
-         <div v-if="data.data.showtext == 'true'">
+          <div v-if="data.data.showtext == 'true'">
             <span class="showtext">{{ moment(value[data.data.name]).format('YYYY年MM月DD日') }}</span>
           </div>
           <div v-else>
-    <lay-date-picker v-model="value[data.data.name]" :placeholder="data.data.placeholder"></lay-date-picker>
+            <lay-date-picker v-model="value[data.data.name]" :placeholder="data.data.placeholder"></lay-date-picker>
 
           </div>
-          
+
         </lay-form-item>
       </div>
       <div v-else-if="data.data.type == 'text'">
@@ -91,15 +91,17 @@ if (data.value.data.required == "true") {
   required.value = false;
 }
 //这是给初始化赋值
-console.log(data.value.data.value);
-switch (data.value.data.value) {
-  case "@_SYS_GETUSERID": value.value[data.value.data.name] = userStore.userInfo.userid; break;
-  case "@_SYS_GETUSERNAME": value.value[data.value.data.name] = userStore.userInfo.name; break;
-  case "@_SYS_GETUSERNICKNAME": value.value[data.value.data.name] = userStore.userInfo.name; break;
-  case "@_SYS_ORGID": value.value[data.value.data.name] = userStore.userInfo.orid; break;
-  case "@_SYS_DATETIME": value.value[data.value.data.name] = new Date(); break;
-  case "00000000-0000-0000-0000-000000000000": value.value[data.value.data.name] = "00000000-0000-0000-0000-000000000000"; break;
-  case "@_SYS_GW": value.value[data.value.data.name] = ""; break;
+if (value.value[data.value.data.name] == "") {
+  switch (data.value.data.value) {
+    case "@_SYS_GETUSERID": value.value[data.value.data.name] = userStore.userInfo.userid; break;
+    case "@_SYS_GETUSERNAME": value.value[data.value.data.name] = userStore.userInfo.name; break;
+    case "@_SYS_GETUSERNICKNAME": value.value[data.value.data.name] = userStore.userInfo.name; break;
+    case "@_SYS_ORGID": value.value[data.value.data.name] = userStore.userInfo.orid; break;
+    case "@_SYS_DATETIME": value.value[data.value.data.name] = new Date(); break;
+    case "@_SYS_ORGNAME": value.value[data.value.data.name] = userStore.userInfo.orgname; break;
+    case "00000000-0000-0000-0000-000000000000": value.value[data.value.data.name] = "00000000-0000-0000-0000-000000000000"; break;
+    case "@_SYS_GW": value.value[data.value.data.name] = ""; break;
+  }
 }
 //数值填写默认值为0
 if (data.value.data.type == 'number') {
@@ -113,7 +115,7 @@ console.log(data.value.data.value)
 if (data.value.data.type == 'date' || data.value.data.type == 'datetime') {
   if (value.value[data.value.data.name] == "") {
     value.value[data.value.data.name] = new Date();
-  }else{
+  } else {
     value.value[data.value.data.name] = moment(value.value[data.value.data.name]).format('YYYY/MM/DD');
   }
 
