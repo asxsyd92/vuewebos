@@ -91,8 +91,8 @@ if (data.value.data.required == "true") {
   required.value = false;
 }
 //这是给初始化赋值
-if (value.value[data.value.data.name] == "") {
-  switch (data.value.data.value) {
+
+  switch (value.value[data.value.data.name]) {
     case "@_SYS_GETUSERID": value.value[data.value.data.name] = userStore.userInfo.userid; break;
     case "@_SYS_GETUSERNAME": value.value[data.value.data.name] = userStore.userInfo.name; break;
     case "@_SYS_GETUSERNICKNAME": value.value[data.value.data.name] = userStore.userInfo.name; break;
@@ -102,7 +102,7 @@ if (value.value[data.value.data.name] == "") {
     case "00000000-0000-0000-0000-000000000000": value.value[data.value.data.name] = "00000000-0000-0000-0000-000000000000"; break;
     case "@_SYS_GW": value.value[data.value.data.name] = ""; break;
   }
-}
+
 //数值填写默认值为0
 if (data.value.data.type == 'number') {
   if (value.value[data.value.data.name] == "") {

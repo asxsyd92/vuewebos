@@ -1,32 +1,50 @@
 <template>
-    <lay-panel>
+    <div>
         <div class="layui-card " ref="workrunindex">
             <div class="layui-container">
+         
                 <lay-button-group>
                     <lay-button type="default" size="sm" @click="validate">立即提交</lay-button>
 
                 </lay-button-group>
+                    <lay-line></lay-line><br/>
                 <div v-if="signature">   
                 <lay-input  placeholder="请输入处理意见" v-model="comment"></lay-input>
+                 
                 </div>
       
                 <lay-form :model="fromdata.field" ref="layFormRef">
-                    <lay-line border-style="dashed" border-width="6px">
-                        <div style="font-size:large"> {{ fromdata.form == undefined ? "" : fromdata.form.name }}</div>
-                    </lay-line>
+                   <lay-line></lay-line><br/>
+                        <div style="font-size:large;text-align: center;"> {{ fromdata.form == undefined ? "" : fromdata.form.name }}</div>
+                      <lay-line></lay-line><br/>
                     <div v-for="(item, index) in fromdata.data" :key="index">
                         <subform :data="item" :value="fromdata.field"></subform>
                     </div>
                 </lay-form>
-            </div>
-         
-        </div>
-           
+                <lay-line></lay-line><br/>
+                   <div class="layui-col-md24">
+                   <lay-badge type="dot" ripple></lay-badge>&nbsp;
+    <lay-badge type="dot" theme="orange" ripple></lay-badge>&nbsp;
+    <lay-badge type="dot" theme="green" ripple></lay-badge>&nbsp;
+    <lay-badge type="dot" theme="cyan" ripple></lay-badge>&nbsp;
+    <lay-badge type="dot" theme="blue" ripple></lay-badge>&nbsp;
+    <lay-badge type="dot" theme="black" ripple></lay-badge>&nbsp;
+    <lay-badge type="dot" theme="gray" ripple></lay-badge>&nbsp;
               <lay-timeline>
               <div v-for="(item,index) in commentlist" :key="index">
-              <lay-timeline-item v-if="item.comment!=''"  :title="item.comment" simple></lay-timeline-item>
+              <lay-timeline-item   :title="getmoment(item.completedtime1)" >
+              <p>
+              {{'【' + item.stepname + '】:' + item.comment}}
+              </p>
+              </lay-timeline-item>
               </div>
              </lay-timeline>
+           </div>
+            </div>
+         <div class="setheight"></div>
+        </div>
+          
+           
        
         <lay-layer move="true" :btn="sendbtn" :closeBtn="false" :area="['80%', '85%']" :shadeClose="false"
             @submit="submit" title="发送" v-model="sedvisible">
@@ -45,28 +63,31 @@
                     </vxe-table>
 
                 </lay-card>
+                 
                 <lay-card v-if="nextstep.length > 0" title="请选择处理步骤">
                     <!-- <lay-checkbox name="like" skin="primary" v-model="stepselect" label="1">写作</lay-checkbox> -->
+                     <div class="">
                     <div v-for="(item, index) in nextstep" :key="index">
                         <lay-radio v-model="stepselect" name="step" :value="item.id">{{ item.name }}</lay-radio>
                     </div>
-
+  </div>
                 </lay-card>
+              
             </lay-panel>
         </lay-layer>
-    </lay-panel>
+    </div>
 </template>
 
 <script lang="ts">
 
-import { ref, reactive, onMounted, getCurrentInstance, withDefaults, defineProps } from 'vue'
+import { ref, reactive, getCurrentInstance, withDefaults, defineProps } from 'vue'
 import { layer } from '@layui/layer-vue'
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore } from "../../../store/app";
 import http from "../../../utils/http";
 import subform from '../../../components/formitem/subform.vue';
 import HelpTabs from "../../../utils/HelpTabs"
-import XEUtils, { values } from 'xe-utils'
+import moment from 'moment'
 import { VXETable, VxeTableInstance, VxeTableEvents } from 'vxe-table'
 
 export default {
@@ -398,9 +419,13 @@ export default {
             });
             console.info(`勾选${records.length}个树形节点`, users.value)
         }
-        onMounted(() => {
+     
             render();
-        })
+      
+       const getmoment=(s:any)=>{
+           return   moment(s).format('YYYY年MM月DD日')
+        }
+       
         return {
             validateModel,
             layFormRef,
@@ -424,32 +449,15 @@ export default {
             selectChangeEvent,
             users,
             signature,
-            userslist
-
+            userslist,
+            getmoment
 
         }
     }
 }
 </script>
 <style>
-.global-content {
-    height: calc(100% - 42px);
-    position: relative;
-    top: 45px;
-    width: 99%;
-    overflow-y: auto;
-}
 
-.global-content .layui-footer {
-    z-index: 400;
-    width: 100%;
-    position: fixed;
-    right: 0;
-    top: 100px;
-    height: 44px;
-    line-height: 22px;
-    background-color: #fff;
-    text-align: center;
-    padding: 10px 0;
-}
+
+
 </style>

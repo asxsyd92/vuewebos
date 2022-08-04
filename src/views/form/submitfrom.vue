@@ -1,6 +1,6 @@
 <template>
-  <lay-panel>
-
+  <div>
+ <lay-line></lay-line>
     <div class="layui-card " ref="submitfrom">
       <div class="layui-container">
     <lay-button-group>
@@ -13,9 +13,9 @@
           <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" @click="reset">关闭</button>
         </div> -->
         <lay-form :model="fromdata.field" ref="layFormRef">
-          <lay-line border-style="dashed" border-width="6px">
-            <div style="font-size:large"> {{ fromdata.name }}</div>
-          </lay-line>
+             <lay-line></lay-line><br/>
+                        <div style="font-size:large;text-align: center;"> {{ fromdata.form == undefined ? "" : fromdata.form.name }}</div>
+             <lay-line></lay-line><br/>
           <div v-for="(item, index) in fromdata.data" :key="index">
             <subform :data="item" :value="fromdata.field"></subform>
           </div>
@@ -23,7 +23,7 @@
       </div>
       <div class="setheight"></div>
     </div>
-  </lay-panel>
+  </div>
 </template>
 
 <script lang="ts">
@@ -165,24 +165,4 @@ export default {
 <style>
 
 
-.global-content {
-  height: calc(100% - 42px);
-  position: relative;
-  top: 45px;
-  width: 99%;
-  overflow-y: auto;
-}
-
-.global-content .layui-footer {
-  z-index: 400;
-  width: 100%;
-  position: fixed;
-  right: 0;
-  top: 100px;
-  height: 44px;
-  line-height: 22px;
-  background-color: #fff;
-  text-align: center;
-  padding: 10px 0;
-}
 </style>

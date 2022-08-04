@@ -15,13 +15,13 @@
   height: 50px;
 }
 .global-content{
-  background-image: url("/src/assets/imges/bj.gif");
+  /* background-image: url("/src/assets/imges/bj.gif"); */
 }
 .layui-card {
   background-color: hsl(0deg 0% 100% / 80%);
 }
 .layui-body {
- 
+  overflow: hidden;
   background-color: hsla(0,0%,100%,.8);
 }
 .layui-body > .layui-tab {

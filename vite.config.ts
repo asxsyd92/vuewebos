@@ -7,7 +7,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-          target: 'http://asxsyd92.com',   //代理接口
+          target: 'http://127.0.0.1:89',   //代理接口
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, 'api')
       }
