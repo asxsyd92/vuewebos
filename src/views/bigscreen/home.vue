@@ -64,7 +64,7 @@ import RightCenter from "./right-center.vue";
 import RightBottom from "./right-bottom.vue";
 
 </script>
-<style lang="scss" scoped>
+<style lang="scss" >
 // 内容
 .contents {
   .contetn_left,

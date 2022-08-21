@@ -1,164 +1,100 @@
-<!--
- * @Author: daidai
- * @Date: 2022-02-28 16:16:42
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-28 09:50:07
- * @FilePath: \web-pc\src\pages\big-screen\view\indexs\left-center.vue
--->
+
 <template>
     <ul class="user_Overview flex" v-if="pageflag">
         <li class="user_Overview-item" style="color: #00fdfa">
             <div class="user_Overview_nums allnum ">
-                <dv-digital-flop :config="config" style="width:100%;height:100%;" />
+                <!-- <dv-digital-flop :config="config" style="width:100%;height:100%;" /> -->
+                  {{userOverview.alarmNum}}
             </div>
             <p>总设备数</p>
         </li>
         <li class="user_Overview-item" style="color: #07f7a8">
             <div class="user_Overview_nums online">
-                <dv-digital-flop :config="onlineconfig" style="width:100%;height:100%;" />
+                    {{userOverview.offlineNum}}
             </div>
             <p>在线数</p>
         </li>
         <li class="user_Overview-item" style="color: #e3b337">
             <div class="user_Overview_nums offline">
-                <dv-digital-flop :config="offlineconfig" style="width:100%;height:100%;" />
-
+                <!-- <dv-digital-flop :config="offlineconfig" style="width:100%;height:100%;" /> -->
+                 {{userOverview.onlineNum}}
             </div>
             <p>掉线数</p>
         </li>
         <li class="user_Overview-item" style="color: #f5023d">
             <div class="user_Overview_nums laramnum">
-                <dv-digital-flop :config="laramnumconfig" style="width:100%;height:100%;" />
+             {{userOverview.totalNum}}
+                <!-- <dv-digital-flop :config="laramnumconfig" style="width:100%;height:100%;" /> -->
             </div>
             <p>告警次数</p>
         </li>
     </ul>
-    <Reacquire v-else @onclick="getData" line-height="200px">
+    <!-- <Reacquire v-else @onclick="getData" line-height="200px">
         重新获取
-    </Reacquire>
+    </Reacquire> -->
 </template>
-<!-- 
-<script>
-import { currentGET } from 'api/modules'
+
+<script lang="ts" setup>
+import http from "../../utils/http";
+import utils from "../../utils/utils";
+
+import { ref } from 'vue';
 let style = {
     fontSize: 24
 }
-export default {
-    data() {
-        return {
-            options: {},
-            userOverview: {
-                alarmNum: 0,
-                offlineNum: 0,
-                onlineNum: 0,
-                totalNum: 0,
-            },
-            pageflag: true,
-            timer: null,
-            config: {
-                number: [100],
-                content: '{nt}',
-                style: {
-                    ...style,
-                    // stroke: "#00fdfa",
-                    fill: "#00fdfa",
-                },
-            },
-            onlineconfig: {
-                number: [0],
-                content: '{nt}',
-                style: {
-                    ...style,
-                    // stroke: "#07f7a8",
-                    fill: "#07f7a8",
-                },
-            },
-            offlineconfig: {
-                number: [0],
+
+
+const options = ref(null) as any;
+const userOverview = ref({ alarmNum: 0, offlineNum: 0, onlineNum: 0, totalNum: 0, }) as any;
+const pageflag = ref(true) as any;
+const timer = ref(true) as any;
+const config = ref({
+    number: [100],
+    content: '{nt}',
+    style: {
+       ...style,
+        // stroke: "#00fdfa",
+        fill: "#00fdfa",
+    },
+}) as any;
+
+const onlineconfig = ref({
+    number: [4],alarmNum: 0, offlineNum: 0, onlineNum: 0, totalNum: 0,
+    content: '{nt}',
+    style: {
+        ...style,
+        // stroke: "#07f7a8",
+        fill: "#07f7a8",
+    }
+}) as any;
+   const offlineconfig = ref({
+                number: [5],alarmNum: 0, offlineNum: 0, onlineNum: 0, totalNum: 0,
                 content: '{nt}',
                 style: {
                     ...style,
                     // stroke: "#e3b337",
                     fill: "#e3b337",
                 },
-            },
-            laramnumconfig: {
-                number: [0],
+            }) as any;
+   const  laramnumconfig = ref({number: [6],alarmNum: 0, offlineNum: 0, onlineNum: 0, totalNum: 0,
                 content: '{nt}',
                 style: {
                     ...style,
                     // stroke: "#f5023d",
                     fill: "#f5023d",
-                },
-            }
+                }}) as any;
 
-        };
-    },
-    filters: {
-        numsFilter(msg) {
-            return msg || 0;
-        },
-    },
-    created() {
-        this.getData()
-    },
-    mounted() {
-    },
-    beforeDestroy() {
-        this.clearData()
-
-    },
-    methods: {
-        clearData() {
-            if (this.timer) {
-                clearInterval(this.timer)
-                this.timer = null
-            }
-        },
-        getData() {
-            this.pageflag = true;
-            currentGET("big2").then((res) => {
-                if (!this.timer) {
-                    console.log("设备总览", res);
-                }
-                if (res.success) {
-                    this.userOverview = res.data;
-                    this.onlineconfig = {
-                        ...this.onlineconfig,
-                        number: [res.data.onlineNum]
-                    }
-                    this.config = {
-                        ...this.config,
-                        number: [res.data.totalNum]
-                    }
-                    this.offlineconfig = {
-                        ...this.offlineconfig,
-                        number: [res.data.offlineNum]
-                    }
-                    this.laramnumconfig = {
-                        ...this.laramnumconfig,
-                        number: [res.data.alarmNum]
-                    }
-                    this.switper()
-                } else {
-                    this.pageflag = false;
-                    this.$Message.warning(res.msg);
-                }
-            });
-        },
-        //轮询
-        switper() {
-            if (this.timer) {
-                return
-            }
-            let looper = (a) => {
-                this.getData()
-            };
-            this.timer = setInterval(looper, this.$store.state.setting.echartsAutoTime);
-        },
-    },
-};
-</script> -->
+          const    switper=()=> {
+             setInterval(function(){
+           userOverview.value.alarmNum=  utils.random(0,1000);
+              userOverview.value.offlineNum=  utils.random(0,1000);
+                 userOverview.value.onlineNum=  utils.random(0,1000);
+                    userOverview.value.totalNum=  utils.random(0,1000);
+             }, 1000);
+             
+        }
+        switper();
+</script>
 <style lang='scss' scoped>
 .user_Overview {
     li {
@@ -197,30 +133,30 @@ export default {
 
         .allnum {
 
-            // background-image: url("../../assets/img/left_top_lan.png");
+            // background-image: url("./../../assets/imges/left_top_lan.png");
             &::before {
-                background-image: url("../../assets/img/left_top_lan.png");
+                background-image: url("./../../assets/imges/left_top_lan.png");
 
             }
         }
 
         .online {
             &::before {
-                background-image: url("../../assets/img/left_top_lv.png");
+                background-image: url("./../../assets/imges/left_top_lv.png");
 
             }
         }
 
         .offline {
             &::before {
-                background-image: url("../../assets/img/left_top_huang.png");
+                background-image: url("./../../assets/imges/left_top_huang.png");
 
             }
         }
 
         .laramnum {
             &::before {
-                background-image: url("../../assets/img/left_top_hong.png");
+                background-image: url("./../../assets/imges/left_top_hong.png");
 
             }
         }

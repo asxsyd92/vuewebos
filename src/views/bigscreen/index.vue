@@ -61,7 +61,7 @@ const showtime=ref("");
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 @import  '../../assets/bigscreen/css/public.scss';
 @import "../../assets/bigscreen/css/index.scss";
 @import "../../assets/bigscreen/css/home.scss";
