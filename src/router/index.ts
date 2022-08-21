@@ -182,7 +182,20 @@ export const outRoute = [
       name: 'Login',
       meta: { noRequireAuth: true },
       component: () => import( '../views/login/login.vue')
-  }
+  }, {
+    path: '/bigscreen',
+    name: 'bigscreen', 
+    redirect: '/bigscreen/home',
+    meta: { noRequireAuth: true },
+    component: () => import( '../views/bigscreen/index.vue'),
+    children:[
+      {
+        path: '/bigscreen/home',
+        name: 'home',
+        component: () => import(/* webpackChunkName: "LSD.bighome" */ '../views/bigscreen/home.vue'),
+      }
+    ]
+}
 ];
 
 const routes = [...inRoutes, ...outRoute]

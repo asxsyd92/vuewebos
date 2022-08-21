@@ -36,7 +36,7 @@
   </lay-container>
 </template>
 <script lang="ts" setup>
-import { defineComponent,onMounted,onUnmounted } from "vue";
+import { defineComponent,onMounted,onUnmounted} from "vue";
 import * as echarts from "echarts";
 import { anyTypeAnnotation } from "@babel/types";
 

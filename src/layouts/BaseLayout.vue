@@ -65,6 +65,9 @@
                 <lay-dropdown-menu-item @click="loginexit()"
                   >注销登录</lay-dropdown-menu-item
                 >
+                  <lay-dropdown-menu-item @click="big"
+                  >大平监控</lay-dropdown-menu-item
+                >
               </lay-dropdown-menu>
             </template>
           </lay-dropdown>
@@ -307,6 +310,9 @@ export default {
         console.log(e);
       }
     };
+    const big=()=>{
+      window.open("/bigscreen", "_blank");
+    }
     // return instance
     return {
       sideWidth,
@@ -328,7 +334,7 @@ export default {
       mmmodel,
       rules,
       layFormRef1,
-      submit,
+      submit,big
     };
   },
 };
