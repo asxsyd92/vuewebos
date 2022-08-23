@@ -4,26 +4,31 @@
         <li class="user_Overview-item" style="color: #00fdfa">
             <div class="user_Overview_nums allnum ">
                 <!-- <dv-digital-flop :config="config" style="width:100%;height:100%;" /> -->
-                  {{userOverview.alarmNum}}
+                <lay-count-up  :startVal="0" :endVal="userOverview.alarmNum" :decimalPlaces="0"></lay-count-up>
             </div>
             <p>总设备数</p>
         </li>
         <li class="user_Overview-item" style="color: #07f7a8">
             <div class="user_Overview_nums online">
-                    {{userOverview.offlineNum}}
+          
+                    <lay-count-up :startVal="0" :endVal="userOverview.offlineNum" :decimalPlaces="0"></lay-count-up>
             </div>
             <p>在线数</p>
         </li>
         <li class="user_Overview-item" style="color: #e3b337">
             <div class="user_Overview_nums offline">
                 <!-- <dv-digital-flop :config="offlineconfig" style="width:100%;height:100%;" /> -->
-                 {{userOverview.onlineNum}}
+         
+                 
+                    <lay-count-up :startVal="0" :endVal="userOverview.onlineNum" :decimalPlaces="0"></lay-count-up>
             </div>
             <p>掉线数</p>
         </li>
         <li class="user_Overview-item" style="color: #f5023d">
             <div class="user_Overview_nums laramnum">
-             {{userOverview.totalNum}}
+   
+                       <lay-count-up :startVal="0" :endVal="userOverview.totalNum" :decimalPlaces="0"></lay-count-up>
+           
                 <!-- <dv-digital-flop :config="laramnumconfig" style="width:100%;height:100%;" /> -->
             </div>
             <p>告警次数</p>
@@ -86,16 +91,16 @@ const onlineconfig = ref({
 
           const    switper=()=> {
              setInterval(function(){
-           userOverview.value.alarmNum=  utils.random(0,1000);
-              userOverview.value.offlineNum=  utils.random(0,1000);
-                 userOverview.value.onlineNum=  utils.random(0,1000);
-                    userOverview.value.totalNum=  utils.random(0,1000);
-             }, 1000);
+           userOverview.value.alarmNum=  utils.random(0,100);
+              userOverview.value.offlineNum=  utils.random(0,100);
+                 userOverview.value.onlineNum=  utils.random(0,100);
+                    userOverview.value.totalNum=  utils.random(0,100);
+             }, 5000);
              
         }
         switper();
 </script>
-<style lang='scss' scoped>
+<style lang='scss' >
 .user_Overview {
     li {
         flex: 1;
@@ -109,6 +114,7 @@ const onlineconfig = ref({
         .user_Overview_nums {
             width: 100px;
             height: 100px;
+            font-family: digital-7; 
             text-align: center;
             line-height: 100px;
             font-size: 22px;

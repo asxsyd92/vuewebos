@@ -15,7 +15,6 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { indexOf } from 'xe-utils';
 export default {
   name: "itemcolor",
 };
