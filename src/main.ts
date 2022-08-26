@@ -12,7 +12,7 @@ import { useAppStore } from './store/app'
 import 'font-awesome/css/font-awesome.min.css'
 import VueUeditorWrap from "vue-ueditor-wrap";
 import print from "print-js";
-
+import DataVVue3 from '@kjgl77/datav-vue3'
 function useTable (app: App) {
     app.use(VXETable)
 
@@ -26,6 +26,6 @@ createApp(Apps)
 // .use(preview)
 .use(Layui).use(VueUeditorWrap)
 .use(Store)
-.use(Router)
+.use(Router).use(DataVVue3)
 .use(useTable)
 .mount('#app');

@@ -6,8 +6,9 @@
         <!-- <div class="item">实时监测</div> -->
         
       </div>
+
       <ItemWrap class="contetn_left-top contetn_lr-item" title="设备总览">
-        <LeftTop/>
+     <LeftTop/>
     
       </ItemWrap>
       <ItemWrap class="contetn_left-center contetn_lr-item" title="用户总览">
@@ -65,6 +66,24 @@ import RightBottom from "./right-bottom.vue";
 
 </script>
 <style lang="scss" >
+.dv-border-box-8 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.dv-border-box-8 .dv-border-svg-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+}
+.dv-border-box-8 .border-box-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 // 内容
 .contents {
   .contetn_left,

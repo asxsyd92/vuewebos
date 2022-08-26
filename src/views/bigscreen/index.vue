@@ -65,7 +65,7 @@ const showtime=ref("");
 @import  '../../assets/bigscreen/css/public.scss';
 @import "../../assets/bigscreen/css/index.scss";
 @import "../../assets/bigscreen/css/home.scss";
-
+@import url('@kjgl77/datav-vue3/dist/style.css');
 
 // 内容
 .contents {

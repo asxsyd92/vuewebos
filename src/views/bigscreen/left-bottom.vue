@@ -1,253 +1,93 @@
-<!--
- * @Author: daidai
- * @Date: 2022-03-01 09:43:37
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-05-07 11:36:18
- * @FilePath: \web-pc\src\pages\big-screen\view\indexs\left-bottom.vue
--->
 <template>
-  <div
-    v-if="pageflag"
-    class="left_boottom_wrap beautify-scroll-def"
-    :class="{ 'overflow-y-auto': !sbtxSwiperFlag }"
-  >
-    <component :is="components" :data="list" :class-option="defaultOption">
-      <ul class="left_boottom">
-        <li class="left_boottom_item" v-for="(item, i) in list" :key="i">
-          <span class="orderNum doudong">{{ i + 1 }}</span>
-          <div class="inner_right">
-            <div class="dibu"></div>
-            <div class="flex">
-              <div class="info">
-                <span class="labels">设备ID：</span>
-                <span class="contents zhuyao doudong wangguan">
-                  {{ item.gatewayno }}</span
-                >
-              </div>
-              <div class="info">
-                <span class="labels">时间：</span>
-                <span class="contents " style="font-size: 12px">
-                  {{ item.createTime }}</span
-                >
-              </div>
-            </div>
+<div>
 
-              <span
-                class="types doudong"
-                :class="{
-                  typeRed: item.onlineState == 0,
-                  typeGreen: item.onlineState == 1,
-                }"
-                >{{ item.onlineState == 1 ? "上线" : "下线" }}</span
-              >
 
-            <div class="info addresswrap">
-              <span class="labels">地址：</span>
-              <span class="contents ciyao" style="font-size: 12px">
-                {{ addressHandle(item) }}</span
-              >
-            </div>
-          </div>
-        </li>
-      </ul>
-    </component>
-  </div>
-
-  <Reacquire v-else @onclick="getData" style="line-height: 200px" />
+  <div  class="left_boottom_wrap beautify-scroll-def">
+  <!-- <svg width="460" height="310" class="dv-border-svg-container"><path fill="transparent" d="
+        M 5 20 L 5 10 L 12 3  L 60 3 L 68 10
+        L 440 10 L 455 25
+        L 455 305 L 20 305
+        L 5 290 L 5 20
+      " stroke="#6586ec"></path><path fill="transparent" stroke-width="3" stroke-linecap="round" stroke-dasharray="10, 5" d="M 16 9 L 61 9" stroke="#6586ec"></path><path fill="transparent" d="M 5 20 L 5 10 L 12 3  L 60 3 L 68 10" stroke="#2cf7fe"></path><path fill="transparent" d="M 455 280 L 455 305 L 430 305" stroke="#2cf7fe"></path></svg>
+  -->
+  <vue3-seamless-scroll :list="list" width="450" class="scroll" :step="1">
+    <div class="item" v-for="(item, index) in list" :key="index">
+      <span>{{ item.title }}</span>
+      <span>{{ item.date }}</span>
+    </div>
+  </vue3-seamless-scroll>
+</div>
+</div>
 </template>
-<!-- 
 <script>
-import { currentGET } from "api";
-import vueSeamlessScroll from "vue-seamless-scroll"; // vue2引入方式
-import Kong from "../../components/kong.vue";
+
+import { ref, reactive,toRefs } from "vue";
+import { Vue3SeamlessScroll } from "vue3-seamless-scroll";
 export default {
-  components: { vueSeamlessScroll, Kong },
-  data() {
+  name: "index",
+  components: {
+    Vue3SeamlessScroll,
+  },
+  setup() {
+
+    const state = reactive({
+      list: [
+        {
+          title: "无缝滚动第一行无缝滚动第一行",
+          date: "2017-12-16",
+        },
+        {
+          title: "无缝滚动第二行无缝滚动第二行",
+          date: "2017-12-16",
+        },
+        {
+          title: "无缝滚动第三行无缝滚动第三行",
+          date: "2017-12-16",
+        },
+        {
+          title: "无缝滚动第四行无缝滚动第四行",
+          date: "2017-12-16",
+        },
+        {
+          title: "无缝滚动第五行无缝滚动第五行",
+          date: "2017-12-16",
+        },
+        {
+          title: "无缝滚动第六行无缝滚动第六行",
+          date: "2017-12-16",
+        },
+        {
+          title: "无缝滚动第七行无缝滚动第七行",
+          date: "2017-12-16",
+        },
+        {
+          title: "无缝滚动第八行无缝滚动第八行",
+          date: "2017-12-16",
+        },
+        {
+          title: "无缝滚动第九行无缝滚动第九行",
+          date: "2017-12-16",
+        },
+      ],
+    });
     return {
-      list: [],
-      pageflag: true,
-      components: vueSeamlessScroll,
-      defaultOption: {
-        ...this.$store.state.setting.defaultOption,
-        singleHeight: 240,
-        limitMoveNum: 5, 
-        step: 0,
-      },
+      ...toRefs(state),
     };
   },
-  computed: {
-    sbtxSwiperFlag() {
-      let sbtxSwiper = this.$store.state.setting.sbtxSwiper;
-      if (sbtxSwiper) {
-        this.components = vueSeamlessScroll;
-      } else {
-        this.components = Kong;
-      }
-      return sbtxSwiper;
-    },
-  },
-  created() {
-    this.getData();
-  },
-
-  mounted() {},
-  methods: {
-    addressHandle(item) {
-      let name = item.provinceName;
-      if (item.cityName) {
-        name += "/" + item.cityName;
-        if (item.countyName) {
-          name += "/" + item.countyName;
-        }
-      }
-      return name;
-    },
-    getData() {
-      this.pageflag = true;
-      // this.pageflag =false
-      currentGET("big3", { limitNum: 20 }).then((res) => {
-        console.log("设备提醒", res);
-        if (res.success) {
-          this.countUserNumData = res.data;
-          this.list = res.data.list;
-          let timer = setTimeout(() => {
-            clearTimeout(timer);
-            this.defaultOption.step =
-              this.$store.state.setting.defaultOption.step;
-          }, this.$store.state.setting.defaultOption.waitTime);
-        } else {
-          this.pageflag = false;
-          this.$Message({
-            text: res.msg,
-            type: "warning",
-          });
-        }
-      });
-    },
-  },
 };
-</script> -->
+</script>
 <style lang='scss' scoped>
-.left_boottom_wrap {
+.scroll {
+  height: 200px;
+  width: 500px;
+  margin: 0px auto;
   overflow: hidden;
-  width: 100%;
-  height: 100%;
 }
 
-.doudong {
-  //  vertical-align:middle;
-  overflow: hidden;
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  -ms-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-.overflow-y-auto {
-  overflow-y: auto;
-}
-
-.left_boottom {
-  width: 100%;
-  height: 100%;
-
-  .left_boottom_item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
-    font-size: 14px;
-    margin: 10px 0;
-    .orderNum {
-      margin: 0 16px 0 -20px;
-    }
-
-    .info {
-      margin-right: 10px;
-      display: flex;
-      align-items: center;
-      color: #fff;
-
-      .labels {
-        flex-shrink: 0;
-        font-size: 12px;
-        color: rgba(255, 255, 255, 0.6);
-      }
-
-      .zhuyao {
-
-        font-size: 15px;
-      }
-
-      .ciyao {
-        color: rgba(255, 255, 255, 0.8);
-      }
-
-      .warning {
-        color: #e6a23c;
-        font-size: 15px;
-      }
-    }
-
-    .inner_right {
-      position: relative;
-      height: 100%;
-      width: 380px;
-      flex-shrink: 0;
-      line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      .dibu {
-        position: absolute;
-        height: 2px;
-        width: 104%;
-        background-image: url("../../assets/img/zuo_xuxian.png");
-        bottom: -10px;
-        left: -2%;
-        background-size: cover;
-      }
-      .addresswrap {
-        width: 100%;
-        display: flex;
-        margin-top: 8px;
-      }
-    }
-
-    .wangguan {
-      color: #1890ff;
-      font-weight: 900;
-      font-size: 15px;
-      width: 80px;
-      flex-shrink: 0;
-    }
-
-
-    .time {
-      font-size: 12px;
-      // color: rgba(211, 210, 210,.8);
-      color: #fff;
-    }
-
-    .address {
-      font-size: 12px;
-      cursor: pointer;
-      // @include text-overflow(1);
-    }
-
-    .types {
-      width: 30px;
-      flex-shrink: 0;
-    }
-
-    .typeRed {
-      color: #fc1a1a;
-    }
-
-    .typeGreen {
-      color: #29fc29;
-    }
-  }
+.scroll .item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 0;
 }
 </style>

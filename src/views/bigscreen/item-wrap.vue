@@ -1,6 +1,7 @@
 
 <template>
-  <dv-border-box-13 class="lr_titles">
+  <dv-border-box-8 class="lr_titles">
+  
     <div class="item_title" v-if="title !== ''">
       <div class="zuo"></div>
       <span class="title-inner"> &nbsp;&nbsp;{{ title }}&nbsp;&nbsp; </span>
@@ -11,25 +12,19 @@
     >
       <slot></slot>
     </div>
-  </dv-border-box-13>
+  </dv-border-box-8>
 </template>
 
-<script>
-export default {
-  data() {
-    return {};
-  },
-  props: {
-    title: {
-      type: String,
-      default: () => "",
-    },
-  },
-  created() {},
-
-  mounted() {},
-  methods: {},
-};
+<script lang="ts" setup>
+import { ref } from "vue";
+const title=ref('');
+interface IitemWrapProps {
+  title: any
+}
+const props = withDefaults(defineProps<IitemWrapProps>(), {
+  title:Object
+});
+title.value=ref(props.title);;
 </script>
 <style lang='scss' scoped>
 $item-title-height: 38px;

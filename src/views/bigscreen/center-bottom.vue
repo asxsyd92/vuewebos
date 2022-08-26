@@ -1,7 +1,10 @@
 <template>
-  <div class="center_bottom">
+<div>
+ <div class="center_bottom">
     <Echart :options="options" id="bottomLeftChart" :echarts="echarts" class="echarts_bottom"></Echart>
   </div>
+</div>
+
 </template>
 
 <script lang="ts" setup>
