@@ -1,6 +1,6 @@
 
 <template>
-  <div ref="echartsid" id="echartsid"  :style="{ height: 120, width: 121 }" />
+  <div  :style="{ height: 120, width: 121 }" />
 </template>
 
 <script lang="ts" setup>
@@ -8,7 +8,7 @@ import * as echarts from "echarts";
   import { ref, reactive, onMounted } from "vue";
 import tdTheme from './theme.json' // 引入默认主题
 interface IechartProps {
-  options: any,echarts: any
+  options: any
 }
 const props = withDefaults(defineProps<IechartProps>(), {
   options:Object
@@ -29,7 +29,7 @@ console.log(chart.value);
      chart.value.setOption(options.value, true)
     })
 
-    },5000)
+    },1000)
 
  
              

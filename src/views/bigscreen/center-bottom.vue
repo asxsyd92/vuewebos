@@ -1,7 +1,7 @@
 <template>
 <div>
  <div class="center_bottom">
-    <Echart :options="options" id="bottomLeftChart" :echarts="echarts" class="echarts_bottom"></Echart>
+    <Echart ref="bottomLeftChart" :options="options" id="bottomLeftChart"  class="echarts_bottom"></Echart>
   </div>
 </div>
 
@@ -9,8 +9,8 @@
 
 <script lang="ts" setup>
 import * as echarts from "echarts";
+ import Echart from './../../components/echart/Echart.vue';
 import http from "../../utils/http";
-import Echart from "../../components/echart/Echart.vue";
 import { ref } from 'vue';
 const newData=ref({"category":["绵阳市","克孜勒苏柯尔克孜自治州","阜阳市","陇南市","承德市","邯郸市","崇左市","舟山市","三亚市","绥化市","黑河市","克拉玛依市","许昌市","丽江市","湖州市","淮安市","营口市","阿克苏地区","忻州市","澳门半岛","阿勒泰地区","朔州市","天津市","三亚市","重庆市","抚州市","三门峡市","离岛","日喀则地区","彰化县"],"barData":[92,81,67,89,20,70,31,69,93,79,54,31,22,87,61,36,43,65,26,30,58,40,20,87,50,87,65,75,33,27],"lineData":[150,120,99,132,35,77,94,120,109,178,100,69,108,106,156,64,68,90,92,38,85,102,39,124,68,161,141,164,41,79],"rateData":["61","68","68","67","57","91","33","57","85","44","54","45","20","82","39","56","63","72","28","79","68","39","51","70","74","54","46","46","80","34"]}) as
  any;
@@ -108,7 +108,7 @@ const getData=()=>{
                 ])
               }
             },
-            data: newData.barData
+            data: newData.value.barData
           },
           {
             name: "计划安装",
