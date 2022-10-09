@@ -30,9 +30,9 @@ export default {
 
 import { ref } from 'vue';
 
-import { AnyKindOfDictionary } from 'lodash';
+import http from '../../api/http';
 import xzqCode from "../../utils/map/xzqCode";
-import http from "../../utils/http";
+
 
     const CenterMap = ref(null) as any;
     const maptitle = ref("国内访问分布图");
@@ -43,7 +43,7 @@ import http from "../../utils/http";
     let zoom = 1.05;
     http.get('../../../src/assets/china.json').then((res: any) => {
       // console.log('地图行政区划', name, res);
-      let cityCenter = {};
+      let cityCenter = {} as any;
       let arr = res.features;
       arr.map((item: any) => {
         cityCenter[item.properties.name] =

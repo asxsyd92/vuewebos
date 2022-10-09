@@ -64,7 +64,7 @@ import draggable from "vuedraggable";
 import subdesign from '../../../components/formdesign/subdesign.vue';
 import sets from '../../../components/formdesign/set.vue';
 import _ from 'lodash';
-import http from "../../../utils/http";
+import http from "../../../api/http";
 import { watch, ref, onMounted } from 'vue';
 import { useRouter, useRoute, RouteMeta } from 'vue-router';
 import toolsdata from '../../../assets/toolsdata';

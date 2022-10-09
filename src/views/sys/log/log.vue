@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import http from "../../../utils/http";
+import http from '../../../api/http'
 import { defineComponent, reactive, ref } from 'vue'
 import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
 
@@ -78,6 +78,11 @@ export default defineComponent({
         { field: 'type', title: '类型', },
         { field: 'username', title: '操作人', },
         { field: 'writetime', title: '发生时间', },
+        {field:'ipaddress',title:"IP地址"},
+        {field:'pro',title:"归属省份"},
+        {field:'city',title:"归属市份"},
+        {field:'addr',title:"详细地址"},
+        {field:'citycode',title:"城市编号"},
         { field: 'contents', title: '详情', },
         { title: '操作', fixed: "right", width: 200, slots: { default: 'operate' } }
       ],

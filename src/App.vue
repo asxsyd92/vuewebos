@@ -2,6 +2,7 @@
   <router-view></router-view>
 </template>
 <style>
+@import "./styles/index.css";
 
 #app {
   height: 100%;
@@ -10,17 +11,6 @@ body {
   height: 100%;
 }
 html {
- overflow: hidden;
   height: 100%;
 }
-.setheight{
-  height: 250px;
-}
-.laymodle{
-  width: 95%;
-}
-.showtext {
-  line-height: 38px;
-}
-
 </style>

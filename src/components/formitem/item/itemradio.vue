@@ -21,13 +21,14 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import { values, debounce } from 'xe-utils';
 export default {
   name: "itemradio",
 };
 </script>
 <script lang="ts" setup>
-    import http from "../../../utils/http";
-    import { ref,reactive  } from "vue";
+  import http from "../../../api/http";
+    import { ref,reactive,watch  } from "vue";
 interface ItemradioProps {
   data: any;
   value:any;
@@ -39,10 +40,12 @@ const props = withDefaults(defineProps<ItemradioProps>(), {
 const showtext=ref({}) as any;
 const data = ref(props.data);
 const value = ref(props.value);
-
+debugger
+value.value[data.value.data.name]=value.value[data.value.data.name].toString();
 const radio=ref([]) as any;
    
      
+
    
     const render = function () {
 

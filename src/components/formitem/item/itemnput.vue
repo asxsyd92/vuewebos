@@ -21,8 +21,8 @@
             <span class="showtext">{{ value[data.data.name] }}</span>
           </div>
           <div v-else>
-            <lay-input-password v-model="value[data.data.name]" :placeholder="data.data.placeholder">
-            </lay-input-password>
+            <lay-input v-model="value[data.data.name]" :placeholder="data.data.placeholder" type="password"></lay-input>
+
 
           </div>
 

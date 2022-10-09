@@ -90,7 +90,7 @@ class Http {
     }
     getQuery(url: any) {
         const index = url.indexOf('?');
-        const obj = {};
+        const obj = {} as any;
         if (index === -1) return obj;
         const queryStr = url.slice(index + 1);
         const arr = queryStr.split('&');

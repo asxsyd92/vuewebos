@@ -71,7 +71,7 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
-import http from "../../utils/http";
+import http from '../../api/http';
 import { layer } from '@layui/layer-vue'
 import { VxeTableInstance, VxeTableListeners, VXETable } from 'vxe-table'
 const xGrid = ref<VxeTableInstance>()

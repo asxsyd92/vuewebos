@@ -1,19 +1,24 @@
 <template>
   <lay-tab
+    class="global-tab"
     v-if="appStore.tab"
-    :modelValue="route.fullPath"
+    :modelValue="currentPath"
+    :allowClose="true"
     @change="change"
-    :allowClose="allowClose"
     @close="close"
   >
-    <div :key="index" v-for="(tab,index) in appStore.tabs">
+    <template :key="tab" v-for="tab in appStore.tabs">
       <lay-tab-item
         :id="tab.id"
         :title="tab.title"
         :closable="tab.closable"
- 
-      ></lay-tab-item>
-    </div>
+      >
+        <template #title>
+          <span class="dot"></span>
+          {{ tab.title }}
+        </template>
+      </lay-tab-item>
+    </template>
   </lay-tab>
 </template>
 
@@ -24,55 +29,43 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { ref, watch  } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { ref } from "vue";
 import { useAppStore } from "../../store/app";
-const router = useRouter();
-const route = useRoute();
+import { useTab } from "../composable/useTab";
+
 const appStore = useAppStore();
-const allowClose = ref(true);
-const change = function (id: string) {
-  router.push(id);
-};
 
-const close = function (path: string) {
-
-  appStore.tabs = appStore.tabs.filter((ele:any) => ele.id != path);
-  var i=appStore.tabs.length-1 
-  if(i>0){
-    var id=appStore.tabs[i].id;
-     router.push(id); 
-  }
-
-};
-    // 路由刷新
-    const refresh = function () {
-      appStore.routerAlive = false;
-      setTimeout(function () {
-        appStore.routerAlive = true;
-     
-      }, 500);
-    };
-
-watch(route, function () {
-
-  let bool = false;
-  appStore.tabs.forEach((tab:any) => {
-    if (tab.id === route.fullPath) {
-      bool = true;
-    }
-  });
-  if (!bool) {
-    // @ts-ignore
-    appStore.tabs.push({ id: route.fullPath, title:decodeURIComponent( route.query.tabname) });
-
-       refresh();
-  }else{
-       refresh();
-  }
-
-
-
-});
-
+const { change, close, currentPath } = useTab();
 </script>
+
+<style>
+  .layui-body > .layui-tab > .layui-tab-head{
+
+    background-color: #E0ECFF;
+    background: -webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+    background: -moz-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+    background: -o-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+    background: linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0);
+
+  }
+.layui-tab .dot {
+  display: inline-block;
+  background-color: whitesmoke;
+  margin-right: 8px;
+  border-radius: 50px;
+  height: 8px;
+  width: 8px;
+}
+.layui-tab .layui-this .dot {
+  background-color: var(--global-primary-color);
+}
+.layui-tab-title is-top{
+  border-color: #95B8E7;
+}
+.layui-tab .layui-tab-close:hover {
+    background: transparent!important;
+    color: #e2e2e2!important;
+}
+</style>

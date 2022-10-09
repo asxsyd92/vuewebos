@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import http from "../../utils/http";
+
 import utils from "../../utils/utils";
 
 import { ref } from 'vue';

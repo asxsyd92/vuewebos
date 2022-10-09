@@ -1,23 +1,40 @@
 <template>
-
-  <lay-layer title="更多设置" type="drawer" area="360px" v-model="visible">
-    <div class="global-setup">
-      <!-- 颜色 -->
-      <div  v-for="(themeVariableName, index) in themeVariableNames" :key="index">
-        <lay-color-picker
-          v-model="appStore.themeVariable[themeVariableName]"
-        ></lay-color-picker>
-      </div>
-      <!-- 其他 -->
+  <lay-layer :title="false" :closeBtn="false" type="drawer" area="300px" v-model="visible">
+    <div class="global-setup">    
+      <div class="global-setup-title">Overall style</div>
+      <global-setup-theme v-model="appStore.sideTheme"></global-setup-theme>
+      <global-color v-model="appStore.themeVariable['--global-primary-color']"></global-color>
+      <lay-line></lay-line>
       <global-setup-item label="多选项卡">
-        <lay-switch v-model="appStore.tab"></lay-switch>
+        <lay-switch v-model="appStore.tab" size="xs"></lay-switch>
       </global-setup-item>
       <global-setup-item label="菜单层级">
-        <lay-switch v-model="appStore.level"></lay-switch>
+        <lay-switch v-model="appStore.level" size="xs"></lay-switch>
       </global-setup-item>
       <global-setup-item label="菜单反选">
-        <lay-switch v-model="appStore.inverted"></lay-switch>
+        <lay-switch v-model="appStore.inverted" size="xs"></lay-switch>
       </global-setup-item>
+      <global-setup-item label="菜单折叠">
+        <lay-switch v-model="appStore.collapse" size="xs"></lay-switch>
+      </global-setup-item>
+      <global-setup-item label="手风琴">
+        <lay-switch v-model="appStore.accordion" size="xs"></lay-switch>
+      </global-setup-item>
+      <global-setup-item label="夜间模式">
+        <lay-switch v-model="appStore.theme" onswitch-value="dark" unswitch-value="light" size="xs"></lay-switch>
+      </global-setup-item>
+      <global-setup-item label="侧边标题">
+        <lay-switch v-model="appStore.logo" size="xs"></lay-switch>
+      </global-setup-item>
+      <global-setup-item label="灰色模式">
+        <lay-switch v-model="appStore.greyMode" size="xs"></lay-switch>
+      </global-setup-item>
+      <global-setup-item label="面包屑">
+        <lay-switch v-model="appStore.breadcrumb" size="xs"></lay-switch>
+      </global-setup-item>
+      <div style="padding:15px">
+        <lay-button border="green" border-style="dashed" :fluid="true">重置配置</lay-button>
+      </div>
     </div>
   </lay-layer>
 </template>
@@ -29,12 +46,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import globalSetupItem from "./GlobalSetupItem.vue";
+import globalSetupTheme from "./GlobalSetupTheme.vue";
+import globalColor from "./GlobalColor.vue";
 import { useAppStore } from "../../store/app";
 import { ref, watch } from "vue";
-import globalSetupItem from "./GlobalSetupItem.vue";
 
 const appStore = useAppStore();
-
 const emits = defineEmits(["update:modelValue"]);
 
 interface SetupProps {
@@ -57,19 +75,17 @@ watch(
     visible.value = val;
   }
 );
-
-const themeVariableNames = [
-  "--global-primary-color",
-  "--global-normal-color",
-  "--global-warm-color",
-  "--global-danger-color",
-  "--global-checked-color",
-] as Array<any>;
 </script>
 
 <style>
 .global-setup {
   padding: 10px;
+}
+
+.global-setup-title {
+  font-size: 13px;
+  margin-bottom: 10px;
+  padding: 10px 10px 0px 10px;
 }
 .global-setup .layui-colorpicker {
   margin-right: 10px;

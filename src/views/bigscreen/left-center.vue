@@ -8,12 +8,7 @@
 </template>
 <script setup lang="ts">
 import {  ref } from 'vue';
-const addData = ()=>{
-  config.data.push({
-    name: '测试'+Math.floor(Math.random() * 100),
-    value: Math.floor(Math.random() * 100)
-  })
-}
+
 
 const config = ref({
   data: [
@@ -40,5 +35,11 @@ const config = ref({
   ],
   colors: ['#e062ae', '#fb7293', '#e690d1', '#32c5e9', '#96bfff'],
   unit: '万元'
-})
+}) as any;
+const addData = ()=>{
+  config.data.push({
+    name: '测试'+Math.floor(Math.random() * 100),
+    value: Math.floor(Math.random() * 100)
+  })
+}
 </script>

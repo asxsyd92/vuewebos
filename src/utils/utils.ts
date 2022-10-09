@@ -64,7 +64,7 @@ class Utils {
             's+': date.getSeconds(),
             'q+': Math.floor((date.getMonth() + 3) / 3),
             S: date.getMilliseconds(),
-          };
+          } as any;
           if (/(y+)/.test(fmt))
             fmt = fmt.replace(
               RegExp.$1,

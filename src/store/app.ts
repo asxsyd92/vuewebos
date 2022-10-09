@@ -1,36 +1,32 @@
 import { defineStore } from 'pinia'
 
-
 export const useAppStore = defineStore({
   id: 'app',
   state: () => {
     return {
       tab: true,
-      tabs:[{ title: "首页", id: "/console", closable: false }],
-      current:"console",
+      tabs:[{ title: "工作台", id: "/workspace/workbench", closable: false }],
+      logo: true,
       level: true,
-      inverted: true,
+      inverted: false,
       routerAlive: true,
+      collapse: false,
       theme: 'light',
+      breadcrumb: true,
+      sideTheme: 'light',
+      greyMode: false,
+      accordion: true,
       themeVariable: {
         "--global-checked-color": "#5fb878",
-        "--global-primary-color": "#1e9fff",
+        "--global-primary-color": "#009688",
         "--global-normal-color": "#1e9fff",
         "--global-danger-color": "#ff5722",
         "--global-warm-color": "#ffb800",
-      } as any,
+      },
     }
   },
   persist: {
-      enabled: true,
-      strategies: [
-        {
-          key: 'tab',
-          storage: localStorage
-        },{
-          key: 'theme',
-          storage: localStorage
-        }
-      ]
+    storage: localStorage,
+    paths: ['tab', 'theme', 'logo', 'level', 'inverted', 'breadcrumb', 'sideTheme', 'greyMode', 'accordion' , 'themeVariable'],
   }
 })

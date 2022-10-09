@@ -1,1 +1,15 @@
 @import url(./admin.css);
+@import url(./reset.css);
+
+.global-css {
+    font-family: 'Courier New', Courier, monospace;
+}
+.setheight{
+    height: 250px;
+  }
+  .laymodle{
+    width: 95%;
+  }
+  .showtext {
+    line-height: 38px;
+  }

@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-  import http from "../../utils/http";
+import http from '../../api/http';
   import { useRouter, useRoute,RouteMeta } from 'vue-router';
 
  import { defineComponent, reactive, ref } from 'vue'

@@ -1,97 +1,98 @@
 <template>
-  <div>
- <lay-line></lay-line>
-    <div class="layui-card " ref="submitfrom">
-      <div class="layui-container">
-    <lay-button-group>
-      <lay-button type="default" size="sm" @click="validate">立即提交</lay-button>
-      <lay-button type="default" size="sm" @click="clearValidate">重置</lay-button>
-    </lay-button-group>
-        <!-- <div class="layui-input-block layui-footer">
-          <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" @click="validate">立即提交</button>
-          <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm" @click="clearValidate">重置</button>
-          <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" @click="reset">关闭</button>
-        </div> -->
-        <lay-form :model="fromdata.field" ref="layFormRef">
-             <lay-line></lay-line><br/>
-                        <div style="font-size:large;text-align: center;"> {{ fromdata.form == undefined ? "" : fromdata.form.name }}</div>
-             <lay-line></lay-line><br/>
-          <div v-for="(item, index) in fromdata.data" :key="index">
-            <subform :data="item" :value="fromdata.field"></subform>
-          </div>
-        </lay-form>
+  <div style="height: 100%; width: 100%">
+    <div style="height: calc(100% - 60px); width: 100%; overflow-y: auto;overflow-x: hidden;">
+      <lay-card style="">
+        <h1 class="title">{{ fromdata.form == undefined ? "" : fromdata.form.name }}</h1>
+      </lay-card>
+      <lay-container :fluid="true" style="padding: 10px; padding-top: 0px; position: relative">
+        <lay-card>
+          <lay-form :model="fromdata.field" ref="layFormRef">
+
+            <div v-for="(item, index) in fromdata.data" :key="index">
+              <subform :data="item" :value="fromdata.field"></subform>
+            </div>
+
+          </lay-form>
+        </lay-card>
+      </lay-container>
+    </div>
+    <div class="footer">
+      <div class="footer-button">
+        <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" @click="validate">立即提交</button>
+        <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm" @click="clearValidate">重置</button>
+        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" @click="reset">关闭</button>
+
       </div>
-      <div class="setheight"></div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-
-import { ref, onMounted} from 'vue'
+<script lang="ts" >
+import { ref, onMounted } from 'vue'
 import { layer } from '@layui/layer-vue'
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore } from "../../store/app";
-import http from "../../utils/http";
+import http from '../../api/http';
 import HelpTabs from "../../utils/HelpTabs"
 import subform from '../../components/formitem/subform.vue';
-
-
 export default {
   components: { subform },
   setup() {
+    //const { change, close, currentPath } = useTab();
     const appStore = useAppStore();
     const router = useRouter();
     const route = useRoute();
     const fromdata = ref({ name: "" }) as any;
     const validateModel = ref({});
     const layFormRef = ref(null) as any;
+
     // 校验
     const validate = function () {
       layFormRef.value.validate((isValidate: any, model: any, errors: any) => {
         if (!isValidate) {
           errors.forEach((item: any) => {
-                  layer.notifiy({
-                        title: "温馨提示",
-                        content:item.message
-                    });
+            layer.notifiy({
+              title: "温馨提示",
+              content: item.message
+            });
             //layer.msg(item.message, { icon: 2, time: 1000 })
           });
 
 
           return;
         }
-        var url="";
-   
-        if(fromdata.value.form.url!=""&&fromdata.value.form.url!=undefined&&fromdata.value.form.url!=null){
-          url=fromdata.value.form.url;
-        }else{
-          url="/api/form/FormCommonTaskSave";
+        var url = "";
+
+        if (fromdata.value.form.url != "" && fromdata.value.form.url != undefined && fromdata.value.form.url != null) {
+          url = fromdata.value.form.url;
+        } else {
+          url = "/api/form/FormCommonTaskSave";
         }
         http.post(url, { table: fromdata.value.form.table, data: JSON.stringify(model), istask: true, fromid: route.query.fromid }).then(res => {
           console.log(res);
 
           if (res.success) {
-              layer.notifiy({
-                        title: "温馨提示",
-                        content:res.msg
-                    });
+            layer.notifiy({
+              title: "温馨提示",
+              content: res.msg
+            });
+
             HelpTabs.close(appStore, route.fullPath, router);
           } else {
-              layer.notifiy({
-                        title: "温馨提示",
-                        content:res.msg
-                    });
-          
+            layer.notifiy({
+              title: "温馨提示",
+              content: res.msg
+            });
+
 
           }
 
         }).catch(resp => {
-            layer.notifiy({
-                        title: "温馨提示",
-                        content:"网络错误"
-                    });
-    
+          layer.notifiy({
+            title: "温馨提示",
+            content: "网络错误"
+          });
+
 
         })
 
@@ -108,7 +109,9 @@ export default {
       layFormRef.value.reset();
 
     }
-
+    const a_close = () => {
+      HelpTabs.close(appStore, route.fullPath, router);
+    }
     //渲染表单
     const render = function () {
 
@@ -120,7 +123,7 @@ export default {
           console.log(k);
           fromdata.value = k;
           if (k.field == null) {
-            var obj = new Object();
+            var obj = new Object() as any;
             fromdata.value.data.forEach((key: any) => {
               for (let keys in key.data) {
                 if (keys == "name") {
@@ -134,7 +137,7 @@ export default {
           }
 
 
-          console.log( fromdata.value);
+          console.log(fromdata.value);
         } else {
 
           //layer.msg(res.msg, { icon: 2 });
@@ -147,6 +150,7 @@ export default {
       })
     }
 
+
     onMounted(() => {
       render();
     })
@@ -157,12 +161,41 @@ export default {
       clearValidate,
       reset,
       subform,
-      fromdata
+      fromdata,
+      a_close
     }
   }
 }
 </script>
-<style>
 
+<style lang="less" scoped>
+.title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  margin-top: 12px;
+}
 
+.describe {
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-top: 1px solid whitesmoke;
+  line-height: 60px;
+  height: 60px;
+
+  .footer-button {
+    right: 10px;
+    position: absolute;
+  }
+}
 </style>

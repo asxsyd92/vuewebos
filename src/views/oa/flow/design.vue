@@ -374,11 +374,12 @@
   </div>
 </template>
 <script lang="ts" setup>
-import http from "../../../utils/http";
+import http from "../../../api/http";
 import { useUserStore } from "../../../store/user";
 
 
 import { layer } from '@layui/layer-vue';
+
 import flowNode from "../../../components/flow/node-item.vue"
 import { ref, nextTick, getCurrentInstance } from 'vue';
 import { useRouter, useRoute } from 'vue-router';

@@ -8,9 +8,7 @@
 </template>
 <script lang="ts" setup>
 import {  ref } from 'vue';
-const updateData = ()=>{
-  option.series[0].data[0].value = Math.floor(Math.random() * 100)
-}
+
 
 const option = ref({
   title: {
@@ -38,5 +36,8 @@ const option = ref({
       animationCurve: 'easeInOutBack'
     }
   ]
-})
+}) as any;
+const updateData = ()=>{
+  option.series[0].data[0].value = Math.floor(Math.random() * 100)
+}
 </script>

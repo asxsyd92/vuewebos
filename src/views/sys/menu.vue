@@ -7,6 +7,16 @@
       <!--将表单放在工具栏中-->
       <template #toolbar_buttons>
 
+
+        <vxe-form>
+
+          <vxe-form-item>
+            <template #default>
+              <vxe-button type="a_add" status="primary" content="新增"></vxe-button>
+            </template>
+          </vxe-form-item>
+        </vxe-form>
+
       </template>
 
       <vxe-column type="checkbox" width="60"></vxe-column>
@@ -52,11 +62,8 @@
             <lay-input v-model="menumodel.id"></lay-input>
           </lay-form-item>
           <lay-form-item label="父级目录" prop="parentid">
-            <lay-select v-model="menumodel.parentid" :items="parentlist" >
-              <!-- <lay-select-option value="00000000-0000-0000-0000-000000000000" label="根目录"></lay-select-option>
-              <lay-select-option :value="menumodel.parentid" label="当前目录"></lay-select-option> -->
+            <lay-select v-model="menumodel.parentid" :items="parentlist"></lay-select>
 
-            </lay-select>
 
           </lay-form-item>
           <lay-form-item label="参数" prop="params">
@@ -82,13 +89,14 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
-import http from "../../utils/http";
+import http from '../../api/http';
+
 import utils from "../../utils/utils";
 import { layer } from '@layui/layer-vue'
 import { VxeTableInstance, VxeTableListeners, VXETable } from 'vxe-table'
 const xGrid = ref<VxeTableInstance>();
-const parentlist=ref([]) as any;
-var menumodel = ref({
+const parentlist = ref([]) as any;
+const menumodel = ref({
   title: "",
   tag: "",
   id: "",
@@ -108,6 +116,14 @@ const options = reactive({
     total: 0,
     limit: 10,
     current: 1,
+  },
+  toolbarConfig: {
+    export: true,
+    print: true,
+    custom: true,
+    slots: {
+      buttons: 'toolbar_buttons'
+    }
   },
 
   data: [],
@@ -212,15 +228,19 @@ const findList = () => {
     if (res.success) {
 
       options.data = res.data;
-     parentlist.value= utils.TreeTtoList( res.data,[]);
-      parentlist.value.push({label:"根目录",value:'00000000-0000-0000-0000-000000000000'});
-  parentlist.value.forEach((item: any) => {
-    var o=new Object() as any;
-    o.label=item.title;
-    o.value=item.id;
-     parentlist.value.push(o);});
-      options.page.total = res.count
-  }});
+      parentlist.value = utils.TreeTtoList(res.data, []);
+      parentlist.value.push({ label: "根目录", value: '00000000-0000-0000-0000-000000000000' });
+      debugger
+      parentlist.value.forEach((item: any) => {
+        var o = new Object() as any;
+        o.label = item.title;
+        o.value = item.id;
+        parentlist.value.push(o);
+      });
+      options.page.total = res.count;
+
+    }
+  });
 
 }
 

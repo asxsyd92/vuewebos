@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import http from "../../utils/http";
+import http from "../../api/http";
   import { ref, reactive, onMounted } from "vue";
 import * as echarts from "echarts";
 import tdTheme from './theme.json' // 引入默认主题

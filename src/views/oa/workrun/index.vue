@@ -1,51 +1,54 @@
 <template>
-    <div>
-        <div class="layui-card " ref="workrunindex">
-            <div class="layui-container">
-         
-                <lay-button-group>
-                    <lay-button type="default" size="sm" @click="validate">立即提交</lay-button>
 
-                </lay-button-group>
-                    <lay-line></lay-line><br/>
-                <div v-if="signature">   
-                <lay-input  placeholder="请输入处理意见" v-model="comment"></lay-input>
-                 
-                </div>
-      
+
+    <div style="height: 100%; width: 100%" ref="workrunindex">
+        <div style="height: calc(100% - 60px); width: 100%; overflow-y: auto;overflow-x: hidden;">
+            <lay-card style="">
+                <h1 class="title">{{ fromdata.form == undefined ? "" : fromdata.form.name }}</h1>
+            </lay-card>
+
+            <lay-container :fluid="true" style="padding: 10px; padding-top: 0px; position: relative">
+
                 <lay-form :model="fromdata.field" ref="layFormRef">
-                   <lay-line></lay-line><br/>
-                        <div style="font-size:large;text-align: center;"> {{ fromdata.form == undefined ? "" : fromdata.form.name }}</div>
-                      <lay-line></lay-line><br/>
-                    <div v-for="(item, index) in fromdata.data" :key="index">
-                        <subform :data="item" :value="fromdata.field"></subform>
-                    </div>
+                    <lay-card>
+                        <div v-for="(item, index) in fromdata.data" :key="index">
+                            <subform :data="item" :value="fromdata.field"></subform>
+                        </div>
+                    </lay-card>
                 </lay-form>
-                <lay-line></lay-line><br/>
-                   <div class="layui-col-md24">
-                   <lay-badge type="dot" ripple></lay-badge>&nbsp;
-    <lay-badge type="dot" theme="orange" ripple></lay-badge>&nbsp;
-    <lay-badge type="dot" theme="green" ripple></lay-badge>&nbsp;
-    <lay-badge type="dot" theme="cyan" ripple></lay-badge>&nbsp;
-    <lay-badge type="dot" theme="blue" ripple></lay-badge>&nbsp;
-    <lay-badge type="dot" theme="black" ripple></lay-badge>&nbsp;
-    <lay-badge type="dot" theme="gray" ripple></lay-badge>&nbsp;
-              <lay-timeline>
-              <div v-for="(item,index) in commentlist" :key="index">
-              <lay-timeline-item   :title="getmoment(item.completedtime1)" >
-              <p>
-              {{'【' + item.stepname + '】:' + item.comment}}
-              </p>
-              </lay-timeline-item>
-              </div>
-             </lay-timeline>
-           </div>
-            </div>
-         <div class="setheight"></div>
+
+
+                <lay-card title="您的处理意见" v-if="signature">
+
+                    <lay-input placeholder="请输入处理意见" v-model="comment"></lay-input>
+
+                </lay-card>
+
+                <lay-card v-if="signature" title="历史意见">
+                    <lay-timeline>
+                        <div v-for="(item,index) in commentlist" :key="index">
+                            <lay-timeline-item :title="getmoment(item.completedtime1)">
+                                <p>
+                                    {{'【' + item.stepname + '】:' + item.comment}}
+                                </p>
+                            </lay-timeline-item>
+                        </div>
+                    </lay-timeline>
+                </lay-card>
+
+
+
+            </lay-container>
+
         </div>
-          
-           
-       
+        <div class="footer">
+            <div class="footer-button">
+                <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" @click="validate">立即提交</button>
+                <!-- <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm" @click="clearValidate">重置</button> -->
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" @click="reset">关闭</button>
+
+            </div>
+        </div>
         <lay-layer move="true" :btn="sendbtn" :closeBtn="false" :area="['80%', '85%']" :shadeClose="false"
             @submit="submit" title="发送" v-model="sedvisible">
             <lay-panel class="laymodle">
@@ -63,28 +66,29 @@
                     </vxe-table>
 
                 </lay-card>
-                 
+
                 <lay-card v-if="nextstep.length > 0" title="请选择处理步骤">
                     <!-- <lay-checkbox name="like" skin="primary" v-model="stepselect" label="1">写作</lay-checkbox> -->
-                     <div class="">
-                    <div v-for="(item, index) in nextstep" :key="index">
-                        <lay-radio v-model="stepselect" name="step" :value="item.id">{{ item.name }}</lay-radio>
+                    <div class="">
+                        <div v-for="(item, index) in nextstep" :key="index">
+                            <lay-radio v-model="stepselect" name="step" :value="item.id">{{ item.name }}</lay-radio>
+                        </div>
                     </div>
-  </div>
                 </lay-card>
-              
+
             </lay-panel>
         </lay-layer>
+
     </div>
 </template>
 
 <script lang="ts">
 
-import { ref, reactive, getCurrentInstance, withDefaults, defineProps } from 'vue'
+import { ref, onMounted, reactive, getCurrentInstance, withDefaults, defineProps } from 'vue'
 import { layer } from '@layui/layer-vue'
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore } from "../../../store/app";
-import http from "../../../utils/http";
+import http from '../../../api/http';
 import subform from '../../../components/formitem/subform.vue';
 import HelpTabs from "../../../utils/HelpTabs"
 import moment from 'moment'
@@ -114,25 +118,25 @@ export default {
         const validateModel = ref({});
         const users = ref([]) as any;
         const userslist = ref([]) as any;
-        const comment=ref('') as any;
+        const comment = ref('') as any;
         const layFormRef = ref(null) as any;
         // 校验
         const validate = () => {
-              if(comment.value.toString().trim().length==0&&signature.value){
-                         layer.notifiy({
-                            title: "温馨提示",
-                            content: "请填写处理意见！"
-                        }) 
-                 return;
-                  }
+            if (comment.value.toString().trim().length == 0 && signature.value) {
+                layer.notifiy({
+                    title: "温馨提示",
+                    content: "请填写处理意见！"
+                })
+                return;
+            }
             layFormRef.value.validate((isValidate: any, model: any, errors: any) => {
                 if (!isValidate) {
                     errors.forEach((item: any) => {
-                           layer.notifiy({
+                        layer.notifiy({
                             title: "温馨提示",
                             content: item.message
-                        }) 
-                   
+                        })
+
                     });
 
 
@@ -160,7 +164,7 @@ export default {
                     var opts = new Object() as any;
                     opts.type = "completed";
                     opts.steps = [];
-                    query.value.comment=comment.value;
+                    query.value.comment = comment.value;
                     http.post("/api/workflowtasks/sendTask", { table: fromdata.value.table, data: JSON.stringify(model), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
 
                         if (resp.success) {
@@ -171,11 +175,11 @@ export default {
                             //  layer.msg(resp.msg, { icon: 1, time: 1000 });
                             HelpTabs.close(appStore, route.fullPath, router);
                         } else {
-                                   layer.notifiy({
+                            layer.notifiy({
                                 title: "温馨提示",
-                                content:resp.msg
+                                content: resp.msg
                             })
-                
+
                         }
                     }).catch(resp => {
                         layer.notifiy({
@@ -207,7 +211,7 @@ export default {
             {
                 text: "确认",
                 callback: () => {
-                
+
                     submit();
                 },
             },
@@ -262,7 +266,7 @@ export default {
                 opts.type = "submit";
                 opts.steps = [];
                 opts.steps.push({ id: stepselect.value, member: users.value.join(",") });
-                query.value.comment=comment.value;
+                query.value.comment = comment.value;
                 http.post("/api/workflowtasks/sendTask", { table: fromdata.value.form.table, data: JSON.stringify(model), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
 
                     if (resp.success) {
@@ -273,11 +277,11 @@ export default {
 
                         HelpTabs.close(appStore, route.fullPath, router);
                     } else {
-                          layer.notifiy({
-                        title: "温馨提示",
-                        content: resp.msg
-                    });
-                       
+                        layer.notifiy({
+                            title: "温馨提示",
+                            content: resp.msg
+                        });
+
                     }
                 }).catch(resp => {
                     layer.notifiy({
@@ -332,7 +336,7 @@ export default {
                             fromdata.value = k;
                             nextstep.value = res.data;
                             if (k.field == null) {
-                                var obj = new Object();
+                                var obj = new Object() as any;
                                 fromdata.value.data.forEach((key: any) => {
                                     for (let keys in key.data) {
                                         if (keys == "name") {
@@ -419,13 +423,15 @@ export default {
             });
             console.info(`勾选${records.length}个树形节点`, users.value)
         }
-     
-            render();
-      
-       const getmoment=(s:any)=>{
-           return   moment(s).format('YYYY年MM月DD日')
+
+
+
+        const getmoment = (s: any) => {
+            return moment(s).format('YYYY年MM月DD日')
         }
-       
+        onMounted(() => {
+            render();
+        })
         return {
             validateModel,
             layFormRef,
@@ -442,7 +448,7 @@ export default {
             submit,
             userchecked,
             selectuser,
-            nextstep, 
+            nextstep,
             query,
             commentlist,
             stepselect,
@@ -456,8 +462,34 @@ export default {
     }
 }
 </script>
-<style>
+<style lang="less" scoped>
+.title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    margin-top: 12px;
+}
 
+.describe {
+    font-size: 14px;
+    margin-bottom: 12px;
+}
 
+.footer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border-top: 1px solid whitesmoke;
+    line-height: 60px;
+    height: 60px;
 
+    .footer-button {
+        right: 10px;
+        position: absolute;
+    }
+}
 </style>
