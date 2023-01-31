@@ -3,6 +3,7 @@ import { useUserStore } from "../store/user";
 import { layer } from '@layui/layui-vue';
 import router from '../router'
 import Qs from 'qs'
+import configs from '../config'
 type TAxiosOption = {
     timeout: number;
     baseURL: string;
@@ -12,12 +13,12 @@ const config: TAxiosOption = {
     timeout: 50000,
     baseURL: ""
 }
-let layerid: any;
+
 class Http {
     service;
     constructor(config: TAxiosOption) {
         this.service = axios.create(config)
-         debugger;
+
         /* 请求拦截 */
         this.service.interceptors.request.use((config: AxiosRequestConfig) => {
             const userInfoStore = useUserStore();
@@ -35,10 +36,8 @@ class Http {
 
         /* 响应拦截 */
         this.service.interceptors.response.use((response: AxiosResponse<any>) => {
-            if (layerid != null) {
-                layer.close(layerid);
-            }
-            debugger
+         
+    
             switch (response.status) {
                 case 200:
                     return response.data;
@@ -74,24 +73,20 @@ class Http {
     /* GET 方法 */
     get<T>(url: string, params?: object, _object = {}): Promise<any> {
      
-        return this.service.get(url, { params, ..._object })
+        return this.service.get(configs.host+url, { params, ..._object })
     }
     /* POST 方法 */
-    post<T>(url: string, params?: object, msg?: string): Promise<any> {
-  
-        if (msg != "" && msg != null&&msg!=undefined) {
-            layerid = layer.msg(msg, { icon: 16, time: 30000, shade: true });
-        }
+    post<T>(url: string, params?: object, _object = {}): Promise<any> {
 
-        return this.service.post(url,  Qs.stringify(params))
+        return this.service.post(configs.host+url,  Qs.stringify(params))
     }
     /* PUT 方法 */
     put<T>(url: string, params?: object, _object = {}): Promise<any> {
-        return this.service.put(url, params, _object)
+        return this.service.put(configs.host+url, params, _object)
     }
     /* DELETE 方法 */
     delete<T>(url: string, params?: any, _object = {}): Promise<any> {
-        return this.service.delete(url, { params, ..._object })
+        return this.service.delete(configs.host+url, { params, ..._object })
     }
 }
 

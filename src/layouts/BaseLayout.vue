@@ -1,4 +1,5 @@
 <template>
+
   <lay-config-provider
     :themeVariable="appStore.themeVariable"
     :theme="appStore.theme"
@@ -109,6 +110,7 @@
     </lay-layout>
     <global-setup v-model="visible"></global-setup>
   </lay-config-provider>
+
 </template>
 
 <script lang="ts">
@@ -121,7 +123,7 @@ import GlobalBreadcrumb from "./Global/GlobalBreadcrumb.vue";
 import GlobalTab from "./Global/GlobalTab.vue";
 import GlobalMenu from "./Global/GlobalMenu.vue";
 import { useRouter } from "vue-router";
-
+import http from "../api/http";
 export default {
   components: {
     GlobalSetup,
@@ -136,10 +138,12 @@ export default {
     const userInfoStore = useUserStore();
     const visible = ref(false);
     const router = useRouter();
+
     const sideWidth = computed(() => appStore.collapse ? "60px" : "220px")
 
     onMounted(() => {
       // 菜单数据 与 权限数据 加载
+      
       userInfoStore.loadMenus();
       userInfoStore.loadPermissions();
     })
@@ -162,7 +166,8 @@ export default {
     };
 
     const logOut = () => {
-      const userInfoStore = useUserStore();
+   
+      appStore. tabs=[{ title: "工作台", id: "/workspace/workbench", closable: false }];
       userInfoStore.token = "";
       userInfoStore.userInfo = {} as any;
       router.push("/login");
@@ -178,7 +183,7 @@ export default {
       visible,
       logOut,
       userInfoStore,
-      currentIndex,
+      currentIndex
     };
   },
 };

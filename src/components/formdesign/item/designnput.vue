@@ -1,11 +1,11 @@
 <template>
 <div>
 
-<div v-if="data.type=='input'||data.type=='color'||data.type=='icon'"   >
+<div v-if="data.type=='input'||data.type=='color'||data.type=='icon'||data.type=='baiduuplod'||data.type=='baiduuplod'"   >
 
-    <lay-form-item  :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label">
+    <lay-form-item   class="layui-form-item" :label="data.data.label">
  
-      <lay-input v-model="data.data.col" disabled="disabled"></lay-input>
+      <lay-input :placeholder="'宽度:'+data.data.col+',标识:'+data.data.name" disabled="disabled"></lay-input>
     </lay-form-item>
 
 

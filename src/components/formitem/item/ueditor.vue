@@ -1,35 +1,20 @@
 <template>
-   <!-- <div class="layui-form-item layui-form-text">
-    <label class="layui-form-label">{{data.data.label}}</label>
+  <lay-col :md="data.data.col" style="margin-bottom: 20px;"  :style="'display:'+data.data.display">
+    <lay-form-item :placeholder="data.data.placeholder" 
+  :label="data.data.label" 
+    :prop="data.data.name">
+      <vue-ueditor-wrap v-model="value[data.data.name]" 
+      :config="config" 
+      editor-id="editor-demo-02"
+      editorid="editor-demo-02"
+      @ready="ready"
+      >
   
-    <div class="layui-input-block">
-    <vue-ueditor-wrap class="ueditor-ins"
-                      ref="ueditor" 
-                     :name="data.data.name"
-                      v-model="value[data.data.name]"
-                      :destroy="false" 
-                      :config="config" 
-        
-                      @ready="ready" 
-         
-                      >
-    </vue-ueditor-wrap>
-    </div>
-  </div> -->
+      </vue-ueditor-wrap>
 
-    <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name">
- <vue-ueditor-wrap class="ueditor-ins"
-                      ref="ueditor" 
-                     :name="data.data.name"
-                      v-model="value[data.data.name]"
-                      :destroy="false" 
-                      :config="config" 
-        
-                      @ready="ready" 
-              :required="data.data.required "
-                      >
-    </vue-ueditor-wrap>
+
     </lay-form-item>
+  </lay-col>
 </template>
 
 <script lang="ts">
@@ -51,14 +36,14 @@ const props = withDefaults(defineProps<ItemradioProps>(), {
 
 
 const user = useUserStore();
-        
- const  config =ref({
+const config=ref(
+  {
         // 编辑器不自动被内容撑高
         autoHeightEnabled: false,
         // 初始容器高度
         initialFrameHeight: '500px',
         // 初始容器宽度
-       // initialFrameWidth: '100%',
+        initialFrameWidth: '100%',
         // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
         serverUrl: '/api/ueditor/upload?asxsyd92user='+user.userInfo.userid,
         // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
@@ -80,16 +65,22 @@ const user = useUserStore();
         headers: {
          'Authorization':"bearer " +  user.token,
         }
-      });
+      }
+) as any;
+
+
+
+
+
       const ready=function(editorInstance:any){
-      
+
       console.log(`实例${editorInstance.key}已经初始化:`, editorInstance)
 
       //先改变一下编辑器的高度
-      changeEditorHeight();
+     // changeEditorHeight();
       //窗口大小改变的回调,编辑器的高度跟着变
       window.onresize = function(){
-        changeEditorHeight();
+       // changeEditorHeight();
 
     
       }

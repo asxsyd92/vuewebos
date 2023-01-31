@@ -230,7 +230,7 @@ const findList = () => {
       options.data = res.data;
       parentlist.value = utils.TreeTtoList(res.data, []);
       parentlist.value.push({ label: "根目录", value: '00000000-0000-0000-0000-000000000000' });
-      debugger
+      
       parentlist.value.forEach((item: any) => {
         var o = new Object() as any;
         o.label = item.title;

@@ -5,6 +5,7 @@ export const useAppStore = defineStore({
   state: () => {
     return {
       tab: true,
+      isgrey:false,
       tabs:[{ title: "工作台", id: "/workspace/workbench", closable: false }],
       logo: true,
       level: true,
@@ -27,6 +28,6 @@ export const useAppStore = defineStore({
   },
   persist: {
     storage: localStorage,
-    paths: ['tab', 'theme', 'logo', 'level', 'inverted', 'breadcrumb', 'sideTheme', 'greyMode', 'accordion' , 'themeVariable'],
+    paths: ['tab', 'tabs','theme', 'logo', 'level', 'inverted', 'breadcrumb', 'sideTheme', 'greyMode', 'accordion' , 'themeVariable'],
   }
 })

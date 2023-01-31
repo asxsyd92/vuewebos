@@ -17,7 +17,7 @@ export function useMenu() {
     const menus = computed(() => userStore.menus);
 
     watch(route, () => {
-        debugger
+        
         selectedKey.value = route.fullPath;
         const andParents = getParents(menus.value, route.fullPath);
         if(andParents && andParents.length > 0) {

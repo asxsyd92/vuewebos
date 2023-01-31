@@ -2,14 +2,15 @@
     <template>
 
 
-<div  :class="data.data.col"  :style="'display:'+data.data.display">
+
+      <lay-col :md="data.data.col" style="margin-bottom: 20px;"  :style="'display:'+data.data.display">
 
     <lay-form-item :placeholder="data.data.placeholder" class="layui-form-item" :label="data.data.label" :prop="data.data.name" :required="data.data.required ">
 <lay-icon-picker v-model="value[data.data.name]" type="layui-icon-face-smile" page showSearch></lay-icon-picker>
 
     </lay-form-item>
 
-</div>
+</lay-col>
 
 
 </template>

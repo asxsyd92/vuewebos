@@ -3,11 +3,13 @@ import routes from './module/base-routes'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useUserStore } from "../store/user";
-
+import { useAppStore } from "../store/app";
+import http from '../api/http';
 NProgress.configure({ showSpinner: false })
 
+
 const router = createRouter({
-  history:createWebHistory(),
+  history: createWebHistory(),
   routes
 })
 
@@ -26,15 +28,26 @@ router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, n
 
   const userStore = useUserStore();
 
-  if(to.meta.requireAuth) {
+  if (to.meta.requireAuth) {
     next();
-  } else if(to.matched.length == 0) {
-    next({path: '/error/404'})
-  }  else {
+  } else if (to.matched.length == 0) {
+    next({ path: '/error/404' })
+  } else {
     next();
   }
 })
+let win = window as any;
 
+http.post("/api/siteconfig/getsiteconfig", { domainname: win.location.host }).then((resp: any) => {
+  const appStore = useAppStore();
+  if (resp.success) {
+    appStore.isgrey = resp.data.isgrey;
+    win.document.getElementsByTagName('html')[0].className = appStore.isgrey ? "isgrey" : "";
+
+  }
+}).catch((resp: any) => {
+
+})
 router.afterEach(() => {
   NProgress.done();
 })

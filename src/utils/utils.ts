@@ -1,4 +1,6 @@
-
+import { layer } from "@layui/layui-vue";
+import { InsideDataZoomComponentOption } from "echarts";
+import {h} from "vue";
 class Utils {
 
 
@@ -30,9 +32,9 @@ class Utils {
 
         da.forEach((item: any) => {
             if (item.children.length > 0) {
-                this.TreeTtoList(item.children,data);
+               this. TreeTtoList(item.children,data);
             }
-            data.push(item);
+            //data.push(item);
           });
           return data;
     }
@@ -83,7 +85,48 @@ class Utils {
           return fmt;
         }
       }
+      /**
+      * 打开表单
+      * @param title 标题
+       * @param anim 动画
+        * @param form popform组件
+       * @param data  fromid:fromid,instanceid:"",callback:Callback 
+       * @param area 弹出大小
+       * @param suppdata 补充数据提交是会填充data中提交给后台
+       */
+      openform(title :string,anim:any,form :any,data:any,area:string[],suppdata :Object){
+        var ks=h(form, data) as any;
+        if(anim==null){
+          anim=0;
+        }
+      layer.open({
+          title: title,
+          area: area,
+          content: ks,
+          shade: true,
+          anim:anim,
+          shadeClose:false,
+          btn: [
+      {
+        text: "确认",
+        callback: (resp:any) => {
+
+            ks.component.exposed.validate(suppdata,resp,layer)
       
+        
+        },
+      },
+      {
+        text: "取消",
+        callback: (resp:any)  => {
+          layer.close(resp);
+        },
+      },
+      ]
+        })
+      
+      }
+
 
 }
 

@@ -1,6 +1,11 @@
 @import url(./admin.css);
 @import url(./reset.css);
-
+.edui-default{
+  z-index: 999999
+}
+.edui-default .edui-dialog{
+ z-index: 999999 !important
+}
 .global-css {
     font-family: 'Courier New', Courier, monospace;
 }
@@ -13,3 +18,8 @@
   .showtext {
     line-height: 38px;
   }
+  .layui-nav-item .layui-nav-child{
+  padding-left: 10px;
+}
+  .isgrey {-webkit-filter: grayscale(100%);filter:progid:DXImageTransform.Microsoft.BasicImage(graysale=1);}
+  .isgrey { filter:progidXImageTransform.Microsoft.BasicImage(grayscale=1); }

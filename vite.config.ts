@@ -31,10 +31,15 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-          target: 'http://asxsyd92.com',   //代理接口
+          target: 'http://39.98.59.233',   //代理接口
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, 'api')
-      }
+      },
+      '/asxsyd92upload': {
+        target: 'http://asxsyd92.com',   //代理接口
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, 'api')
+    }
     }
 }
 });

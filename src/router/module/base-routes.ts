@@ -186,12 +186,23 @@ export default [
         path: '/sys/menu',
         component: () => import('../../views/sys/menu.vue'),
         meta: { title: '菜单管理' },
+      }  ,
+      {
+        path: '/sys/appset',
+        component: () => import('../../views/sys/appset.vue'),
+        meta: { title: '应用设置' },
       }
       ,
       {
         path: '/sys/role',
-        component: () => import('../../views/sys/role.vue'),
+        component: () => import('../../views/users/role.vue'),
         meta: { title: '角色管理' },
+      }  
+        ,
+      {
+        path: '/sys/webset',
+        component: () => import('../../views/sys/webset.vue'),
+        meta: { title: '网站设置' },
       }
       ,
       {
@@ -212,7 +223,30 @@ export default [
         meta: { title: '网站管理' },
       }
     ]
-  }, {
+  },  {
+
+    path: '/users',
+    component: BaseLayout,
+    meta: { title: '人事管理' },
+    children: [
+      {
+        path: '/users/list',
+        component: () => import('../../views/users/list.vue'),
+        meta: { title: '人员管理' },
+      },
+      {
+        path: '/users/department',
+        component: () => import('../../views/users/department.vue'),
+        meta: { title: '部门管理' },
+      }
+      ,
+      {
+        path: '/users/role',
+        component: () => import('../../views/users/role.vue'),
+        meta: { title: '角色管理' },
+      }
+    ]
+  },{
 
     path: '/webinfo',
     component: BaseLayout,

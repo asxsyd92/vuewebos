@@ -66,7 +66,7 @@ import xzqCode from "../../utils/map/xzqCode";
       // if (!mapjson) {
       //   echarts.registerMap("china", res);
       // }
-      debugger
+  
       init("china", [{"name":"海南省","value":268},{"name":"广东省","value":143},{"name":"湖南省","value":37},{"name":"宁夏回族自治区","value":608},{"name":"贵州省","value":54},{"name":"河南省","value":460},{"name":"青海省","value":110},{"name":"辽宁省","value":865}], [{"name":"海南省","value":[109.754859,19.189767,268]},{"name":"广东省","value":[113.429919,23.334643,143]},{"name":"湖南省","value":[111.711649,27.629216,37]},{"name":"宁夏回族自治区","value":[106.169866,37.291332,608]},{"name":"贵州省","value":[106.880455,26.826368,54]},{"name":"河南省","value":[113.619717,33.902648,460]},{"name":"青海省","value":[96.043533,35.726403,110]},{"name":"辽宁省","value":[122.604994,41.299712,865]}]);
     }).catch((res: any) => {
 

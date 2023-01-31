@@ -1,9 +1,11 @@
 <template>
-  <div :class="data.data.col">
+  <lay-col :md="data.data.col"  style="margin-bottom: 20px;" :style="'display:' + data.data.display">
+
 
     <div v-if="data.type == 'input'">
-      <div v-if="data.data.type == 'number'" :style="'display:' + data.data.display">
-        <lay-form-item :label="data.data.label" :prop="data.data.name" :class="data.data.col" :required="required">
+      <div v-if="data.data.type == 'number'" >
+
+        <lay-form-item  :label="data.data.label" :prop="data.data.name"  :required="required">
           <div v-if="data.data.showtext == 'true'">
             <span class="showtext">{{ value[data.data.name] }}</span>
           </div>
@@ -61,8 +63,8 @@
         <lay-textarea v-model="value[data.data.name]" :placeholder="data.data.placeholder"></lay-textarea>
       </lay-form-item>
     </div>
-  </div>
-
+  
+</lay-col>
 </template>
 <script lang="ts">
 

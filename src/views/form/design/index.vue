@@ -200,7 +200,7 @@ export default {
             form.value = val;
             layers.msg("更新成功", { icon: 1 });
             needdata.value = {};
-            layers.open({ title: "标题", content: JSON.stringify(form.value) });
+          
         }
         else {
             if (a == "save") {
@@ -211,7 +211,7 @@ export default {
                 confirm.value = [];
                 setTimeout(function () {
                     confirm.value = con;
-                }, 100);
+                }, 500);
 
                 layers.msg("更新成功", { icon: 1 });
             }
@@ -221,6 +221,12 @@ export default {
                 confirm.value = confirm.value.filter((item: any) => {
                     return item !== val;
                 });
+                var con = confirm.value;
+                confirm.value = [];
+                setTimeout(function () {
+                    confirm.value = con;
+                }, 500);
+                layers.msg("移出成功", { icon: 1 });
 
             }
 

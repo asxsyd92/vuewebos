@@ -64,4 +64,7 @@ console.log(menus);
   font-size: 12px!important;
   padding: 3px 0px;
 }
+.layui-nav-light * {
+  color: black!important;
+}
 </style>

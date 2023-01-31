@@ -7,6 +7,7 @@
     <setcheckbox v-if="data.type == 'checkbox'" :data="data" :setdata="setdata"></setcheckbox>
     <setform v-if="data.type == 'table'" :data="data" :setdata="setdata"></setform>
     <setueditor v-if="data.type == 'ueditor'" :data="data" :setdata="setdata"></setueditor>
+    <setbaiduuplod v-if="data.type == 'baiduuplod'" :data="data" :setdata="setdata"></setbaiduuplod>
     <!-- <itemradio v-if="data.type=='radio'" :data="data" ></itemradio>
  <itemcolor v-if="data.type=='color'" :data="data" ></itemcolor>
   <itemicon v-if="data.type=='icon'" :data="data" ></itemicon>

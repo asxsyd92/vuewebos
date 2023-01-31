@@ -2,9 +2,10 @@
     <template>
 
 
-<div  :class="data.data.col"  :style="'display:'+data.data.display" :required="data.data.required ">
 
-    <lay-form-item  class="layui-form-item" :label="data.data.label" :prop="data.data.name">
+      <lay-col :md="data.data.col" style="margin-bottom: 20px;"  :style="'display:'+data.data.display">
+
+    <lay-form-item  class="layui-form-item" :label="data.data.label" :prop="data.data.name" :required="required">
       <div v-if="data.data.showtext == 'true'">
             <span class="showtext">{{showtext.title}}</span>
           </div>
@@ -15,13 +16,12 @@
           </div>
    </lay-form-item>
 
-</div>
+</lay-col>
 
 
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { values, debounce } from 'xe-utils';
 export default {
   name: "itemradio",
 };
@@ -40,8 +40,13 @@ const props = withDefaults(defineProps<ItemradioProps>(), {
 const showtext=ref({}) as any;
 const data = ref(props.data);
 const value = ref(props.value);
-debugger
-value.value[data.value.data.name]=value.value[data.value.data.name].toString();
+const required=ref(true);
+if (data.value.data.required == "true") {
+  required.value = true;
+} else {
+  required.value = false;
+}
+value.value[data.value.data.name]=value.value[data.value.data.name]+"";
 const radio=ref([]) as any;
    
      

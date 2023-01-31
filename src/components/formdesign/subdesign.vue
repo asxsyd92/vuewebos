@@ -1,10 +1,11 @@
 <template>
 <div>
 
-  <designnput v-if="data.type=='input'||data.type=='textarea'||data.type=='ueditor'||data.type=='color'||data.type=='icon'" :data="data" ></designnput>
+  <designnput v-if="data.type=='input'||data.type=='textarea'||data.type=='ueditor'||data.type=='color'||data.type=='icon'||data.type=='baiduuplod'" :data="data" ></designnput>
   <designradio v-if="data.type=='radio'" :data="data"></designradio>
   <designselect v-if="data.type=='select'" :data="data"></designselect>
   <designcheckbox v-if="data.type=='checkbox'" :data="data"></designcheckbox>
+
 <!-- <itemradio v-if="data.type=='radio'" :data="data" ></itemradio>
  <itemcolor v-if="data.type=='color'" :data="data" ></itemcolor>
   <itemicon v-if="data.type=='icon'" :data="data" ></itemicon>

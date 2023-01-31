@@ -7,11 +7,11 @@
       <lay-container :fluid="true" style="padding: 10px; padding-top: 0px; position: relative">
         <lay-card>
           <lay-form :model="fromdata.field" ref="layFormRef">
-
+            <lay-row>
             <div v-for="(item, index) in fromdata.data" :key="index">
               <subform :data="item" :value="fromdata.field"></subform>
             </div>
-
+          </lay-row>
           </lay-form>
         </lay-card>
       </lay-container>

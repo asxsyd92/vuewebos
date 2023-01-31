@@ -71,7 +71,7 @@
 .layui-side {
   z-index: 9999;
   width: 230px !important;
-  background: rgb(34, 36, 37, 98%);
+  /* background: rgb(34, 36, 37, 98%); */
   box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
 }
 .layui-side.light {

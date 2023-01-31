@@ -79,6 +79,7 @@ export default defineComponent({
       columns: [
         // { type: 'seq', width: 60 },
         { type: 'checkbox', width: 50 },
+        { field: 'id', title: '表单id', },
         { field: 'title', title: '标题', },
         // { field: 'type', title: '类型',  },
         // { field: 'username', title: '操作人',  },

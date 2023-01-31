@@ -17,11 +17,12 @@
             <lay-select v-model="modle.type">
                 <lay-select-option value="local" label="本地数据"></lay-select-option>
                 <lay-select-option value="dic" label="字典数据"></lay-select-option>
+                <lay-select-option value="api" label="接口数据"></lay-select-option>
             </lay-select>
         </lay-form-item>
         <lay-form-item label="数据源">
-            <lay-textarea v-model="modle.data" placeholder="数据格式：数据项,值,是否选中true;数据项1,值1;"></lay-textarea>
-            数据格式：本地数据填写：是,1,true;否,0;字典数据请填写字典类型code
+            <lay-textarea v-model="modle.data" placeholder="数据格式：数据项,值,是否选中true;数据项1,值1; 接口数据配置api"></lay-textarea>
+            数据格式：本地数据填写：是,1,true;否,0;字典数据请填写字典类型code，接口数据请配置请求的api地址
         </lay-form-item>
 
 
@@ -32,30 +33,30 @@
         </lay-form-item>
         <lay-form-item label="显示样式">
             <lay-select v-model="modle.col">
-                <lay-select-option value="layui-col-md1" label="layui-col-md1"></lay-select-option>
-                <lay-select-option value="layui-col-md2" label="layui-col-md2"></lay-select-option>
-                <lay-select-option value="layui-col-md3" label="layui-col-md3"></lay-select-option>
-                <lay-select-option value="layui-col-md4" label="layui-col-md4"></lay-select-option>
-                <lay-select-option value="layui-col-md5" label="layui-col-md5"></lay-select-option>
-                <lay-select-option value="layui-col-md6" label="layui-col-md6"></lay-select-option>
-                <lay-select-option value="layui-col-md7" label="layui-col-md7"></lay-select-option>
-                <lay-select-option value="layui-col-md8" label="layui-col-md8"></lay-select-option>
-                <lay-select-option value="layui-col-md9" label="layui-col-md9"></lay-select-option>
-                <lay-select-option value="layui-col-md10" label="layui-col-md10"></lay-select-option>
-                <lay-select-option value="layui-col-md11" label="layui-col-md11"></lay-select-option>
-                <lay-select-option value="layui-col-md12" label="layui-col-md12"></lay-select-option>
-                <lay-select-option value="layui-col-md13" label="layui-col-md13"></lay-select-option>
-                <lay-select-option value="layui-col-md14" label="layui-col-md14"></lay-select-option>
-                <lay-select-option value="layui-col-md15" label="layui-col-md15"></lay-select-option>
-                <lay-select-option value="layui-col-md16" label="layui-col-md16"></lay-select-option>
-                <lay-select-option value="layui-col-md17" label="layui-col-md17"></lay-select-option>
-                <lay-select-option value="layui-col-md18" label="layui-col-md18"></lay-select-option>
-                <lay-select-option value="layui-col-md19" label="layui-col-md19"></lay-select-option>
-                <lay-select-option value="layui-col-md20" label="layui-col-md20"></lay-select-option>
-                <lay-select-option value="layui-col-md21" label="layui-col-md21"></lay-select-option>
-                <lay-select-option value="layui-col-md22" label="layui-col-md22"></lay-select-option>
-                <lay-select-option value="layui-col-md23" label="layui-col-md23"></lay-select-option>
-                <lay-select-option value="layui-col-md24" label="layui-col-md24"></lay-select-option>
+                <lay-select-option value="1" label="1"></lay-select-option>
+                <lay-select-option value="2" label="2"></lay-select-option>
+                <lay-select-option value="3" label="3"></lay-select-option>
+                <lay-select-option value="4" label="4"></lay-select-option>
+                <lay-select-option value="5" label="5"></lay-select-option>
+                <lay-select-option value="6" label="6"></lay-select-option>
+                <lay-select-option value="7" label="7"></lay-select-option>
+                <lay-select-option value="8" label="8"></lay-select-option>
+                <lay-select-option value="9" label="9"></lay-select-option>
+                <lay-select-option value="10" label="10"></lay-select-option>
+                <lay-select-option value="11" label="11"></lay-select-option>
+                <lay-select-option value="12" label="12"></lay-select-option>
+                <lay-select-option value="13" label="13"></lay-select-option>
+                <lay-select-option value="14" label="14"></lay-select-option>
+                <lay-select-option value="15" label="15"></lay-select-option>
+                <lay-select-option value="16" label="16"></lay-select-option>
+                <lay-select-option value="17" label="17"></lay-select-option>
+                <lay-select-option value="18" label="18"></lay-select-option>
+                <lay-select-option value="19" label="19"></lay-select-option>
+                <lay-select-option value="20" label="20"></lay-select-option>
+                <lay-select-option value="21" label="21"></lay-select-option>
+                <lay-select-option value="22" label="22"></lay-select-option>
+                <lay-select-option value="23" label="23"></lay-select-option>
+                <lay-select-option value="24" label="24"></lay-select-option>
             </lay-select>
         </lay-form-item>
         <lay-form-item label="文本显示">
