@@ -3,9 +3,11 @@
     <lay-form-item label="表单名称">
       <lay-input v-model="modle.name"></lay-input>
     </lay-form-item>
-    <!-- <lay-form-item label="表单样式">
-      <lay-input v-model="modle.style"></lay-input>
-    </lay-form-item> -->
+    <lay-form-item label="提交类型">
+
+      <lay-radio v-model="modle.mode" name="mode"  label="api"></lay-radio>
+      <lay-radio v-model="modle.mode" name="mode"  label="本地"></lay-radio>
+    </lay-form-item>
     <lay-form-item label="表">
       <lay-input v-model="modle.table"></lay-input>
     </lay-form-item>

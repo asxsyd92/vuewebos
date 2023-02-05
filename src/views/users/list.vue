@@ -69,26 +69,33 @@ const depOptions = reactive({
     depData: []
 })
 //加载按钮
-const finbuuton=()=>{
-    depOptions.loading = true;
+// const finbuuton=()=>{
+//     depOptions.loading = true;
 
 
-http.post("/api/common/getRoleBuutton", { pathname: route.path }).then(res => {
-    depOptions.loading = false
+// http.post("/api/common/getRoleBuutton", { pathname: route.path }).then(res => {
+//     depOptions.loading = false
 
-    if (res.success) {
-    toolbarbuttons.value=res.data.filter((item:any) => {
-        return item.type == 1
-    }
-   );
-    rowbuttons.value=res.data.filter((item:any) =>{return item.type == 2})
+//     if (res.success) {
+//     toolbarbuttons.value=res.data.filter((item:any) => {
+//         return item.type == 1
+//     }
+//    );
+//     rowbuttons.value=res.data.filter((item:any) =>{return item.type == 2})
  
 
 
-    }
-});
-}
-finbuuton();
+//     }
+// });
+// }
+// finbuuton();
+utils.finbuuton(route.path,depOptions).then((res:any)=>{
+        if(res.success){
+          area.value=res.area;
+          toolbarbuttons.value=res.toolbarbuttons;
+          rowbuttons.value=res.rowbuttons;
+        }
+  });
 const findDepartmentList = () => {
     depOptions.loading = true;
 

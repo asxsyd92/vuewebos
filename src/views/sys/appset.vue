@@ -56,8 +56,6 @@
   const instanceid = ref("");
   const toolbarbuttons=ref([]) as any;
   const rowbuttons=ref([]) as any;
-  const _popform=ref(null) as any;
-  const rolevisible=ref(false);
   const area=ref(['50%','40%']);
   const router = useRouter();
     const route = useRoute();
@@ -66,29 +64,35 @@
     depData: []
   })
   //加载按钮
-  const finbuuton=()=>{
-    depOptions.loading = true;
+  // const finbuuton=()=>{
+  //   depOptions.loading = true;
   
   
-  http.post("/api/common/getRoleBuutton", { pathname: route.path }).then(res => {
-    depOptions.loading = false
+  // http.post("/api/common/getRoleBuutton", { pathname: route.path }).then(res => {
+  //   depOptions.loading = false
   
-    if (res.success) {
-        if(res.data.length>0){
-        area.value=[res.data[0].areax,res.data[0].areay]
-    }
+  //   if (res.success) {
+  //       if(res.data.length>0){
+  //       area.value=[res.data[0].areax,res.data[0].areay]
+  //   }
 
-    toolbarbuttons.value=res.data.filter((item:any) => {  return item.type == 1 });
+  //   toolbarbuttons.value=res.data.filter((item:any) => {  return item.type == 1 });
    
   
-    console.log(area.value)
-    rowbuttons.value=res.data.filter((item:any) =>{return item.type == 2});
-                    }
-                } );
-  }
-  finbuuton();
+  //   console.log(area.value)
+  //   rowbuttons.value=res.data.filter((item:any) =>{return item.type == 2});
+  //                   }
+  //               } );
+  // }
+  // finbuuton();
   
-  
+  utils.finbuuton(route.path,depOptions).then((res:any)=>{
+        if(res.success){
+          area.value=res.area;
+          toolbarbuttons.value=res.toolbarbuttons;
+          rowbuttons.value=res.rowbuttons;
+        }
+  });
   //信息
   const search = ref({
     name: '',
@@ -139,7 +143,7 @@
   //标段保存回调返回结果
   const Callback=(res:any)=>{
     if(res.success){
-        rolevisible.value = false;
+
         findList();
     }else{
         layer.notifiy({  title:"温馨提示", content:res.msg })
@@ -168,12 +172,7 @@
   
   
   
-  const editRowEvent = (ent:any,row: any) => {
-  
-    utils.openform(ent.title,ent.animation,popform,{   fromid:ent.formid,instanceid:row.id,callback:Callback },area.value,new Object());
-  
-  
-  }
+
   const gridEvents: VxeGridListeners = {
       pageChange({ currentPage, pageSize }) {
         if (gridOptions.pagerConfig) {
@@ -225,12 +224,6 @@
   
   }
   
-  const a_index = async (row: any) => {
-    search.value.type = row.row.id;
-  
-    findList();
-  
-  }
   
   findList()
   const searchEvent = () => {
@@ -240,28 +233,42 @@
   const formData = reactive({
     name: ''
   });
-  
-  const a_add = (ent:any) => {
+  /***
+   新增
+   * */
+  const addEvent = (ent:any) => {
     utils.openform(ent.title,ent.animation,popform,{   fromid:ent.formid,instanceid:"",callback:Callback },area.value,new Object());
   
   
   
   }
+  const cloneRowEvent= (ent:any,row: any) => {
+    utils.openform(ent.name+"【"+row.title+"】"+"的配置",ent.animation,popform,{   fromid:ent.formid,instanceid:row.id,callback:Callback },area.value,{id:""});
   
+  
+  }
+  const editRowEvent = (ent:any,row: any) => {
+  
+  utils.openform(ent.title,ent.animation,popform,{   fromid:ent.formid,instanceid:row.id,callback:Callback },area.value,new Object());
 
+
+}
   const Events=(ent:any,row:any)=>{
     try{
- 
+ debugger
         switch(ent.events){
             case "searchEvent":searchEvent();
             break;
-            case "addEvent":a_add(ent);
+            case "addEvent":addEvent(ent);
             break;
   
             case "editEvent":editRowEvent(ent,row);
             break;
             case "deleteEvent":removeRowEvent(ent,row);
             break;
+            case "cloneEvent":cloneRowEvent(ent,row);
+            break;
+            
         }
     }catch(e){
         layer.msg("按钮解析失败", { icon: 3, time: 1000 })

@@ -59,6 +59,16 @@
                 <lay-select-option value="24" label="24"></lay-select-option>
             </lay-select>
         </lay-form-item>
+        <lay-form-item label="开启检索">
+            <lay-radio v-model="modle.showSearch" value="true">是</lay-radio>
+            <lay-radio v-model="modle.showSearch" value="false">否</lay-radio>
+
+        </lay-form-item>
+        <lay-form-item label="是否多选">
+            <lay-radio v-model="modle.multiple" value="true">是</lay-radio>
+            <lay-radio v-model="modle.multiple" value="false">否</lay-radio>
+
+        </lay-form-item>
         <lay-form-item label="文本显示">
             <lay-radio v-model="modle.showtext" value="true">是</lay-radio>
             <lay-radio v-model="modle.showtext" value="false">否</lay-radio>

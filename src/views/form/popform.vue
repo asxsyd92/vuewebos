@@ -1,7 +1,7 @@
 <template>
 
           <lay-card>
-            <lay-form :model="fromdata.field" ref="popfrom">
+            <lay-form :model="fromdata.field" ref="popfrom" :class="formstyle">
               <lay-row>
               <div v-for="(item, index) in fromdata.data" :key="index">
                 <subform :data="item" :value="fromdata.field"></subform>
@@ -23,6 +23,7 @@
   import { useAppStore } from "../../store/app";
   import http from '../../api/http';
   import subform from '../../components/formitem/subform.vue';
+
   interface IdesignselectProps {
     fromid:any, instanceid: any,callback:Function
 }
@@ -31,7 +32,7 @@
 });
 
       const appStore = useAppStore();
-
+      const formstyle=ref("");
       const fromdata = ref({ name: "" }) as any;
       const validateModel = ref({});
       const popfrom = ref(null) as any;
@@ -58,8 +59,13 @@
          var index= layer.msg("加载中...",{icon: 16,shadeClose:false})
           if(data!=null){
             Object.keys(data).forEach(key => {
-              model[key]=data[key]
-              });
+
+         
+                model[key]=data[key];
+          
+         
+  
+            });
           }
 
           var url = "";
@@ -98,8 +104,9 @@
   
           if (res.success) {
             var k = JSON.parse(res.data.designhtml);
-            console.log(k);
+ 
             fromdata.value = k;
+            formstyle.value=k.form.style;
             if (k.field == null) {
               var obj = new Object() as any;
               fromdata.value.data.forEach((key: any) => {
@@ -110,6 +117,7 @@
                 }
               });
   
+         
               fromdata.value.field = obj;
   
             }

@@ -22,7 +22,7 @@
                 <div style="  border:1px dashed rgb(0 255 99);min-height: 200px;">
                     <header class="el-header _fc-m-tools">
                         <lay-tooltip content="从数据库中生成单个输入框，需要配置表单属性，生成后配置对应组件即可" :is-dark="false"> <button
-                                @click="generate()" type="button"
+                               @click="generate()" type="button"
                                 class="layui-btn layui-btn-normal layui-btn-sm">从数据中生成表单</button></lay-tooltip>
                         <lay-tooltip content="设置表单属性表单名称等信息" :is-dark="false">
                             <button @click="attribute()" type="button"
@@ -39,11 +39,11 @@
                     </header>
                     <lay-field title="表单标题">
 
-                        <draggable :list="confirm" group="people">
-                            <template #item="{ element, index }">
+                        <draggable :list="confirm" group="people" item-key="name">
+                            <template #item="{ element, index }" >
                                 <div>
 
-                                    <subdesign @dblclick="set(element, index)" class="list-group-item1" :data="element">
+                                    <subdesign @dblclick="set(element, index)"  :itemKey="element.data.name" class="list-group-item1" :data="element">
                                     </subdesign>
                                 </div>
                             </template>
@@ -59,23 +59,23 @@
     </lay-panel>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import draggable from "vuedraggable";
 import subdesign from '../../../components/formdesign/subdesign.vue';
 import sets from '../../../components/formdesign/set.vue';
 import _ from 'lodash';
 import http from "../../../api/http";
-import { watch, ref, onMounted } from 'vue';
+import {watch,  ref, onMounted } from 'vue';
 import { useRouter, useRoute, RouteMeta } from 'vue-router';
 import toolsdata from '../../../assets/toolsdata';
 import { layer } from '@layui/layer-vue';
-const needdata = ref(new Object());
-export default {
-    components: {
-        draggable, subdesign, sets
-    },
-    name: "designindex",
-    setup() {
+const needdata = ref({});
+// export default {
+//     components: {
+//         draggable, subdesign, sets
+//     },
+//     name: "designindex",
+//     setup() {
         const router = useRouter();
         const route = useRoute();
         const tools = ref(toolsdata.data);
@@ -187,7 +187,8 @@ export default {
             t.table = "";
             t.style = "layui-form";
             t.url = "/api/";
-            t.name = "这是表单名称";
+            t.mode="api";
+            t.name = "请修改表单名称";
             needdata.value = t;
         } else {
             needdata.value = form.value;
@@ -291,13 +292,13 @@ export default {
 
 
 });
-return {
-    publishfrom, tools, log, groups, openKeys2, setdata, set, generate, attribute, showfrom, confirm, needdata, cloneDog
-}
+// return {
+//     publishfrom, tools, log, groups, openKeys2, setdata, set, generate, attribute, showfrom, confirm, needdata, cloneDog
+// }
 
 
-    }
-}
+//     }
+// }
 
 </script>
 <style>

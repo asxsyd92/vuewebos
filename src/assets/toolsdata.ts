@@ -124,6 +124,8 @@ const toolsdata={ data:[
         "required":"false",
         "value": "",
         "data":"",
+        "showSearch":"false",
+        "multiple":"false",
         "input": [
             {"title":"男",value:"1"},
             {"title":"女",value:"2"},

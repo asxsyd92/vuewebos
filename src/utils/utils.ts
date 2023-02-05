@@ -1,6 +1,7 @@
 import { layer } from "@layui/layui-vue";
 import { InsideDataZoomComponentOption } from "echarts";
 import {h} from "vue";
+import http from "../api/http";
 class Utils {
 
 
@@ -126,6 +127,43 @@ class Utils {
         })
       
       }
+  //加载按钮
+  finbuuton(path:string,depOptions:any) {
+    depOptions.loading = false;
+    var obj={
+      area:["50%","50%"],
+      toolbarbuttons:[],
+      rowbuttons:[],
+      success:true
+  };
+
+    return new Promise((resolve, reject) => {
+      http.post("/api/common/getRoleBuutton", { pathname: path }).then(res => {
+        depOptions.loading = false
+      
+        if (res.success) {
+            if(res.data.length>0){
+              obj.area=[res.data[0].areax,res.data[0].areay]
+        }
+    
+        obj.toolbarbuttons=res.data.filter((item:any) => {  return item.type == 1 });
+       
+ 
+        obj.rowbuttons=res.data.filter((item:any) =>{return item.type == 2});
+        obj.success=true;
+        resolve(obj);
+      
+                        }
+                    } ).catch(res=>{
+                      obj.success=false;
+                      reject(obj)
+                    });;
+   
+      })
+
+
+    
+  }
 
 
 }

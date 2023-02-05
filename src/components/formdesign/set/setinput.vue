@@ -16,6 +16,7 @@
     <lay-form-item label="值">
       <lay-select v-model="modle.value">
         <lay-select-option value="" label="空值"></lay-select-option>
+                <lay-select-option value="0" label="数字"></lay-select-option>
         <lay-select-option value="@_SYS_GETUSERID" label="获取当前用户id"> </lay-select-option>
         <lay-select-option value="@_SYS_GETUSERNAME" label="获取当前用户名"></lay-select-option>
         <lay-select-option value="@_SYS_GETUSERNICKNAME" label="获取当前用户昵称"></lay-select-option>
