@@ -148,7 +148,7 @@ export default {
                     // users.value=[];
                     http.post("/api/organiz/GetOrganizeById", { id: "" }, "正在获取...").then(res => {
                         if (res.success) {
-                            console.log(res.data);
+                         
                             userdata.value = res.data;
                             sedvisible.value = true;
                             userslistadd(res.data);
@@ -165,7 +165,7 @@ export default {
                     opts.type = "completed";
                     opts.steps = [];
                     query.value.comment = comment.value;
-                    http.post("/api/workflowtasks/sendTask", { table: fromdata.value.table, data: JSON.stringify(model), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
+                    http.post("/api/workflowtasks/sendTask", { table: fromdata.value.form.table, data: JSON.stringify(model), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
 
                         if (resp.success) {
                             layer.notifiy({
@@ -251,7 +251,7 @@ export default {
 
                     return;
                 }
-                console.log(stepselect.value);
+             
                 if (stepselect.value.length == 0) {
                     layer.notifiy({
                         title: "温馨提示",
@@ -324,7 +324,7 @@ export default {
                 )
                     .then((res: any) => {
                         if (res.success) {
-                            console.log(res);
+                      
                             currentdata.value = res.currentdata;
                             if (
                                 currentdata.value.signatureType == 1 ||
@@ -340,21 +340,19 @@ export default {
                                 fromdata.value.data.forEach((key: any) => {
                                     for (let keys in key.data) {
                                         if (keys == "name") {
-                                            //field.value = { [key.data[keys]]: "" };
                                             obj[key.data[keys]] = key.data['value'];
                                         }
                                     }
                                 });
-                                console.log(obj);
+                            
                                 fromdata.value.field = obj;
-                                console.log(fromdata.value.field);
+                            
                             }
 
 
-                            console.log(field.value);
+                 
                             rules.value = k.rules;
-                            console.log(rules.value);
-                            console.log(fromdata.value);
+                  
                             if (res.data.length > 0) {
                                 res.data.forEach((item: any) => {
                                     let o = new Object() as any;
@@ -364,7 +362,6 @@ export default {
                                 });
                             }
 
-                            console.log(step.value);
 
                             if (
                                 isflow.value &&
@@ -379,7 +376,6 @@ export default {
                             // message.value = res.msg;
                             // currentInstance.refs.popupMessage.open();
 
-                            console.log("初始化成功");
                         } else {
                             layer.notifiy({
                                 title: "温馨提示",

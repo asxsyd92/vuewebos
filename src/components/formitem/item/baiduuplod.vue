@@ -8,7 +8,7 @@
          :name="data.data.name+'ueditor'"
          :destroy="false" 
           :config="config" 
-     
+          style="display: none;" 
          >
         </vue-ueditor-wrap>
         <input v-model="value[data.data.name]" style="display: none;" />

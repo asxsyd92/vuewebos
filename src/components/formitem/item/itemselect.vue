@@ -5,7 +5,7 @@
         <lay-select @change="change" v-model="selected" :items="items" :create="true" @create="createEvent"
           :multiple="multiple" :showSearch="showSearch">
         </lay-select>
-      <lay-input v-model="value[data.data.name]" :placeholder="data.data.placeholder"></lay-input>
+      <lay-input style="display: none;"  v-model="value[data.data.name]" :placeholder="data.data.placeholder"></lay-input>
     </lay-form-item>
   </lay-col>
 
