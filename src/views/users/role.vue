@@ -1,151 +1,96 @@
 <template>
   <lay-layout>
-      <!--  -->
+    <!--  -->
 
-      <lay-body>
+    <lay-body>
 
-          <vxe-grid ref="xGrid" v-bind="gridOptions" v-on="gridEvents"
-              :column-config="{ isCurrent: true, isHover: true }" :row-config="{ isCurrent: true, isHover: true }">
-              <!--将表单放在工具栏中-->
-              <template #toolbar_buttons>
-                  <vxe-form :data="search" @submit="searchEvent">
-                      <vxe-form-item field="name">
-                          <template #default>
-                              <vxe-input v-model="search.name" type="text" placeholder="请输入名称"></vxe-input>
-                          </template>
-                      </vxe-form-item>
-                      <vxe-form-item>
-                          <template #default>
-                              <lay-button-group v-for="n in toolbarbuttons" :key="n">
-                                  <lay-button :size="n.size" :type="n.status" border-style="dashed" @click="Events(n,null)">{{n.name}}</lay-button>
-
-                                </lay-button-group>
-
-                          </template>
-                      </vxe-form-item>
-                  </vxe-form>
+      <vxe-grid ref="roleGrid" v-bind="config" v-on="gridEvents" :column-config="{ isCurrent: true, isHover: true }"
+        :row-config="{ isCurrent: true, isHover: true }">
+        <!--将表单放在工具栏中-->
+        <template #toolbar_buttons>
+          <vxe-form :data="search">
+            <vxe-form-item field="name">
+              <template #default>
+                <lay-input v-model="search.name" type="text" placeholder="请输入名称"  @keyup.enter="soso()"></lay-input>
+       
               </template>
+            </vxe-form-item>
+            <vxe-form-item>
+              <template #default>
 
-              <template #operate="{ row }">
-                  <span v-for="n in rowbuttons" :key="n">
-                      <vxe-button :icon="n.icon" :title="n.name" circle @click="Events(n,row)"></vxe-button>
-                  </span>
-                  <!-- <vxe-button icon="fa fa-eye" title="查看" circle @click="Events(row)"></vxe-button>
-                  <vxe-button icon="fa fa-trash" title="删除" circle @click="Events(row)"></vxe-button> -->
+                <lay-button-group v-for="n in listbutton.toolbarbuttons" :key="n">
+                  <lay-button :size="n.size" :type="n.status" border-style="dashed" @click="Events(n, null)">{{
+                    n.name
+                  }}</lay-button>
+
+                </lay-button-group>
+
               </template>
-          </vxe-grid>
-      </lay-body>
-      <!-- <lay-layer title="角色管理"  :area="area"  :resize="true"  :btn="menubtn" :shadeClose="false" v-model="rolevisible">
-          <popform ref="_popform" :fromid="formid" :instanceid="instanceid" :callback="callback" ></popform>
-      </lay-layer> -->
+            </vxe-form-item>
+          </vxe-form>
+        </template>
+
+        <template #operate="{ row }">
+          <span v-for="n in listbutton.rowbuttons" :key="n">
+            <vxe-button :icon="n.icon" :title="n.name" circle @click="Events(n, row)"></vxe-button>
+          </span>
+        </template>
+      </vxe-grid>
+    </lay-body>
   </lay-layout>
 </template>
 <script lang="ts" setup>
-
-import http from '../../api/http';
-import { useRouter, useRoute } from 'vue-router';
+import { reactive, ref } from 'vue'
+import { useRoute } from 'vue-router';
 import popform from '../form/popform.vue';
 import { layer } from "@layui/layer-vue"
-import { reactive, ref,  h, resolveComponent } from 'vue'
-import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
-import utils from '../../utils/utils';
-const xGrid = ref<VxeGridInstance>()
-
-const formid = ref("");
-const instanceid = ref("");
-const toolbarbuttons=ref([]) as any;
-const rowbuttons=ref([]) as any;
-const _popform=ref(null) as any;
-const rolevisible=ref(false);
-const area=ref(['50%','40%']);
-const router = useRouter();
-  const route = useRoute();
-const depOptions = reactive({
-  loading: false,
-  depData: []
-})
-//加载按钮
-// const finbuuton=()=>{
-//   depOptions.loading = true;
-
-
-// http.post("/api/common/getRoleBuutton", { pathname: route.path }).then(res => {
-//   depOptions.loading = false
-
-//   if (res.success) {
-//   toolbarbuttons.value=res.data.filter((item:any) => {
-//       return item.type == 1
-//   }
-
-//  );
- 
-//  if (toolbarbuttons.value!==null&&toolbarbuttons.value!= undefined&&toolbarbuttons.value.length>0){
-// var entype=  res.data.find((item:any) => {
-//       return item.eventstype == 'add'
-//   })
-//   if(entype){
-//     console.log(area.value)
-//     var ent= entype.events;
-//  var en=JSON.parse(ent);
-//  if(en.parameter.area)
-//   area.value=[en.parameter.area.x,en.parameter.area.y]
-// }
-//   }
-
-//   console.log(area.value)
-//   rowbuttons.value=res.data.filter((item:any) =>{return item.type == 2})
-
-
-//   }
-// });
-// }
-// finbuuton();
-utils.finbuuton(route.path,depOptions).then((res:any)=>{
-        if(res.success){
-          area.value=res.area;
-          toolbarbuttons.value=res.toolbarbuttons;
-          rowbuttons.value=res.rowbuttons;
-        }
-  });
-
-//信息
+import { VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
+import listurils from '../../utils/listutils';
+const roleGrid = ref<VxeGridInstance>();
+const route = useRoute();
+const listbutton = ref({
+  area: ['50%', '50%'],
+  rowbuttons: [] as any,
+  toolbarbuttons: [] as any,
+});
 const search = ref({
   name: '',
-  type: ""
+  type: "",
+  api: ""
 });
 
-const gridOptions = reactive<VxeGridProps>({
+const config = reactive<VxeGridProps>({
   border: true,
   keepSource: true,
   showOverflow: true,
 
   loading: false,
   columnConfig: {
-      resizable: true,
-      isCurrent: true,
-      isHover: true,
+    resizable: true,
+    isCurrent: true,
+    isHover: true,
   },
   pagerConfig: {
-      total: 0,
-      currentPage: 1,
-      pageSize: 10,
-      pageSizes: [10, 20, 50, 100, 200, 500]
+    total: 0,
+    currentPage: 1,
+    pageSize: 10,
+    pageSizes: [10, 20, 50, 100, 200, 500]
   },
   editConfig: {
-      trigger: 'manual',
-      mode: 'row',
-      showStatus: true,
-      icon: 'fa fa-file-text-o'
+    trigger: 'manual',
+    mode: 'row',
+    showStatus: true,
+    icon: 'fa fa-file-text-o'
   },
   toolbarConfig: {
-      export: true,
-      print: true,
-      custom: true,
-      slots: {
-          buttons: 'toolbar_buttons'
-      }
+    export: true,
+    print: true,
+    custom: true,
+    slots: {
+      buttons: 'toolbar_buttons'
+    }
   },
-  columns: [
+  columns:[
       // { type: 'seq', width: 60 },
       { type: 'checkbox', width: 50 },
       { field: 'id', title: '角色id' },
@@ -158,137 +103,77 @@ const gridOptions = reactive<VxeGridProps>({
       { title: '操作', fixed: "right", width: 150, slots: { default: 'operate' } }
   ],
   data: []
-})
-//标段保存回调返回结果
-const Callback=(res:any)=>{
-  if(res.success){
-      rolevisible.value = false;
-      findList();
-  }else{
-      layer.notifiy({  title:"温馨提示", content:res.msg })
+});
+listurils.getButton(route.path, config, listbutton).then((res: any) => {
+  //加载完成后刷新列表
+
+  if (res.success) {
+    search.value.api = res.data.api;
+    listurils.searchEvent(config, search);
+  } else {
+    layer.notifiy({
+      title: "Error",
+      content: res.msg,
+      icon: 2
+    })
   }
 
-}
-const findList = () => {
-  gridOptions.loading = true;
-  var page: any, limt: any;
-  if (gridOptions.pagerConfig) {
-      page = gridOptions.pagerConfig.currentPage;
-      limt = gridOptions.pagerConfig.pageSize;
-  }
-  http.post("/api/users/getRolePage", { type: search.value.type, title: search.value.name, page: page, limit: limt }).then(res => {
-      gridOptions.loading = false
-
-      if (res.success) {
-          gridOptions.data = res.data;
-
-          if (gridOptions.pagerConfig) {
-              gridOptions.pagerConfig.total = res.count
-          }
-      }
-  });
-}
-
-
-
-const editRowEvent = (ent:any,row: any) => {
-
-  utils.openform(ent.title,ent.animation,popform,{   fromid:ent.formid,instanceid:row.id,callback:Callback },area.value,new Object());
-
-
-}
-
-const saveRowEvent = async () => {
-  const $grid = xGrid.value
-  if ($grid) {
-      await $grid.clearActived()
-      gridOptions.loading = true
-      // 模拟异步保存
-      setTimeout(() => {
-          gridOptions.loading = false
-          VXETable.modal.message({ content: '保存成功！', status: 'success' })
-      }, 300)
-  }
-}
-
-const removeRowEvent = async (ent:any,row: any) => {
-  const $grid = xGrid.value
-  layer.confirm("您确定要删除该数据", 
-  {btn:
-      [
-          {text:'确认', callback: function(id:any){
-        http.post(ent.api,{id:row.id}).then((res:any)=>{
-          if(res.success){
-              layer.close(id);
-              searchEvent();
-              layer.notifiy({  title:"温馨提示", content:res.msg })
-        
-            
-          }else{
-              layer.notifiy({  title:"温馨提示", content:res.msg })
-              layer.close(id);
-          }
-        }).catch((error:any)=>{
-          layer.notifiy({  title:"温馨提示", content:"网络错误！" })
-          layer.close(id);
-        })
-           
-          }},
-          {text:'取消', callback: function(id:any){layer.close(id);}}
-      ]
-  })
-
-}
-
-const a_index = async (row: any) => {
-  search.value.type = row.row.id;
-
-  findList();
-
-}
-
-findList()
-const searchEvent = () => {
-  findList();
-}
-
-const formData = reactive({
-  name: ''
 });
 
-const a_add = (ent:any) => {
-  utils.openform(ent.title,ent.animation,popform,{   fromid:ent.formid,instanceid:"",callback:Callback },area.value,new Object());
+//标段保存回调返回结果
+const Callback = (res: any) => {
+  if (res.success) {
 
-
+    listurils.searchEvent(config, search);
+  } else {
+    layer.notifiy({ title: "温馨提示", content: res.msg })
+  }
 
 }
 
 const gridEvents: VxeGridListeners = {
-    pageChange({ currentPage, pageSize }) {
-        if (gridOptions.pagerConfig) {
-            gridOptions.pagerConfig.currentPage = currentPage
-            gridOptions.pagerConfig.pageSize = pageSize
-        }
-        findList()
+  pageChange({ currentPage, pageSize }) {
+    if (config.pagerConfig) {
+      config.pagerConfig.currentPage = currentPage;
+      config.pagerConfig.pageSize = pageSize;
+      listurils.searchEvent(config, search);
     }
-}
-const Events=(ent:any,row:any)=>{
-    try{
- 
-        switch(ent.events){
-            case "searchEvent":searchEvent();
-            break;
-            case "addEvent":a_add(ent);
-            break;
-  
-            case "editEvent":editRowEvent(ent,row);
-            break;
-            case "deleteEvent":removeRowEvent(ent,row);
-            break;
-        }
-    }catch(e){
-        layer.msg("按钮解析失败", { icon: 3, time: 1000 })
-    }
-  
+
   }
+}
+const soso=()=>{
+  if (config.pagerConfig) {
+          config.pagerConfig.currentPage = 1;
+          listurils.searchEvent(config, search);
+        }
+
+}
+
+const Events = (ent: any, row: any) => {
+  try {
+
+    switch (ent.events) {
+      case "searchEvent":
+        if (config.pagerConfig) {
+          config.pagerConfig.currentPage = 1;
+          listurils.searchEvent(config, search);
+        }
+
+        break;
+      case "addEvent": listurils.addEvent(popform, ent, { fromid: ent.formid, instanceid: "", callback: Callback }, listbutton, {});
+        break;
+
+      case "editEvent": listurils.editRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback }, listbutton, {});
+        break;
+      case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config, search);
+        break;
+      case "cloneEvent": listurils.cloneRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback }, listbutton, { id: "" });
+        break;
+
+    }
+  } catch (e) {
+    layer.msg("按钮解析失败", { icon: 3, time: 1000 })
+  }
+
+}
 </script>
