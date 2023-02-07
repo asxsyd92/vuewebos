@@ -2,8 +2,11 @@
 import { layer } from "@layui/layui-vue";
 import utils from '../utils/utils';
 import http from '../api/http';
-
+import { h } from "vue";
 class ListUtils {
+
+
+
     /**
      * 获取列表数据
      * @param config table配置文件
@@ -30,9 +33,7 @@ class ListUtils {
      * 获取按钮
      * @param path 路由地址：/sys/log
      * @param config loading配置文件
-     * @param area 弹窗大小
-     * @param toolbarbuttons 顶部按钮
-     * @param rowbuttons 列表按钮
+     * @param buttons 按钮
      */
     getButton = (path: string, config: any, buttons: any) => {
         return new Promise((resolve, reject) => {
@@ -43,13 +44,10 @@ class ListUtils {
                 config.loading = false
 
                 if (res.success) {
-                    if (res.data.length > 0) {
-                        buttons.value.area = [res.data[0].areax, res.data[0].areay]
-                    }
-
+          
                     buttons.value.toolbarbuttons = res.data.filter((item: any) => { return item.type == 1 });
                     buttons.value.rowbuttons = res.data.filter((item: any) => { return item.type == 2 });
-                    debugger
+                   
                     var data = res.data.find((e: any) => e.events == "searchEvent");
                     var o = new Object() as any;
                     if (data == null) {
@@ -65,6 +63,7 @@ class ListUtils {
                             o.msg = "获取成功";
                             o.success = true;
                             o.data = data;
+                
                         }
 
                     }
@@ -81,7 +80,7 @@ class ListUtils {
     }
 
     //类别查询功能
-    searchEvent = ( config: any, search: any) => {
+    searchEvent = (config: any, search: any) => {
         if (config.pagerConfig) {
 
             this.getList(config, search.value.api, { type: search.value.type, title: search.value.name, page: config.pagerConfig.currentPage, limit: config.pagerConfig.pageSize });
@@ -95,12 +94,11 @@ class ListUtils {
      * @param ent 事件
      * @param row 该行编辑数据数据Object
      * @param data 请求时需打开的数据包含回调函数
-     * @param listbutton 按钮
      * @param suppdata 补充的数据或者赋值的数据
      */
-    editRowEvent = (popform: any, ent: any, row: any, data: object, listbutton: any, suppdata: object) => {
+    editRowEvent = (popform: any, ent: any, row: any, data: object,  suppdata: object) => {
 
-        utils.openform(ent.title, ent.animation, popform, data, listbutton.value.area, suppdata);
+        this.openform(ent.title, ent.animation, popform, data,[ent.areax,ent.areay], suppdata);
 
 
     }
@@ -110,11 +108,10 @@ class ListUtils {
     * @param ent 事件
     * @param row 该行编辑数据数据Object
     * @param data 请求时需打开的数据包含回调函数
-    * @param listbutton 按钮
     * @param suppdata 补充的数据或者赋值的数据
     */
-    cloneRowEvent = (popform: any, ent: any, row: any, data: object, listbutton: any, suppdata: object) => {
-        utils.openform(ent.name + "【" + row.title + "】" + "的配置", ent.animation, popform, data, listbutton.value.area, suppdata);
+    cloneRowEvent = (popform: any, ent: any, row: any, data: object, suppdata: object) => {
+        this.openform(ent.name + "【" + row.title + "】" + "的配置", ent.animation, popform, data,[ent.areax,ent.areay], suppdata);
 
 
     }
@@ -123,12 +120,11 @@ class ListUtils {
     * @param popform 弹窗组件
     * @param ent 事件
     * @param data 请求时需打开的数据包含回调函数
-    * @param listbutton 按钮
     * @param suppdata 补充的数据或者赋值的数据
     */
 
-    addEvent = (popform: any, ent: any, data: object, listbutton: any, suppdata: object) => {
-        utils.openform(ent.title, ent.animation, popform, data, listbutton.value.area, suppdata);
+    addEvent = (popform: any, ent: any, data: object, suppdata: object) => {
+        this.openform(ent.title, ent.animation, popform, data, [ent.areax,ent.areay], suppdata);
 
 
 
@@ -144,7 +140,7 @@ class ListUtils {
      */
     removeRowEvent = async (ent: any, row: any, search: Function, config: any, searchpara: any) => {
 
-        layer.confirm("您确定要删除该数据",
+        layer.confirm("您确定要"+ent.name+"该数据",
             {
                 btn:
                     [
@@ -153,7 +149,7 @@ class ListUtils {
                                 http.post(ent.api, { id: row.id }).then((res: any) => {
                                     if (res.success) {
                                         layer.close(id);
-                                        search( config, searchpara);
+                                        search(config, searchpara);
                                         layer.notifiy({ title: "温馨提示", content: res.msg })
 
 
@@ -173,7 +169,85 @@ class ListUtils {
             })
 
     }
+    previewEvent = async (popform: any, ent: any, row: any) => {
+        this.previewform(ent.title, ent.animation, popform, { fromid: ent.formid, instanceid: row.id },[ent.areax,ent.areay]);
 
+
+    }
+
+    /**
+     * 没有确认按钮的表单弹窗
+     * @param title 弹窗变态
+     * @param anim 弹窗动画
+     * @param form 自定义表单组件
+     * @param data 包含表单id和数据组件id
+     * @param area 弹窗大小
+     */
+    previewform(title: string, anim: any, form: any, data: object, area: string[]) {
+
+        if (anim == null) {
+            anim = 0;
+        }
+        layer.open({
+            title: title,
+            area: area,
+            content: h(form, data),
+            shade: true,
+            anim: anim,
+            shadeClose: false,
+            btn: [
+                {
+                    text: "取消",
+                    callback: (resp: any) => {
+                        layer.close(resp);
+                    },
+                },
+            ]
+        })
+
+    }
+
+    /**
+     * 打开表单
+     * @param title 标题
+      * @param anim 动画
+       * @param form popform组件
+      * @param data  fromid:fromid,instanceid:"",callback:Callback 
+      * @param area 弹出大小
+      * @param suppdata 补充数据提交是会填充data中提交给后台
+      */
+    openform(title: string, anim: any, form: any, data: any, area: string[], suppdata: Object) {
+        var ks = h(form, data) as any;
+        if (anim == null) {
+            anim = 0;
+        }
+        layer.open({
+            title: title,
+            area: area,
+            content: ks,
+            shade: true,
+            anim: anim,
+            shadeClose: false,
+            btn: [
+                {
+                    text: "确认",
+                    callback: (resp: any) => {
+
+                        ks.component.exposed.validate(suppdata, resp, layer)
+
+
+                    },
+                },
+                {
+                    text: "取消",
+                    callback: (resp: any) => {
+                        layer.close(resp);
+                    },
+                },
+            ]
+        })
+
+    }
 
 }
 export default new ListUtils;

@@ -49,7 +49,6 @@ import listurils from '../../utils/listutils';
 const xGrid = ref<VxeGridInstance>();
 const route = useRoute();
 const listbutton = ref({
-  area: ['50%', '50%'],
   rowbuttons: [] as any,
   toolbarbuttons: [] as any,
 });
@@ -156,14 +155,14 @@ const Events = (ent: any, row: any) => {
         }
 
         break;
-      case "addEvent": listurils.addEvent(popform, ent, { fromid: ent.formid, instanceid: "", callback: Callback }, listbutton, {});
+      case "addEvent": listurils.addEvent(popform, ent, { fromid: ent.formid, instanceid: "", callback: Callback }, {});
         break;
 
-      case "editEvent": listurils.editRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback }, listbutton, {});
+      case "editEvent": listurils.editRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback }, {});
         break;
       case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config, search);
         break;
-      case "cloneEvent": listurils.cloneRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback }, listbutton, { id: "" });
+      case "cloneEvent": listurils.cloneRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback },  { id: "" });
         break;
 
     }
