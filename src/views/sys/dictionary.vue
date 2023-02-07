@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <vxe-table show-overflow ref="xTable" :tree-config="{ children: 'children' }" :loading="options.loading"
+    <vxe-table show-overflow ref="xdTable" :tree-config="{ children: 'children' }" :loading="options.loading"
       :data="options.data" :column-config="{ isCurrent: true, isHover: true }"
       :row-config="{ isCurrent: true, isHover: true }">
       <!--将表单放在工具栏中-->
@@ -37,7 +37,8 @@ import { useRouter, useRoute } from 'vue-router';
 import utils from '../../utils/utils';
 import { VxeTableInstance, VxeTableListeners, VXETable } from 'vxe-table'
 import popform from '../form/popform.vue';
-const xGrid = ref<VxeTableInstance>();
+const xdTable = ref<VxeTableInstance>();
+  const treeExpandRecords =ref([]) as any;
 const router = useRouter();
     const route = useRoute();
     const toolbarbuttons=ref([]) as any;
@@ -83,7 +84,13 @@ const findList = () => {
     if (res.success) {
       options.data = res.data;
       options.page.total = res.count
+     if(treeExpandRecords.value.length>0){
+      setTimeout(()=>{
+        const $table = xdTable.value as any;
+      $table.setTreeExpand(treeExpandRecords.value,false);
+      },1000);
 
+     }
     }
   });
 
@@ -95,6 +102,7 @@ findList();
     if(res.success){
 
         findList();
+      
     }else{
         layer.notifiy({  title:"温馨提示", content:res.msg })
     }
@@ -111,7 +119,7 @@ const a_add = (ent:any,row: any) => {
 
 }
 const removeRowEvent = async (ent:any,row: any) => {
-    const $grid = xGrid.value
+
     layer.confirm("您确定要删除该数据", 
     {btn:
         [
@@ -140,7 +148,10 @@ const removeRowEvent = async (ent:any,row: any) => {
   }
 const Events=(ent:any,row:any)=>{
     try{
- 
+      const $table = xdTable.value as any;
+       treeExpandRecords.value = $table.getTreeExpandRecords()
+         console.log(treeExpandRecords.value );
+         
         switch(ent.events){
             case "searchEvent":findList();
             break;

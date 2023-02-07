@@ -68,27 +68,7 @@ const depOptions = reactive({
     loading: false,
     depData: []
 })
-//加载按钮
-// const finbuuton=()=>{
-//     depOptions.loading = true;
 
-
-// http.post("/api/common/getRoleBuutton", { pathname: route.path }).then(res => {
-//     depOptions.loading = false
-
-//     if (res.success) {
-//     toolbarbuttons.value=res.data.filter((item:any) => {
-//         return item.type == 1
-//     }
-//    );
-//     rowbuttons.value=res.data.filter((item:any) =>{return item.type == 2})
- 
-
-
-//     }
-// });
-// }
-// finbuuton();
 utils.finbuuton(route.path,depOptions).then((res:any)=>{
         if(res.success){
           area.value=res.area;

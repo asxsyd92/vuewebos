@@ -9,6 +9,7 @@ import 'xe-utils'
 import 'font-awesome/css/font-awesome.min.css'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
+// import { createPinia } from 'pinia'
 
 import VueUeditorWrap from "vue-ueditor-wrap";
 import print from "print-js";
@@ -23,11 +24,13 @@ function useTable (app: App) {
     // app.config.globalProperties.$XReadFile = VXETable.readFile
   }
 const app = createApp(Apps);
-
+// const pinia = createPinia()
 app.use(Store);
 app.use(Router);
 app.use(VueUeditorWrap);
 // app.use(DataVVue3);
 app.use(useTable);
+
+// app.use(pinia)
 app.directive("permission",permission);
 app.mount('#app');
