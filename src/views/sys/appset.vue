@@ -104,7 +104,7 @@ listurils.getButton(route.path, config, listbutton).then((res: any) => {
 
   if (res.success) {
     search.value.api = res.data.api;
-    listurils.searchEvent(config, search);
+    listurils.searchEvent(config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
   } else {
     layer.notifiy({
       title: "Error",
@@ -119,7 +119,7 @@ listurils.getButton(route.path, config, listbutton).then((res: any) => {
 const Callback = (res: any) => {
   if (res.success) {
 
-    listurils.searchEvent(config, search);
+    listurils.searchEvent(config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
   } else {
     layer.notifiy({ title: "温馨提示", content: res.msg })
   }
@@ -131,7 +131,7 @@ const gridEvents: VxeGridListeners = {
     if (config.pagerConfig) {
       config.pagerConfig.currentPage = currentPage;
       config.pagerConfig.pageSize = pageSize;
-      listurils.searchEvent(config, search);
+      listurils.searchEvent(config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
     }
 
   }
@@ -139,7 +139,7 @@ const gridEvents: VxeGridListeners = {
 const soso=()=>{
   if (config.pagerConfig) {
           config.pagerConfig.currentPage = 1;
-          listurils.searchEvent(config, search);
+          listurils.searchEvent(config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
         }
 
 }
@@ -151,7 +151,7 @@ const Events = (ent: any, row: any) => {
       case "searchEvent":
         if (config.pagerConfig) {
           config.pagerConfig.currentPage = 1;
-          listurils.searchEvent(config, search);
+          listurils.searchEvent(config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
         }
 
         break;

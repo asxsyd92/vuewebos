@@ -80,10 +80,10 @@ class ListUtils {
     }
 
     //类别查询功能
-    searchEvent = (config: any, search: any) => {
+    searchEvent = (config: any, search: any,data:Object) => {
         if (config.pagerConfig) {
 
-            this.getList(config, search.value.api, { type: search.value.type, title: search.value.name, page: config.pagerConfig.currentPage, limit: config.pagerConfig.pageSize });
+            this.getList(config, search.value.api, data);
 
         }
     }
