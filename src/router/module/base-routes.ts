@@ -269,6 +269,12 @@ export default [
         meta: { title: '待办事项' },
       },
       {
+        path: '/oa/button',
+        component: () => import('../../views/oa/flow/flowbutton.vue'),
+        meta: { title: '流程按钮' },
+      },
+      
+      {
         path: '/oa/completed',
         component: () => import('../../views/oa/completed.vue'),
         meta: { title: '已办事项' },

@@ -154,7 +154,7 @@ const Events = (ent: any, row: any) => {
       case "searchEvent":
         if (config.pagerConfig) {
           config.pagerConfig.currentPage = 1;
-          listurils.searchEvent(config, search, { type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
+          listurils.searchEvent(config, search, { type: route.query.zhuanti, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
         }
 
         break;
@@ -189,7 +189,7 @@ const Events = (ent: any, row: any) => {
         }
 
         break;
-      case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config, search);
+      case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config, search,{ type:  route.query.zhuanti, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
         break;
       case "cloneEvent":
         if (ent.ispopup == 0) {

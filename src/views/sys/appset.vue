@@ -94,6 +94,8 @@ const config = reactive<VxeGridProps>({
     { field: 'title', title: '弹窗名称', },
     { field: 'name', title: '按钮名称', },
     { field: 'pathname', title: '控制路径', },
+    
+    { field: 'sort', title: '排序号', },
     { field: 'note', title: '备注', },
     { title: '操作', fixed: "right", width: 150, slots: { default: 'operate' } }
   ],
@@ -160,7 +162,7 @@ const Events = (ent: any, row: any) => {
 
       case "editEvent": listurils.editRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback }, {});
         break;
-      case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config, search);
+      case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config, search{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
         break;
       case "cloneEvent": listurils.cloneRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback },  { id: "" });
         break;

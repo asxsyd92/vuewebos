@@ -169,7 +169,7 @@ const Events = (ent: any, row: any) => {
 
       case "editEvent": listurils.editRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback }, {});
         break;
-      case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config, search);
+      case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
         break;
       case "cloneEvent": listurils.cloneRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback },  { id: "" });
         break;

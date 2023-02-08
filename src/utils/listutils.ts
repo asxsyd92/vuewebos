@@ -14,11 +14,11 @@ class ListUtils {
      * @param data 参数
      */
     getList = (config: any, url: string, data: Object) => {
-
-        config.loading = true;
+       var i= layer.msg("加载中...", { icon : 16, time: 1000});
+ 
         http.post(url, data).then((res: any) => {
-            config.loading = false
-
+ 
+            layer.close(i);
             if (res.success) {
                 config.data = res.data;
 
@@ -138,7 +138,7 @@ class ListUtils {
      * @param config 配置
      * @param searchpara 查询参数
      */
-    removeRowEvent = async (ent: any, row: any, search: Function, config: any, searchpara: any) => {
+    removeRowEvent = async (ent: any, row: any, searchfun: Function, config: any,search:any, searchpara: any) => {
 
         layer.confirm("您确定要"+ent.name+"该数据",
             {
@@ -149,7 +149,7 @@ class ListUtils {
                                 http.post(ent.api, { id: row.id }).then((res: any) => {
                                     if (res.success) {
                                         layer.close(id);
-                                        search(config, searchpara);
+                                        searchfun(config,search,searchpara);
                                         layer.notifiy({ title: "温馨提示", content: res.msg })
 
 
