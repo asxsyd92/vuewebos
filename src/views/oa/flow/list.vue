@@ -41,12 +41,13 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { useRoute } from 'vue-router';
+import { useRoute,useRouter } from 'vue-router';
 import popform from '../../form/popform.vue';
 import { layer } from "@layui/layer-vue"
 import { VxeGridInstance, VxeGridListeners, VxeGridProps ,VxeColumnPropTypes} from 'vxe-table'
 import listurils from '../../../utils/listutils';
 const xGrid = ref<VxeGridInstance>();
+  const router = useRouter();
 const route = useRoute();
 const listbutton = ref({
   rowbuttons: [] as any,
@@ -165,15 +166,56 @@ const Events = (ent: any, row: any) => {
       case "searchEvent":
         if (config.pagerConfig) {
           config.pagerConfig.currentPage = 1;
-                  listurils.searchEvent(config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
+          listurils.searchEvent(config, search, { type: route.query.zhuanti, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
         }
 
         break;
-      case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
+      case "addEvent":
+        if (ent.ispopup == 0) {
+          var query = new Object() as any;
+          query.id = "";
+          query.tabname = encodeURIComponent(row.title);
+          router.push({ path: ent.api, query: query, params: { tabname: ent.name } })
+
+        } else {
+          listurils.addEvent(popform, ent, { fromid: ent.formid, instanceid: "", callback: Callback }, {});
+
+        }
         break;
 
-      case "previewEvent": listurils.previewEvent(popform, ent, row);
+      case "editEvent":
+        if (ent.ispopup == 0) {
+          var query = new Object() as any;
+          query.id = row.id;
+
+          query.tabname = encodeURIComponent(row.name);
+          router.push({ path: ent.api, query: query, params: { tabname: row.name } })
+
+
+        } else {
+          listurils.editRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback }, {});
+
+        }
+
         break;
+      case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config, search,{ type:  route.query.zhuanti, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
+        break;
+      case "cloneEvent":
+        if (ent.ispopup == 0) {
+          var query = new Object() as any;
+          query.fromid = ent.formid;
+          query.instanceid = row.instanceid;
+          query.zhuanti = row.classid;
+          query.tabname = encodeURIComponent(row.title);
+          router.push({ path: "/formdesign/submitfrom", query: query, params: { tabname: row.title } })
+
+
+        } else {
+          listurils.cloneRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback }, { id: "" });
+
+        }
+        break;
+
     }
   } catch (e) {
     layer.msg("按钮解析失败", { icon: 3, time: 1000 })

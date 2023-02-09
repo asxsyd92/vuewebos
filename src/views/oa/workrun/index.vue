@@ -20,16 +20,16 @@
 
                 <lay-card title="您的处理意见" v-if="signature">
 
-                    <lay-input placeholder="请输入处理意见" v-model="comment"></lay-input>
+                    <lay-input placeholder="请输入处理意见" @click="showusers" v-model="comment"></lay-input>
 
                 </lay-card>
 
                 <lay-card v-if="signature" title="历史意见">
                     <lay-timeline>
-                        <div v-for="(item,index) in commentlist" :key="index">
+                        <div v-for="(item, index) in commentlist" :key="index">
                             <lay-timeline-item :title="getmoment(item.completedtime1)">
                                 <p>
-                                    {{'【' + item.stepname + '】:' + item.comment}}
+                                    {{ '【' + item.stepname + '】:' + item.comment }}
                                 </p>
                             </lay-timeline-item>
                         </div>
@@ -49,7 +49,7 @@
 
             </div>
         </div>
-        <lay-layer move="true" :btn="sendbtn" :closeBtn="false" :area="['80%', '85%']" :shadeClose="false"
+        <!-- <lay-layer move="true" :btn="sendbtn" :closeBtn="false" :area="['80%', '85%']" :shadeClose="false"
             @submit="submit" title="发送" v-model="sedvisible">
             <lay-panel class="laymodle">
                 <lay-select v-model="users" multiple :disabled="true">
@@ -68,7 +68,7 @@
                 </lay-card>
 
                 <lay-card v-if="nextstep.length > 0" title="请选择处理步骤">
-                    <!-- <lay-checkbox name="like" skin="primary" v-model="stepselect" label="1">写作</lay-checkbox> -->
+                   <lay-checkbox name="like" skin="primary" v-model="stepselect" label="1">写作</lay-checkbox> 
                     <div class="">
                         <div v-for="(item, index) in nextstep" :key="index">
                             <lay-radio v-model="stepselect" name="step" :value="item.id">{{ item.name }}</lay-radio>
@@ -77,26 +77,28 @@
                 </lay-card>
 
             </lay-panel>
-        </lay-layer>
+        </lay-layer> -->
 
     </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 
-import { ref, onMounted, reactive, getCurrentInstance, withDefaults, defineProps } from 'vue'
+import { ref, onMounted, h } from 'vue'
 import { layer } from '@layui/layer-vue'
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore } from "../../../store/app";
 import http from '../../../api/http';
 import subform from '../../../components/formitem/subform.vue';
 import HelpTabs from "../../../utils/HelpTabs"
+import flowutils from '../../../utils/flowutils';
+import utils from '../../../utils/utils'
 import moment from 'moment'
-import { VXETable, VxeTableInstance, VxeTableEvents } from 'vxe-table'
-
-export default {
-    components: { subform },
-    setup() {
+import selecteuser from '../../../components/users/selecteuser.vue';
+import oasend from './oasend.vue';
+// export default {
+//     components: { subform,selecteuser },
+//     setup() {
         const query = ref(new Object()) as any;
         const isflow = ref(false);
         const step = ref([]) as any;
@@ -113,7 +115,7 @@ export default {
         const router = useRouter();
         const route = useRoute();
         const stepselect = ref([]);
-        const selectuser = ref<VxeTableInstance>();
+   
         const fromdata = ref({ name: "" }) as any;
         const validateModel = ref({});
         const users = ref([]) as any;
@@ -148,7 +150,7 @@ export default {
                     // users.value=[];
                     http.post("/api/organiz/GetOrganizeById", { id: "" }, "正在获取...").then(res => {
                         if (res.success) {
-                         
+
                             userdata.value = res.data;
                             sedvisible.value = true;
                             userslistadd(res.data);
@@ -195,8 +197,45 @@ export default {
 
             });
         }
+        const uCallback = (res: any) => {
+            if (res.success) {
+                console.log(res.item);
+               var title= res.item.map((e:any)=> {return e.title});
+                comment.value=title.join(",");
+            } else {
+                layer.notifiy({ title: "温馨提示", content: res.msg })
+            }
+
+        }
+        const showusers = () => {
+
+            var ks = h(selecteuser, { data: ["4"],orgid: utils.GuidEmpty(), callback: uCallback }) as any;
+            layer.open({
+                title: "人员择",
+                area: ["50%", "50"],
+                content: ks,
+                shade: true,
+                anim: 1,
+                shadeClose: false,
+                btn: [
+                    {
+                        text: "确认",
+                        callback: (resp: any) => {
+
+                            ks.component.exposed.confirm(resp, layer);
 
 
+                        },
+                    },
+                    {
+                        text: "取消",
+                        callback: (resp: any) => {
+                            layer.close(resp);
+                        },
+                    },
+                ]
+            })
+        }
         const userslistadd = (v: any) => {
             v.forEach((item: any) => {
                 userslist.value.push(item);
@@ -251,7 +290,7 @@ export default {
 
                     return;
                 }
-             
+
                 if (stepselect.value.length == 0) {
                     layer.notifiy({
                         title: "温馨提示",
@@ -324,7 +363,7 @@ export default {
                 )
                     .then((res: any) => {
                         if (res.success) {
-                      
+
                             currentdata.value = res.currentdata;
                             if (
                                 currentdata.value.signatureType == 1 ||
@@ -344,15 +383,15 @@ export default {
                                         }
                                     }
                                 });
-                            
+
                                 fromdata.value.field = obj;
-                            
+
                             }
 
 
-                 
+
                             rules.value = k.rules;
-                  
+
                             if (res.data.length > 0) {
                                 res.data.forEach((item: any) => {
                                     let o = new Object() as any;
@@ -428,35 +467,38 @@ export default {
         onMounted(() => {
             render();
         })
-        return {
-            validateModel,
-            layFormRef,
-            validate,
-            // clearValidate,
-            reset,
-            subform,
-            fromdata,
-            getcomment,
-            comment,
-            userdata,
-            sedvisible,
-            sendbtn,
-            submit,
-            userchecked,
-            selectuser,
-            nextstep,
-            query,
-            commentlist,
-            stepselect,
-            selectChangeEvent,
-            users,
-            signature,
-            userslist,
-            getmoment
+//         return {
+//             validateModel,
+//             layFormRef,
+//             validate,
+//             // clearValidate,
+//             reset,
+//             subform,
+//             fromdata,
+//             getcomment,
+//             comment,
+//             userdata,
+//             sedvisible,
+//             sendbtn,
+//             submit,
+//             userchecked,
+//             selectuser,
+//             nextstep,
+//             query,
+//             commentlist,
+//             stepselect,
+//             selectChangeEvent,
+//             users,
+//             signature,
+//             userslist,
+//             getmoment,
+//             uCallback,
+//             showusers
+        
 
-        }
-    }
-}
+//         }
+//     }
+// }
 </script>
 <style lang="less" scoped>
 .title {

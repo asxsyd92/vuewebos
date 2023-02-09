@@ -11,7 +11,10 @@ class Utils {
         return Math.floor(Math.random() * (max - min)) + min;
 
     }
+    GuidEmpty() {
 
+      return "00000000-0000-0000-0000-000000000000";
+  }
     //生成guid
     GenNonDuplicateID() {
 

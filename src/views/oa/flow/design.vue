@@ -257,7 +257,13 @@
       
             </lay-tab-item>
             <lay-tab-item title="按钮" id="4">
-              <div style="padding:20px">按钮</div>
+     
+                <lay-transfer v-model="btValue" :dataSource="btSource"  :showSearch="true" >
+                  <template #leftTitle> 未选按钮 </template>
+                  <template #rightTitle> 已选按钮 </template>
+                </lay-transfer>
+              
+             
             </lay-tab-item>
           </lay-tab>
 
@@ -400,6 +406,8 @@ const auxiliaryLine = { isShowXLine: false, isShowYLine: false };
 const auxiliaryLinePos = { width: '100%', height: '100%', offsetX: 0, offsetY: 0, x: 20, y: 20 };
 const commonGrid = [5, 5] as any;
 const user = useUserStore();
+const btSource = ref([]);
+const btValue = ref([]) as any;
 const initNodeTypeObj = () => {
   nodeTypeList.map((v: any) => {
     nodeTypeObj[v.type] = v
@@ -480,7 +488,8 @@ const methods = {
   init() {
     //加载表单
      this.addfom();
-     
+     //加载按钮
+     this.getbutton();
     //加载流程分类
     this.adddictionary();
     $jsPlumbs.getInstance().ready(() => {
@@ -632,10 +641,7 @@ const methods = {
         "selectRange": "",
         "valueField": ""
       },
-      "buttons": [{
-        "id": "",
-        "sort": 0
-      }],
+      "buttons": [],
       "countersignature": 0,
       "event": {
         "backAfter": "",
@@ -882,7 +888,15 @@ const methods = {
   setflow(d: any) {
     setflowmode.value = d.value;
      fieldSource.value= d.value.fieldStatus;
-    console.log(d.value);
+     if(setflowmode.value.buttons.length>0){
+      setflowmode.value.buttons.forEach((item:any)=>{
+      // btSource.value.find((item: any) => { return item.id == item.id });
+      // setflowmode.buttons.find(a=>a.id=item.id);
+
+      btValue.value.push(item.id);
+      });
+      //btValue.value.push();
+     }
     //res.data.forEach((tab: any) => {}
     setflowvisible.value = !setflowvisible.value
   },
@@ -985,6 +999,18 @@ const methods = {
       layer.msg("网络错误，请重试", { icon: 2 });
     })
 
+  },
+  //加载流程按钮
+  getbutton(){
+    http.post("/api/workflowtasks/getListButton", { }).then(res => {
+      if (res.success) {
+           btSource.value=res.data;
+      } else {
+        layer.msg(res.msg, { icon: 2 });
+      }
+    }).catch(res => {
+      layer.msg("网络错误，请重试", { icon: 2 });
+    })
   }
 }
 
@@ -1010,6 +1036,21 @@ const setflowbtn = [
       console.log(setflowmode.value.fieldStatus);
       setflowmode.value.fieldStatus=fieldSource.value;
       console.log(setflowmode.value);
+
+      if(btValue.value.length>0){
+        var s=new Array() as any;
+
+        btValue.value.forEach((item:any)=>{
+          var sa=btSource.value.find((c:any)=>c.id==item);
+          if(sa!=null){
+            s.push(sa);
+          }
+      });
+      setflowmode.value.buttons=s;
+      btValue.value=[];
+   
+      }
+   
       setflowvisible.value = false;
     },
   },
