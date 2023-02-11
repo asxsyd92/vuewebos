@@ -164,8 +164,8 @@ const Events = (ent: any, row: any) => {
           query.fromid = ent.formid;
           query.instanceid = "";
           query.zhuanti = route.query.zhuanti;
-          query.tabname = encodeURIComponent(row.title);
-          router.push({ path: ent.api, query: query, params: { tabname: ent.name } })
+          query.tabname = encodeURIComponent(ent.title);
+          router.push({ path: ent.api, query: query})
 
         } else {
           listurils.addEvent(popform, ent, { fromid: ent.formid, instanceid: "", callback: Callback }, {});

@@ -1,11 +1,18 @@
 
 <template>
-  <lay-col style="margin-bottom: 20px;" :md="data.data.col" :style="'display:' + data.data.display">
+  <lay-col style="margin-bottom: 20px;" ref="itemselect" :md="data.data.col" :style="'display:' + data.data.display">
     <lay-form-item :label="data.data.label" :prop="data.data.name" :required="required">
-        <lay-select @change="change" v-model="selected" :items="items" :create="true" @create="createEvent"
+      <div v-if="data.data.showtext == 'true'">
+        <div classs="showtext"  >
+          <span class="showtext">{{showtext}}</span>
+          </div>
+      </div>
+      <div v-else>  
+      <lay-select @change="change" v-model="selected" :items="items" :create="true" @create="createEvent"
           :multiple="multiple" :showSearch="showSearch">
         </lay-select>
       <lay-input style="display: none;"  v-model="value[data.data.name]" :placeholder="data.data.placeholder"></lay-input>
+      </div>
     </lay-form-item>
   </lay-col>
 
@@ -34,6 +41,7 @@ interface ItemcolorProps {
 const props = withDefaults(defineProps<ItemcolorProps>(), {
   data: Object, value: Object
 });
+const showtext=ref({}) as any;
 const items = ref([]) as any;
 const selected = ref([]) as any;
 const data = ref(props.data);
@@ -42,6 +50,7 @@ const route = useRoute();
 const required = ref(true);
 const showSearch = ref(false);
 const multiple = ref(false);
+const itemselect=ref(null);
 if (data.value.data.required == "true") {
   required.value = true;
 } else {
@@ -118,6 +127,19 @@ const createEvent = function () {
 
 
         }
+        
+          if(data.value.data.showtext == 'true'){
+            try{
+            let v=items.value.filter((ele:any) => ele.value == value.value[data.value.data.name].toString());
+     
+              showtext.value=v.length==0?"未知":v.map((c:any)=>c.name).join(",");
+
+           }catch(e){
+      
+           }
+          }
+  
+    
       }
     });
   }
@@ -136,7 +158,7 @@ const createEvent = function () {
           }
        
         }
-        //  showtext.value=radio.value.filter((ele:any) => ele.value == value.value[data.value.data.name]);
+     
       }
     }).catch(resp => {
 

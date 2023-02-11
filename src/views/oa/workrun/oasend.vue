@@ -107,14 +107,15 @@ const confirm = (tab: any, query: any, type: string, layid: any, layers: any) =>
 		if (!isValidate) {
 			return;
 		}
-      
+		var index= layer.msg("正在发送...",{icon: 16,shadeClose:false})
 		var opts = new Object() as any;
 		opts.type = type;
 		opts.steps = [];
 		opts.steps.push({ id: model.step, member: model.user.join(",") });
-		query.value.comment = model.comment;
+		query.value.comment = validateModel.comment;
+		
 		http.post("/api/workflowtasks/sendTask", { table: tab, data: JSON.stringify(props.data), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
-
+			layer.close(index);
 			if (resp.success) {
 				layer.notifiy({
 					title: "温馨提示",
@@ -133,6 +134,7 @@ const confirm = (tab: any, query: any, type: string, layid: any, layers: any) =>
 
 			}
 		}).catch(resp => {
+			layer.close(index);
 			layer.notifiy({
 				title: "温馨提示",
 				content: "网络错误"

@@ -60,8 +60,16 @@
     </div>
     <div v-if="data.data.type == 'textarea'" :style="'display:' + data.data.display">
       <lay-form-item :label="data.data.label" :prop="data.data.name" :required="required">
+        <div v-if="data.data.showtext == 'true'">
+          <div classs="showtext"  >
+            <span class="showtext">{{ value[data.data.name] }}</span>
+            </div>
+        </div>
+        <div v-else>  
         <lay-textarea v-model="value[data.data.name]" :placeholder="data.data.placeholder"></lay-textarea>
+      </div>
       </lay-form-item>
+    
     </div>
   
 </lay-col>

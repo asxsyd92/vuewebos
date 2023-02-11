@@ -1,19 +1,29 @@
 <template>
   <lay-col :md="data.data.col" style="margin-bottom: 20px;"  :style="'display:'+data.data.display">
+    <div v-if="data.data.showtext == 'true'">
+      <div classs="article-detail-content w-e-text showtext"  >
+        <div v-html="value[data.data.name]"></div>
+        </div>
+    </div>
+    <div v-else>
     <lay-form-item :placeholder="data.data.placeholder" 
-  :label="data.data.label" 
-    :prop="data.data.name">
-      <VueUeditorWrap v-model="value[data.data.name]" 
-      :config="config" 
-      editor-id="editor-demo-02"
-      editorid="editor-demo-02"
-      @ready="ready"
-      >
-  
-      </VueUeditorWrap>
-
-
+        :label="data.data.label" 
+      :prop="data.data.name">
+ 
+        <VueUeditorWrap v-model="value[data.data.name]" 
+        :config="config" 
+        editor-id="editor-demo-02"
+        editorid="editor-demo-02"
+        @ready="ready"
+        >
+    
+        </VueUeditorWrap>
+        
     </lay-form-item>
+      </div>
+  
+
+
   </lay-col>
 </template>
 

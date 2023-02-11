@@ -161,7 +161,7 @@ const soso = () => {
 
 const Events = (ent: any, row: any) => {
   try {
-
+debugger
     switch (ent.events) {
       case "searchEvent":
         if (config.pagerConfig) {
@@ -174,8 +174,8 @@ const Events = (ent: any, row: any) => {
         if (ent.ispopup == 0) {
           var query = new Object() as any;
           query.id = "";
-          query.tabname = encodeURIComponent(row.title);
-          router.push({ path: ent.api, query: query, params: { tabname: ent.name } })
+          query.tabname = encodeURIComponent(ent.title);
+          router.push({ path: ent.api, query: query})
 
         } else {
           listurils.addEvent(popform, ent, { fromid: ent.formid, instanceid: "", callback: Callback }, {});
