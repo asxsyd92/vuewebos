@@ -1,189 +1,150 @@
 <template>
-	<form>
-	<lay-form-item  label="接收人" prop="oasendusers"  :required="true">
-	    <lay-tree-select v-model="value2" placeholder="123" :data="data2" multiple></lay-tree-select>
-	</lay-form-item>
-	<lay-form-item  label="步骤" prop="oasetep"  :required="true">
-	    <lay-tree-select v-model="value2" placeholder="123" :data="data2" multiple></lay-tree-select>
-	</lay-form-item>
-	<lay-form-item  label="处理意见" prop="oasetep"  :required="true">
-	    <lay-tree-select v-model="value2" placeholder="请输入处理意见" :data="data2" multiple></lay-tree-select>
-	</lay-form-item>
-</form>
+	<lay-form ref="sendFormRef" :model="validateModel" :required="true">
+		<lay-col :md="24">
+			<lay-form-item label="接收人" prop="user">
+				<lay-tree-select v-model="validateModel.user" :allow-clear="true" placeholder="请选择处理人" :data="userdata"
+					multiple></lay-tree-select>
+			</lay-form-item>
+		</lay-col>
+		<lay-col :md="24">
+
+			<lay-form-item label="步骤" prop="step">
+				<div v-for="(item, index) in nextstep" :key="index">
+					<lay-radio v-model="validateModel.step" :value="item.id">{{ item.name }}</lay-radio>
+				</div>
+			</lay-form-item>
+		</lay-col>
+		<lay-col :md="24">
+			<lay-form-item label="处理意见" prop="comment">
+				<!-- <lay-input placeholder="请输入处理意见" ></lay-input> -->
+				
+		<VueUeditorWrap
+        editor-id="comment"
+		v-model="validateModel.comment"
+		ref="comment"
+         name="comment"
+         :destroy="true" 
+          :config="config" 
+		  style="width: 99%;"
+         >
+        </VueUeditorWrap>
+			</lay-form-item>
+		</lay-col>
+	</lay-form>
 </template>
 <script lang="ts">
+
 export default {
-    name: "oasend"
+	name: "oasend",
+
 }
 </script>
 <script lang="ts" setup>
-import { ref } from 'vue';
-import http from '../../../api/http';
-interface IOasendProps {
-    nextstep:Array<any>,users:Array<any>,data:any, callback:Function
-}
- const props = withDefaults(defineProps<IOasendProps>(), {
-    nextstep:Array, users:Array,callback:Function
-});
-const value2 = ref([23]);
 
-const data2 = ref([{
-	title: '一级1',
-	id: 1,
-	field: 'name1',
-	checked: true,
-	spread: true,
-	children: [{
-		title: '二级1-1 可允许跳转',
-		id: 3,
-		field: 'name11',
-		href: 'https://www.layui.com/',
-		children: [{
-			title: '三级1-1-3',
-			id: 23,
-			field: '',
-			children: [{
-				title: '四级1-1-3-1',
-				id: 24,
-				field: '',
-				children: [{
-					title: '五级1-1-3-1-1',
-					id: 30,
-					field: ''
-				},
-				{
-					title: '五级1-1-3-1-2',
-					id: 31,
-					field: ''
-				}]
-			}]
-		},
-		{
-			title: '三级1-1-1',
-			id: 7,
-			field: '',
-			children: [{
-				title: '四级1-1-1-1 可允许跳转',
-				id: 15,
-				field: '',
-				href: 'https://www.layui.com/doc/'
-			}]
-		},
-		{
-			title: '三级1-1-2',
-			id: 8,
-			field: '',
-			children: [{
-				title: '四级1-1-2-1',
-				id: 32,
-				field: ''
-			}]
-		}]
-	},
-	{
-		title: '二级1-2',
-		id: 4,
-		spread: true,
-		children: [{
-			title: '三级1-2-1',
-			id: 9,
-			field: '',
-			disabled: true
-		},
-		{
-			title: '三级1-2-2',
-			id: 10,
-			field: ''
-		}]
-	},
-	{
-		title: '二级1-3',
-		id: 20,
-		field: '',
-		children: [{
-			title: '三级1-3-1',
-			id: 21,
-			field: ''
-		},
-		{
-			title: '三级1-3-2',
-			id: 22,
-			field: ''
-		}]
-	}]
-},
-{
-	title: '一级2',
-	id: 2,
-	field: '',
-	spread: true,
-	children: [{
-		title: '二级2-1',
-		id: 5,
-		field: '',
-		spread: true,
-		children: [{
-			title: '三级2-1-1',
-			id: 11,
-			field: ''
-		},
-		{
-			title: '三级2-1-2',
-			id: 12,
-			field: ''
-		}]
-	},
-	{
-		title: '二级2-2',
-		id: 6,
-		field: '',
-		children: [{
-			title: '三级2-2-1',
-			id: 13,
-			field: ''
-		},
-		{
-			title: '三级2-2-2',
-			id: 14,
-			field: '',
-			disabled: true
-		}]
-	}]
-},
-{
-	title: '一级3',
-	id: 16,
-	field: '',
-	children: [{
-		title: '二级3-1',
-		id: 17,
-		field: '',
-		fixed: true,
-		children: [{
-			title: '三级3-1-1',
-			id: 18,
-			field: ''
-		},
-		{
-			title: '三级3-1-2',
-			id: 19,
-			field: ''
-		}]
-	},
-	{
-		title: '二级3-2',
-		id: 27,
-		field: '',
-		children: [{
-			title: '三级3-2-1',
-			id: 28,
-			field: ''
-		},
-		{
-			title: '三级3-2-2',
-			id: 29,
-			field: ''
-		}]
-	}]
-}]);
+import { ref, reactive,h } from 'vue';
+import http from '../../../api/http';
+import { layer } from '@layui/layer-vue';
+import { useUserStore } from '../../../store/user';
+
+import VueUeditorWrap from 'vue-ueditor-wrap/lib/vue-ueditor-wrap/index';
+interface IOasendProps {
+	nextstep: Array<any>, users: Array<any>, data: any, callback: Function
+}
+const props = withDefaults(defineProps<IOasendProps>(), {
+	nextstep: Array, users: Array, callback: Function
+});
+const userdata = ref([]);
+const userkes = ref([]);
+const comment = ref("");
+const stepkey = ref([]);
+const sendFormRef = ref(null) as any;
+const nextstep = ref([]) as any;
+   
+const user = useUserStore();
+const validateModel = reactive({
+	user: [],
+	step: [],
+	comment: ""
+
+})
+nextstep.value = props.nextstep;
+
+const config = ref(
+        {
+        // 编辑器不自动被内容撑高
+        autoHeightEnabled: false,
+        // 初始容器高度
+        initialFrameHeight: '500px',
+    
+        // 初始容器宽度
+        initialFrameWidth: '100%',
+        // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
+        serverUrl: '/api/ueditor/upload?asxsyd92user='+user.userInfo.userid,
+        // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
+        UEDITOR_HOME_URL: '/ueditor/',
+        toolbars: [[ 'insertimage', 'attachment' ]],
+        // 配合最新编译的资源文件，你可以实现添加自定义Request Headers,详情https://github.com/HaoChuan9421/ueditor/commits/dev-1.4.3.3
+        headers: {
+         'Authorization':"bearer " +  user.token,
+        }
+      }
+    );
+const getOrg = () => {
+	http.post("/api/organiz/getOrgandUserlist", { id: "" }, "正在获取...").then(res => {
+		if (res.success) {
+
+			userdata.value = res.data;
+
+			// userslistadd(res.data);
+		}
+
+	}).catch(res => {
+
+	});
+}
+const confirm = (tab: any, query: any, type: string, layid: any, layers: any) => {
+	sendFormRef.value!.validate((isValidate: any, model: any, errors: any) => {
+		if (!isValidate) {
+			return;
+		}
+      
+		var opts = new Object() as any;
+		opts.type = type;
+		opts.steps = [];
+		opts.steps.push({ id: model.step, member: model.user.join(",") });
+		query.value.comment = model.comment;
+		http.post("/api/workflowtasks/sendTask", { table: tab, data: JSON.stringify(props.data), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
+
+			if (resp.success) {
+				layer.notifiy({
+					title: "温馨提示",
+					content: resp.msg
+				});
+				var obj = new Object() as any;
+				obj.success = true;
+
+				props.callback(obj, "callback");
+				layers.close(layid);
+			} else {
+				layer.notifiy({
+					title: "温馨提示",
+					content: resp.msg
+				});
+
+			}
+		}).catch(resp => {
+			layer.notifiy({
+				title: "温馨提示",
+				content: "网络错误"
+			});
+
+		});
+
+	})
+
+}
+getOrg();
+defineExpose({
+	confirm
+})
 </script>

@@ -3,14 +3,14 @@
     <lay-form-item :placeholder="data.data.placeholder" 
   :label="data.data.label" 
     :prop="data.data.name">
-      <vue-ueditor-wrap v-model="value[data.data.name]" 
+      <VueUeditorWrap v-model="value[data.data.name]" 
       :config="config" 
       editor-id="editor-demo-02"
       editorid="editor-demo-02"
       @ready="ready"
       >
   
-      </vue-ueditor-wrap>
+      </VueUeditorWrap>
 
 
     </lay-form-item>
@@ -26,6 +26,7 @@ export default {
 <script lang="ts" setup>
     import { ref,reactive ,onMounted  } from "vue";
     import { useUserStore } from "../../../store/user";
+    import VueUeditorWrap from 'vue-ueditor-wrap/lib/vue-ueditor-wrap/index';
 interface ItemradioProps {
   data: any;
   value:any;

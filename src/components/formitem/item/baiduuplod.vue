@@ -2,15 +2,15 @@
     <lay-col :md="data.data.col" style="margin-bottom: 20px;">
             <!-- 隐藏编辑器 -->
         <!--  -->
-        <vue-ueditor-wrap 
+        <VueUeditorWrap
         :editor-id="data.data.name+'ueditor'"
          :ref="data.data.name+'ueditor'"
          :name="data.data.name+'ueditor'"
-         :destroy="false" 
+         :destroy="true" 
           :config="config" 
           style="display: none;" 
          >
-        </vue-ueditor-wrap>
+        </VueUeditorWrap>
         <input v-model="value[data.data.name]" style="display: none;" />
         <lay-form-item :placeholder="data.data.placeholder" 
         class="layui-form-item" :label="data.data.label" 
@@ -54,6 +54,7 @@
   <script lang="ts" setup>
     import { ref, reactive, onMounted } from "vue";
     import { useUserStore } from "../../../store/user";
+    import VueUeditorWrap from 'vue-ueditor-wrap/lib/vue-ueditor-wrap/index';
     interface ItemradioProps {
       data: any;
       value: any;

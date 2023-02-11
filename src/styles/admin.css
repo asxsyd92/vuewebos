@@ -105,3 +105,6 @@
 .layui-layout {
   height: 100%;
 }
+.layui-timeline-content  img,image{
+  width: 90% !important;
+}
