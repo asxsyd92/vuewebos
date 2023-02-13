@@ -83,7 +83,8 @@
     const config = ref(
         {
         // 编辑器不自动被内容撑高
-        autoHeightEnabled: false,
+        autoHeightEnabled: false, 
+        elementPathEnabled:false,
         // 初始容器高度
         initialFrameHeight: '500px',
     

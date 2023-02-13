@@ -75,7 +75,7 @@ import flowutils from '../../../utils/flowutils';
 import utils from '../../../utils/utils'
 import moment from 'moment'
 import oasend from './oasend.vue';
-
+import oaback from './oaback.vue';
 const query = ref(new Object()) as any;
 const isflow = ref(false);
 const step = ref([]) as any;
@@ -136,7 +136,7 @@ const flowsend = (type: string, snedtitle: string) => {
             case "completed": CompleteTask(type, model); break;
             case "submit": Submit(snedtitle, type, model); break;
             case "save": Save(type, model); break;
-            case "back": Back(model); break;
+            case "back": Back(snedtitle, type, model); break;
         }
 
 
@@ -208,7 +208,7 @@ const Submit = (snedtitle: string, type: string, model: any) => {
         CompleteTask("completed", model);
     }
 }
-const Back = (data: any) => {
+const Back = (snedtitle: string, type: string, model: any) => {
     //获取可退后得步骤
     if (query.value.stepid == null) {
         layer.notifiy({
@@ -217,59 +217,83 @@ const Back = (data: any) => {
             icon: 2
         });
     } else {
-        http.post("/api/workflowtasks/getBackStepList", { query: JSON.stringify(query.value), type: currentdata.value.behavior.backModel }, "请稍等").then((res: any) => {
-            if (res.success) {
-                layer.notifiy({
-                    title: "Success",
-                    content: res.msg,
-                    icon: 1
-                });
+        var sen = h(oaback, { query:query, type: currentdata.value.behavior.backModel,data: model, callback: uCallback }) as any;
+        layer.open({
+            title: snedtitle,
+            area: ["60%", "60%"],
+            content: sen,
+            shade: true,
+            anim: 4,
+            shadeClose: false,
+            btn: [
+                {
+                    text: "确认",
+                    callback: (resp: any) => {
 
-                var opts = new Object() as any;
-                opts.type = "back";
-                opts.steps = [];
-                opts.steps.push({ id: res.data.map((c: any) => c.id).join(","), member: "" });
-                debugger
-                query.value.comment = comment.value;
-                http.post("/api/workflowtasks/sendTask", { table: fromdata.value.form.table, data: JSON.stringify(data), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
+                        sen.component.exposed.confirm(fromdata.value.form.table, query, type, resp, layer);
+                    },
+                },
+                {
+                    text: "取消",
+                    callback: (resp: any) => {
+                        layer.close(resp);
+                    },
+                },
+            ]
+        })
+        // http.post("/api/workflowtasks/getBackStepList", { query: JSON.stringify(query.value), type: currentdata.value.behavior.backModel }, "请稍等").then((res: any) => {
+        //     if (res.success) {
+        //         layer.notifiy({
+        //             title: "Success",
+        //             content: res.msg,
+        //             icon: 1
+        //         });
 
-                    if (resp.success) {
-                        layer.notifiy({
-                            title: "温馨提示",
-                            content: resp.msg
-                        });
-                        HelpTabs.close(appStore, route.fullPath, router);
-                    } else {
-                        layer.notifiy({
-                            title: "温馨提示",
-                            content: resp.msg
-                        });
+        //         var opts = new Object() as any;
+        //         opts.type = "back";
+        //         opts.steps = [];
+        //         opts.steps.push({ id: res.data.map((c: any) => c.id).join(","), member: "" });
+        //         debugger
+        //         query.value.comment = comment.value;
+        //         http.post("/api/workflowtasks/sendTask", { table: fromdata.value.form.table, data: JSON.stringify(data), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
 
-                    }
-                }).catch(resp => {
-                    layer.notifiy({
-                        title: "温馨提示",
-                        content: "网络错误"
-                    });
+        //             if (resp.success) {
+        //                 layer.notifiy({
+        //                     title: "温馨提示",
+        //                     content: resp.msg
+        //                 });
+        //                 HelpTabs.close(appStore, route.fullPath, router);
+        //             } else {
+        //                 layer.notifiy({
+        //                     title: "温馨提示",
+        //                     content: resp.msg
+        //                 });
 
-                });
+        //             }
+        //         }).catch(resp => {
+        //             layer.notifiy({
+        //                 title: "温馨提示",
+        //                 content: "网络错误"
+        //             });
+
+        //         });
 
 
-            } else {
-                layer.notifiy({
-                    title: "Error",
-                    content: res.msg,
-                    icon: 2
-                });
-            }
-        }).catch((resp: any) => {
-            layer.notifiy({
-                title: "Error",
-                content: "网络错误！",
-                icon: 2
-            });
+        //     } else {
+        //         layer.notifiy({
+        //             title: "Error",
+        //             content: res.msg,
+        //             icon: 2
+        //         });
+        //     }
+        // }).catch((resp: any) => {
+        //     layer.notifiy({
+        //         title: "Error",
+        //         content: "网络错误！",
+        //         icon: 2
+        //     });
 
-        });
+        // });
     }
 }
 const Save = (type: any, model: any) => {

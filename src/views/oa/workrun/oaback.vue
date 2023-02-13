@@ -1,11 +1,6 @@
 <template>
 	<lay-form ref="sendFormRef" :model="validateModel" :required="true">
-		<lay-col :md="24">
-			<lay-form-item label="接收人" prop="user">
-				<lay-tree-select v-model="validateModel.user" :allow-clear="true" placeholder="请选择处理人" :data="userdata"
-					multiple></lay-tree-select>
-			</lay-form-item>
-		</lay-col>
+
 		<lay-col :md="24">
 
 			<lay-form-item label="步骤" prop="step">
@@ -21,6 +16,8 @@
 		<VueUeditorWrap
         editor-id="comment"
 		v-model="validateModel.comment"
+		ref="comment"
+         name="comment"
          :destroy="true" 
           :config="config" 
 		  style="width: 99%;"
@@ -33,7 +30,7 @@
 <script lang="ts">
 
 export default {
-	name: "oasend",
+	name: "oaback",
 
 }
 </script>
@@ -45,11 +42,11 @@ import { layer } from '@layui/layer-vue';
 import { useUserStore } from '../../../store/user';
 
 import VueUeditorWrap from 'vue-ueditor-wrap/lib/vue-ueditor-wrap/index';
-interface IOasendProps {
-	nextstep: Array<any>, users: Array<any>, data: any, callback: Function
+interface IoabackProps {
+	query:any,type:number, data: any, callback: Function
 }
-const props = withDefaults(defineProps<IOasendProps>(), {
-	nextstep: Array, users: Array,  data: Object,callback: Function
+const props = withDefaults(defineProps<IoabackProps>(), {
+	query:Object,type:Object, data: Object,  callback: Function
 });
 const userdata = ref([]);
 const userkes = ref([]);
@@ -61,11 +58,11 @@ const nextstep = ref([]) as any;
 const user = useUserStore();
 const validateModel = reactive({
 	user: [],
-	step: [],
+	step: [] as any,
 	comment: ""
 
 })
-nextstep.value = props.nextstep;
+
 
 const config = ref(
         {
@@ -88,13 +85,16 @@ const config = ref(
         }
       }
     );
-const getOrg = () => {
-	http.post("/api/organiz/getOrgandUserlist", { id: "" }, "正在获取...").then(res => {
+	//获取可退回的步骤
+const getStep = () => {
+	http.post("/api/workflowtasks/getBackStepList", {  query: JSON.stringify(props.query.value), type: props.type  }, "正在获取...").then(res => {
 		if (res.success) {
-
-			userdata.value = res.data;
-
-			// userslistadd(res.data);
+debugger
+			nextstep.value = res.data;
+			if(res.data.length>0){
+				validateModel.step=res.data[0].id;
+				console.log(validateModel.step)
+			}
 		}
 
 	}).catch(res => {
@@ -106,11 +106,11 @@ const confirm = (tab: any, query: any, type: string, layid: any, layers: any) =>
 		if (!isValidate) {
 			return;
 		}
-		var index= layer.msg("正在发送...",{icon: 16,shadeClose:false})
+		var index= layer.msg("正在退回...",{icon: 16,shadeClose:false})
 		var opts = new Object() as any;
 		opts.type = type;
 		opts.steps = [];
-		opts.steps.push({ id: model.step, member: model.user.join(",") });
+		opts.steps.push({ id: model.step, member: "" });
 		query.value.comment = validateModel.comment;
 		
 		http.post("/api/workflowtasks/sendTask", { table: tab, data: JSON.stringify(props.data), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
@@ -144,7 +144,7 @@ const confirm = (tab: any, query: any, type: string, layid: any, layers: any) =>
 	})
 
 }
-getOrg();
+getStep();
 defineExpose({
 	confirm
 })
