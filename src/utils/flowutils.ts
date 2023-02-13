@@ -4,66 +4,58 @@ import utils from '../utils/utils';
 import http from '../api/http';
 import { h } from "vue";
 class FlowUtils {
-    fieldSource=[] as any;
-    btValue=[] as any;
-    btSource=[] as any;
-    resetfield=(v:any,flowjson:any,fieldSource:any)=>{
-  
-            if (flowjson.value.databases.table == null || flowjson.value.databases.table == "" || flowjson.value.databases.table == undefined) {
-              layer.notifiy({
-                title: "温馨提示",
-                content: "请先在流程基础信息中配置表"
-              });
-              return;
-            }
-            http.post("/api/workflow/GetFields", { table: flowjson.value.databases.table }, "请稍等...").then(res => {
-              if (res.success) {
-                var fields = [];
-                //重置表字段
-                fieldSource.value=[] ;
-                console.log(res);
-                for (var i = 0; i < res.data.length; i++) {
-                  var o = new Object() as any;
-                  o.check = "0";
-                  o.status = "0";
-                  o.field = res.data[i].f_name.toLowerCase();
-                  fields.push(o);
-                  o.value=res.data[i].value;
-                  fieldSource.value.push(o);
-                }
-                v.fieldStatus= fields;
-                layer.notifiy({
-                  title: "温馨提示",
-                  content: res.msg
-                });
-              } else {
-                layer.notifiy({
-                  title: "温馨提示",
-                  content: res.msg
-                })
-              }
-        
-            });
-          
-    }
-    setflow(d: any,setflowmode:any) {
-        setflowmode.value = d.value;
-        this. fieldSource= d.value.fieldStatus;
-         if(setflowmode.value.buttons.length>0){
-          setflowmode.value.buttons.forEach((item:any)=>{
-    
-        this. btValue.push(item.id);
-          });
-         }
 
+  resetfield=(v:any,flowjson:any,fieldSource:any)=>{
+  
+    if (flowjson.value.databases.table == null || flowjson.value.databases.table == "" || flowjson.value.databases.table == undefined) {
+      layer.notifiy({
+        title: "温馨提示",
+        content: "请先在流程基础信息中配置表"
+      });
+      return;
+    }
+    http.post("/api/workflow/GetFields", { table: flowjson.value.databases.table }, "请稍等...").then(res => {
+      if (res.success) {
+        var fields = [];
+        //重置表字段
+        fieldSource.value=[] ;
+        console.log(res);
+        for (var i = 0; i < res.data.length; i++) {
+          var o = new Object() as any;
+          o.check = "0";
+          o.status = "0";
+          o.field = res.data[i].f_name.toLowerCase();
+          fields.push(o);
+          o.value=res.data[i].value;
+          fieldSource.value.push(o);
+        }
+        v.fieldStatus= fields;
+        layer.notifiy({
+          title: "温馨提示",
+          content: res.msg
+        });
+      } else {
+        layer.notifiy({
+          title: "温馨提示",
+          content: res.msg
+        })
       }
+
+    });
+  
+}
+    // setsetp(d: any,setflowmode:any,fieldSource:any,btValue:any) {
+    
+    //      }
+
+    //   }
 /**
  * 加载流程按钮
  */
-      getbutton=()=>{
+      getbutton=(btSource:any)=>{
         http.post("/api/workflowtasks/getListButton", { }).then(res => {
           if (res.success) {
-              this.btSource=res.data;
+              btSource.value=res.data;
           } else {
             layer.msg(res.msg, { icon: 2 });
           }

@@ -30,22 +30,18 @@
             :style="{ height: auxiliaryLinePos.height, left: auxiliaryLinePos.x + 'px', top: auxiliaryLinePos.offsetY + 'px' }">
           </div>
           <flowNode v-for="item in data.steps" :id="item.id" :key="item.id" :nodedata="item" @setname="methods.setname"
-            @deleteNode="methods.deleteNode" @changeLineState="methods.changeLineState" @setflow="methods.setflow">
+            @deleteNode="methods.deleteNode" @changeLineState="methods.changeLineState" @setflow="methods.setStep">
           </flowNode>
         </div>
       </div>
 
 
-      <!-- 双击时打开步骤属性 -->
-      <lay-layer move="true" :btn="setflowbtn" :closeBtn="false" :area="['70%', '80%']" :shadeClose="false"
-        @submit="submit" title="步骤设置" v-model="setflowvisible">
-   
-      </lay-layer>
+
       <!-- 流程属性 -->
-      <lay-layer move="true" :btn="flowbtn" :closeBtn="false" :area="['70%', '85%']" :shadeClose="false"
+      <!-- <lay-layer move="true" :btn="flowbtn" :closeBtn="false" :area="['70%', '85%']" :shadeClose="false"
         @submit="flowsubmit" title="流程属性" v-model="flowvisible">
  
-      </lay-layer>
+      </lay-layer> -->
 
     </div>
   </div>
@@ -156,10 +152,8 @@ const initflow = () => {
 
 const methods = {
   init() {
-    //加载表单
-    flowutils.addfom(forms);
-     //加载按钮
-     flowutils.getbutton();
+
+
     //加载流程分类
     flowutils.adddictionary(flowtype);
     $jsPlumbs.getInstance().ready(() => {
@@ -560,7 +554,7 @@ const methods = {
   flow() {
     debugger
     //	flowjson:Object,setflowmode:any,type:number, forms: any, callback: Function
-    var sen = h(flowset, { flowjson:flowjson,forms:forms, callback:methods. uCallback }) as any;
+    var sen = h(flowset, { flowjson:flowjson,forms:forms }) as any;
         layer.open({
             title: "流程设置",
             area: ["60%", "80%"],
@@ -585,8 +579,33 @@ const methods = {
             ]
         })
   },
-   uCallback(res: any)  {
-    flowjson.value=res;
+setStep(nodes:any){
+
+    //	flowjson:Object,setflowmode:any,type:number, forms: any, callback: Function
+    var sen = h(stepset, { nodes:nodes,flowjson:flowjson}) as any;
+        layer.open({
+            title:nodes.value.name +"设置",
+            area: ["80%", "90%"],
+            content: sen,
+            shade: true,
+            anim: 3,
+            shadeClose: false,
+            btn: [
+                {
+                    text: "确认",
+                    callback: (resp: any) => {
+
+                        sen.component.exposed.confirm(resp,layer);
+                    },
+                },
+                {
+                    text: "取消",
+                    callback: (resp: any) => {
+                        layer.close(resp);
+                    },
+                },
+            ]
+        })
 
 },
   save(op: String) {
@@ -619,53 +638,45 @@ const methods = {
 const forms = ref([]) as any;
 const flowtype = ref([]) as any;
 
-const setflowmode = ref(null) as any;
-const setflowvisible = ref(false);
+
 
 const tabcurrent = ref("1");
 const flowcurrent = ref("1");
-const setflowbtn = [
+// const setflowbtn = [
 
-  {
-    text: "确定",
-    callback: () => {
-      console.log(setflowmode.value.fieldStatus);
-      setflowmode.value.fieldStatus=fieldSource.value;
-      console.log(setflowmode.value);
+//   {
+//     text: "确定",
+//     callback: () => {
+//       console.log(setflowmode.value.fieldStatus);
+//       setflowmode.value.fieldStatus=fieldSource.value;
+//       console.log(setflowmode.value);
 
-      if(btValue.value.length>0){
-        var s=new Array() as any;
+//       if(btValue.value.length>0){
+//         var s=new Array() as any;
 
-        btValue.value.forEach((item:any)=>{
-          var sa=btSource.value.find((c:any)=>c.id==item);
-          if(sa!=null){
-            s.push(sa);
-          }
-      });
-      setflowmode.value.buttons=s;
-      btValue.value=[];
+//         btValue.value.forEach((item:any)=>{
+//           var sa=btSource.value.find((c:any)=>c.id==item);
+//           if(sa!=null){
+//             s.push(sa);
+//           }
+//       });
+//       setflowmode.value.buttons=s;
+//       btValue.value=[];
    
-      }
+//       }
    
-      setflowvisible.value = false;
-    },
-  },
-];
+//       setflowvisible.value = false;
+//     },
+//   },
+// ];
 //步骤属性
 const flowmode = ref(null) as any;
-const flowvisible = ref(false);
+
 const flowsubmit = () => {
 
 }
 
-const flowbtn = [
-  {
-    text: "确定",
-    callback: () => {
-      flowvisible.value = false;
-    },
-  },
-];
+
 initflow();
 </script>
 
