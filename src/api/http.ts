@@ -22,7 +22,7 @@ class Http {
         /* 请求拦截 */
         this.service.interceptors.request.use((config: AxiosRequestConfig) => {
             const userInfoStore = useUserStore();
-            debugger
+      
             if (userInfoStore.token) {
                 (config.headers as AxiosRequestHeaders).Authorization ="bearer " + userInfoStore.token as string
             } else {

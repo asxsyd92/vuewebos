@@ -21,7 +21,13 @@
 
   </div>
 </template>
+<script lang="ts">
 
+export default {
+	name: "flowNode"
+
+}
+</script>
 <script lang="ts" setup>
 import { layer } from '@layui/layer-vue'
 import { ref, onMounted } from "vue";

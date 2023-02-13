@@ -130,6 +130,39 @@ class Utils {
         })
       
       }
+      /**
+       * 获取组织和人员
+       * @param id 组织id
+       * @param userdata 数据
+       */
+       getOrg = (id:string) => {
+        return new Promise((resolve, reject) => {
+        http.post("/api/organiz/getOrgandUserlist", { id: id}, "正在获取...").then(res => {
+          if (res.success) {
+      
+            resolve(res.data)
+     
+          }
+      
+        }).catch(res => {
+          reject(res);
+        }); });
+      }
+      GetDictionaryByCode(code:string){
+        return new Promise((resolve, reject) => {
+        http.post("/api/form/GetDictionaryByCode", { id: code}, "正在获取...").then(res => {
+          if (res.success) {
+      
+  
+            resolve(res.data);
+     
+          }
+      
+        }).catch(res => {
+          reject(res);
+        }); })
+     
+      }
   //加载按钮
   finbuuton(path:string,depOptions:any) {
     depOptions.loading = false;

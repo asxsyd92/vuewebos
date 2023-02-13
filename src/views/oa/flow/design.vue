@@ -39,341 +39,12 @@
       <!-- 双击时打开步骤属性 -->
       <lay-layer move="true" :btn="setflowbtn" :closeBtn="false" :area="['70%', '80%']" :shadeClose="false"
         @submit="submit" title="步骤设置" v-model="setflowvisible">
-        <div class="layui-container laymodle">
-          <lay-tab type="brief" v-model="tabcurrent">
-            <lay-tab-item title="基本信息" id="1">
-              <lay-form :model="setflowmode" class="layui-form layui-form-pane">
-                <div class="layui-col-md12">
-                  <lay-form-item label="步骤id：" prop="id">
-                    <lay-input v-model="setflowmode.id" disabled="disabled"></lay-input>
-                  </lay-form-item>
-                </div>
-                <div class="layui-col-md12">
-                  <lay-form-item label="步骤名称：" prop="name">
-                    <lay-input v-model="setflowmode.name"></lay-input>
-                  </lay-form-item>
-                </div>
-
-                <div class="layui-col-md12">
-                  <lay-form-item label="工时" prop="workTime">
-                    <lay-input v-model="setflowmode.worktime"></lay-input>
-                  </lay-form-item>
-                </div>
-
-                <div class="layui-col-md12">
-                  <lay-form-item label="意见显示：" prop="opinionDisplay">
-                    <lay-radio v-model="setflowmode.opinionDisplay" name="opinionDisplay" value="0" label="是">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.opinionDisplay" name="opinionDisplay" value="1" label="否">
-                    </lay-radio>
-                  </lay-form-item>
-                </div>
-
-                <div class="layui-col-md12">
-                  <lay-form-item label="是否归档：" prop="countersignature">
-                    <lay-radio v-model="setflowmode.archives" name="archives" value="0" label="是"></lay-radio>
-                    <lay-radio v-model="setflowmode.archives" name="archives" value="1" label="否"></lay-radio>
-                  </lay-form-item>
-                </div>
-
-
-                <div class="layui-col-md12">
-                  <lay-form-item label="表单">
-                    <lay-select v-model="setflowmode.forms.id" :items="forms"></lay-select>
-                  </lay-form-item>
-                </div>
-
-                <div class="layui-col-md24">
-                  <lay-form-item label="审签类型：" prop="signatureType">
-                    <lay-radio v-model="setflowmode.signatureType" name="signatureType" value="0" label="无签批意见栏">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.signatureType" name="signatureType" value="1"
-                      label="有签批意见-无须签章">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.signatureType" name="signatureType" value="2"
-                      label="有签批意见-须签章">
-                    </lay-radio>
-                  </lay-form-item>
-                </div>
-              </lay-form>
-            </lay-tab-item>
-            <lay-tab-item title="策略" id="2">
-              <!-- 策略               -->
-              <lay-form :model="setflowmode" class="layui-form layui-form-pane">
-                <div class="layui-col-md14">
-                  <lay-form-item label="流转类型:" prop="flowType">
-                    <lay-radio v-model="setflowmode.behavior.flowType" name="flowType" value="0" label="单一分支流转">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.behavior.flowType" name="flowType" value="1" label="系统控制">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.behavior.flowType" name="flowType" value="2" label="多个分支流转">
-                    </lay-radio>
-
-                  </lay-form-item>
-                </div>
-                <div class="layui-col-md8">
-
-                  <lay-form-item label="运行时选择:" prop="runSelect">
-                    <lay-radio v-model="setflowmode.behavior.runSelect" name="runSelect" value="1" label="允许">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.behavior.runSelect" name="runSelect" value="0" label="不允许">
-                    </lay-radio>
-                  </lay-form-item>
-                </div>
-
-                <div class="layui-col-md8">
-                  <lay-form-item label="处理者类型:" prop="handlerType">
-                    <lay-select v-model="setflowmode.behavior.handlerType">
-                      <lay-select-option value="0" label="所有成员"></lay-select-option>
-                      <lay-select-option value="1" label="部门"></lay-select-option>
-                      <lay-select-option value="2" label="岗位"></lay-select-option>
-                      <lay-select-option value="3" label="工作组"></lay-select-option>
-                      <lay-select-option value="4" label="人员"></lay-select-option>
-                      <lay-select-option value="5" label="发起者"></lay-select-option>
-                      <lay-select-option value="6" label="前一步骤处理者"></lay-select-option>
-                      <lay-select-option value="7" label="某一步骤处理者"></lay-select-option>
-                      <lay-select-option value="8" label="字段值"></lay-select-option>
-                      <lay-select-option value="9" label="发起者领导"></lay-select-option>
-                      <lay-select-option value="10" label="发起者分管领导"> </lay-select-option>
-                      <lay-select-option value="11" label="前一步处理者领导"></lay-select-option>
-                      <lay-select-option value="12" label="前一步处理者分管领导"></lay-select-option>
-                    </lay-select>
-
-                  </lay-form-item>
-                </div>
-                <div class="layui-col-md8">
-
-                  <lay-form-item label="选择范围:" prop="selectRange">
-                    <lay-input v-model="setflowmode.behavior.selectRange"></lay-input>
-                  </lay-form-item>
-                </div>
-                <div class="layui-col-md8">
-
-                  <lay-form-item label="处理者步骤:" prop="handlerStep">
-                    <lay-input v-model="setflowmode.behavior.handlerStep"></lay-input>
-                  </lay-form-item>
-                </div>
-                <div class="layui-col-md8">
-
-                  <lay-form-item label="值字段:" prop="valueField">
-                    <lay-input v-model="setflowmode.behavior.valueField"></lay-input>
-                  </lay-form-item>
-                </div>
-                <div class="layui-col-md8">
-
-                  <lay-form-item label="默认处理者:" prop="defaultHandler">
-                    <lay-input v-model="setflowmode.behavior.defaultHandler"></lay-input>
-                  </lay-form-item>
-                </div>
-                <div class="layui-col-md24">
-                  <lay-form-item label="退回策略:" prop="backModel">
-                    <lay-radio v-model="setflowmode.behavior.backModel" name="backModel" value="0" label="不能退回">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.behavior.backModel" name="backModel" value="1" label="根据处理策略退回">
-                    </lay-radio>
-                  </lay-form-item>
-                </div>
-                <div class="layui-col-md24">
-                  <lay-form-item label="处理策略:" prop="hanlderModel">
-                    <lay-radio v-model="setflowmode.behavior.hanlderModel" name="hanlderModel" value="0"
-                      label="所有人必须同意">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.behavior.hanlderModel" name="hanlderModel" value="1" label="一人同意即可">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.behavior.hanlderModel" name="hanlderModel" value="2" label="依据人数比例">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.behavior.hanlderModel" name="hanlderModel" value="3" label="独立处理">
-                    </lay-radio>
-                  </lay-form-item>
-                </div>
-                <div class="layui-col-md12">
-                  <lay-form-item label="退回类型:" prop="backType">
-                    <lay-radio v-model="setflowmode.behavior.backType" name="backType" value="0" label="退回前一步">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.behavior.backType" name="backType" value="1" label="退回第一步">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.behavior.backType" name="backType" value="2" label="退回某一步">
-                    </lay-radio>
-
-                  </lay-form-item>
-                </div>
-
-                <div class="layui-col-md10">
-                  <lay-form-item label="策略百分比:" prop="percentage">
-                    <lay-input v-model="setflowmode.behavior.percentage"></lay-input>
-
-                  </lay-form-item>
-                </div>
-                <div class="layui-col-md6">
-                  <lay-form-item label="退回步骤:" prop="backStep">
-                    <lay-input v-model="setflowmode.behavior.backStep"></lay-input>
-
-                  </lay-form-item>
-                </div>
-                <div class="layui-col-md18">
-                  <lay-form-item label="会签策略:" prop="countersignature">
-                    <lay-radio v-model="setflowmode.behavior.countersignature" name="countersignature" value="0"
-                      label="不会签">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.behavior.countersignature" name="countersignature" value="1"
-                      label="所有步骤同意">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.behavior.countersignature" name="countersignature" value="2"
-                      label="一个步骤同意即可">
-                    </lay-radio>
-                    <lay-radio v-model="setflowmode.behavior.countersignature" name="countersignature" value="3"
-                      label="依据比例">
-                    </lay-radio>
-                  </lay-form-item>
-                </div>
-                <div class="layui-col-md12">
-                  <lay-form-item label="会签百分比:" prop="countersignaturePercentage">
-                    <lay-input v-model="setflowmode.behavior.countersignaturePercentage"></lay-input>
-
-                  </lay-form-item>
-                </div>
-                <div class="layui-col-md12">
-                  <lay-form-item label="抄送:" prop="copyFor">
-                    <lay-input v-model="setflowmode.behavior.copyFor"></lay-input>
-
-                  </lay-form-item>
-                </div>
-              </lay-form>
-            </lay-tab-item>
-            <lay-tab-item title="字段" id="3">
-              <!-- 字段 -->
-              <lay-button type="default" size="sm" @click="methods.resetfield(setflowmode)">重置</lay-button>
-              <lay-table :columns="fieldcolumns" :data-source="fieldSource" >
-
-       
-               <template v-slot:eoperator="{ data }">
-                 <lay-switch v-model="data.status" onswitch-value="0" unswitch-value="1" onswitch-text="编辑"  unswitch-text="只读"></lay-switch>
-              
-               </template>
-             <template v-slot:doperator="{ data }">
-                <lay-switch v-model="data.check" onswitch-value="0" unswitch-value="1" onswitch-text="不检查"  unswitch-text="检查"></lay-switch>
-               </template>
-    </lay-table>
-      
-            </lay-tab-item>
-            <lay-tab-item title="按钮" id="4">
-     
-                <lay-transfer v-model="btValue" :dataSource="btSource"  :showSearch="true" >
-                  <template #leftTitle> 未选按钮 </template>
-                  <template #rightTitle> 已选按钮 </template>
-                </lay-transfer>
-              
-             
-            </lay-tab-item>
-          </lay-tab>
-
-
-        </div>
+   
       </lay-layer>
       <!-- 流程属性 -->
       <lay-layer move="true" :btn="flowbtn" :closeBtn="false" :area="['70%', '85%']" :shadeClose="false"
         @submit="flowsubmit" title="流程属性" v-model="flowvisible">
-        <div class="layui-container laymodle">
-
-          <lay-form :model="flowjson" class="layui-form layui-form-pane">
-            <div class="layui-col-md12">
-              <lay-form-item label="流程id：" prop="id">
-                <lay-input v-model="flowjson.id" disabled="disabled"></lay-input>
-              </lay-form-item>
-            </div>
-
-            <div class="layui-col-md12">
-
-              <lay-form-item label="流程名称：" prop="name">
-                <lay-input v-model="flowjson.name"></lay-input>
-              </lay-form-item>
-            </div>
-            <div class="layui-col-md6">
-              <lay-form-item label="完成后移出" prop="removeCompleted">
-                <lay-input v-model="flowjson.removeCompleted"></lay-input>
-              </lay-form-item>
-            </div>
-
-
-            <div class="layui-col-md18">
-              <lay-form-item label="流程备注：" prop="debug">
-                <lay-radio v-model="flowjson.debug" name="debug" value="0" label="关闭">
-                </lay-radio>
-                <lay-radio v-model="flowjson.debug" name="debug" value="1" label="（开启）有调试窗口">
-                </lay-radio>
-                <lay-radio v-model="flowjson.debug" name="debug" value="2" label="（开启）无调试窗口">
-                </lay-radio>
-              </lay-form-item>
-            </div>
-            <div class="layui-col-md12">
-              <lay-form-item label="调试人员" prop="debugUsers">
-                <lay-input v-model="flowjson.debugUsers"></lay-input>
-              </lay-form-item>
-            </div>
-
-            <div class="layui-col-md12">
-              <lay-form-item label="实例管理人" prop="instanceManager">
-                <lay-input v-model="flowjson.instanceManager"></lay-input>
-              </lay-form-item>
-            </div>
-            <div class="layui-col-md12">
-              <lay-form-item label="分类：" prop="note">
-                <lay-select v-model="flowjson.type" :items="flowtype"></lay-select>
-              </lay-form-item>
-            </div>
-            <div class="layui-col-md12">
-              <lay-form-item label="流程备注：" prop="note">
-                <lay-input v-model="flowjson.note"></lay-input>
-              </lay-form-item>
-            </div>
-            <div class="layui-col-md12">
-              <lay-form-item label="创建人：" prop="note">
-                <lay-input v-model="flowjson.manager"></lay-input>
-              </lay-form-item>
-            </div>
-            <div class="layui-col-md12">
-              <lay-form-item label="表：" prop="table">
-                <lay-input v-model="flowjson.titleField.table"></lay-input>
-              </lay-form-item>
-            </div>
-            <div class="layui-col-md12">
-              <lay-form-item label="完成标识：" prop="field">
-                <lay-input v-model="flowjson.titleField.field"></lay-input>
-              </lay-form-item>
-
-            </div>
-            <div class="layui-col-md12">
-              <lay-form-item label="连接：" prop="link">
-                <lay-input v-model="flowjson.titleField.link"></lay-input>
-              </lay-form-item>
-
-            </div>
-            <div class="layui-col-md12">
-              <lay-form-item label="连接：" prop="links">
-                <lay-input v-model="flowjson.databases.link"></lay-input>
-              </lay-form-item>
-
-            </div>
-            <div class="layui-col-md12">
-              <lay-form-item label="连接名称：" prop="linkName">
-                <lay-input v-model="flowjson.databases.linkName"></lay-input>
-              </lay-form-item>
-
-            </div>
-            <div class="layui-col-md12">
-              <lay-form-item label="主键：" prop="primaryKey">
-                <lay-input v-model="flowjson.databases.primaryKey"></lay-input>
-              </lay-form-item>
-
-            </div>
-            <div class="layui-col-md12">
-              <lay-form-item label="表：" prop="table">
-                <lay-input v-model="flowjson.databases.table"></lay-input>
-              </lay-form-item>
-
-            </div>
-          </lay-form>
-        </div>
+ 
       </lay-layer>
 
     </div>
@@ -383,17 +54,19 @@
 import http from "../../../api/http";
 import { useUserStore } from "../../../store/user";
 
-
 import { layer } from '@layui/layer-vue';
-
+import flowutils from "../../../utils/flowutils";
 import flowNode from "../../../components/flow/node-item.vue"
-import { ref, nextTick, getCurrentInstance } from 'vue';
+import { ref, nextTick, getCurrentInstance,h } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import panzoom from "panzoom";
 import jsPlumb from 'jsPlumb';
 import utils from "../../../utils/utils";
 import { jsplumbSetting, jsplumbConnectOptions, jsplumbSourceOptions, jsplumbTargetOptions } from '../../../utils/flowconfig'
 import { nodeTypeList } from '../../../utils/flowinit';
+
+import flowset from "./set/flowset.vue";
+import stepset from "./set/stepset.vue";
 const $jsPlumbs = jsPlumb.jsPlumb;
 var instance = "" as any;
 const currentItem = ref(null) as any;
@@ -406,8 +79,7 @@ const auxiliaryLine = { isShowXLine: false, isShowYLine: false };
 const auxiliaryLinePos = { width: '100%', height: '100%', offsetX: 0, offsetY: 0, x: 20, y: 20 };
 const commonGrid = [5, 5] as any;
 const user = useUserStore();
-const btSource = ref([]);
-const btValue = ref([]) as any;
+
 const initNodeTypeObj = () => {
   nodeTypeList.map((v: any) => {
     nodeTypeObj[v.type] = v
@@ -449,9 +121,7 @@ const initflow = () => {
     if (res.success) {
 
       flowjson.value = JSON.parse(res.data);;
-      flowjson.value.instanceManager = user.userInfo.userid;
-      flowjson.value.debugUsers = user.userInfo.userid;
-      flowjson.value.manager = user.userInfo.userid;
+
       let o = new Object() as any;
       if(flowjson.value.lines==null||flowjson.value.lines==undefined||flowjson.value.lines==''){
        o.lines=[];
@@ -487,11 +157,11 @@ const initflow = () => {
 const methods = {
   init() {
     //加载表单
-     this.addfom();
+    flowutils.addfom(forms);
      //加载按钮
-     this.getbutton();
+     flowutils.getbutton();
     //加载流程分类
-    this.adddictionary();
+    flowutils.adddictionary(flowtype);
     $jsPlumbs.getInstance().ready(() => {
       // 导入默认配置
       console.log(jsplumbSetting);
@@ -885,29 +555,43 @@ const methods = {
     }
   },
   //设置步骤
-  setflow(d: any) {
-    setflowmode.value = d.value;
-     fieldSource.value= d.value.fieldStatus;
-     if(setflowmode.value.buttons.length>0){
-      setflowmode.value.buttons.forEach((item:any)=>{
-      // btSource.value.find((item: any) => { return item.id == item.id });
-      // setflowmode.buttons.find(a=>a.id=item.id);
 
-      btValue.value.push(item.id);
-      });
-      //btValue.value.push();
-     }
-    //res.data.forEach((tab: any) => {}
-    setflowvisible.value = !setflowvisible.value
-  },
   //设置流程属性
   flow() {
-    // flowmode.value = nodes.value;
+    debugger
+    //	flowjson:Object,setflowmode:any,type:number, forms: any, callback: Function
+    var sen = h(flowset, { flowjson:flowjson,forms:forms, callback:methods. uCallback }) as any;
+        layer.open({
+            title: "流程设置",
+            area: ["60%", "80%"],
+            content: sen,
+            shade: true,
+            anim: 4,
+            shadeClose: false,
+            btn: [
+                {
+                    text: "确认",
+                    callback: (resp: any) => {
 
-    flowvisible.value = !flowvisible.value
+                        sen.component.exposed.confirm(resp,layer);
+                    },
+                },
+                {
+                    text: "取消",
+                    callback: (resp: any) => {
+                        layer.close(resp);
+                    },
+                },
+            ]
+        })
   },
+   uCallback(res: any)  {
+    flowjson.value=res;
+
+},
   save(op: String) {
     flowjson.value.lines=data.value.lines;
+    debugger
     http.post("/api/workflow/Save", { json: JSON.stringify(flowjson.value), op: op }, "正在保存").then(res => {
       if (res.success) {
         layer.notifiy({
@@ -923,95 +607,9 @@ const methods = {
 
     });
   },
-  resetfield(v:any) {
-    if (flowjson.value.databases.table == null || flowjson.value.databases.table == "" || flowjson.value.databases.table == undefined) {
-      layer.notifiy({
-        title: "温馨提示",
-        content: "请先在流程基础信息中配置表"
-      });
-      return;
-    }
-    http.post("/api/workflow/GetFields", { table: flowjson.value.databases.table }, "请稍等...").then(res => {
-      if (res.success) {
-        var fields = [];
-        //重置表字段
-        fieldSource.value=[] ;
-        console.log(res);
-        for (var i = 0; i < res.data.length; i++) {
-          var o = new Object() as any;
-          o.check = "0";
-          o.status = "0";
-          o.field = res.data[i].f_name.toLowerCase();
-          fields.push(o);
-          o.value=res.data[i].value;
-          fieldSource.value.push(o);
-        }
-        v.fieldStatus= fields;
-        layer.notifiy({
-          title: "温馨提示",
-          content: res.msg
-        });
-      } else {
-        layer.notifiy({
-          title: "温馨提示",
-          content: res.msg
-        })
-      }
 
-    });
-  },
-  addfom(){
-      //加载表单
-    http.post("/api/common/GetCommonList", { tab: "SysFormDesign", page: 1, limit: 1000 }).then(res => {
-      if (res.success) {
-        forms.value = [];
-        res.data.forEach((tab: any) => {
-          var o = new Object() as any;
-          o.label = tab.title;
-          o.value = tab.id;
-          forms.value.push(o);
-        });
-      } else {
-        layer.msg(res.msg, { icon: 2 });
-      }
-    }).catch(res => {
-      layer.msg("网络错误，请重试", { icon: 2 });
-    })
-  },
-  adddictionary(){
 
-    http.post("/api/form/GetDictionaryByCode", { id: "FlowTypes" }).then(res => {
-      if (res.success) {
-        flowtype.value = [];
 
-        flowtype.value = utils.TreeTtoList(res.data,[]);
-        // res.data.forEach((tab: any) => {
-        //   var o = new Object() as any;
-        //   o.label = tab.name;
-        //   o.value = tab.id;
-        //   flowtype.value.push(o);
-        // });
-        console.log(forms.value)
-      } else {
-        layer.msg(res.msg, { icon: 2 });
-      }
-    }).catch(res => {
-      layer.msg("网络错误，请重试", { icon: 2 });
-    })
-
-  },
-  //加载流程按钮
-  getbutton(){
-    http.post("/api/workflowtasks/getListButton", { }).then(res => {
-      if (res.success) {
-           btSource.value=res.data;
-      } else {
-        layer.msg(res.msg, { icon: 2 });
-      }
-    }).catch(res => {
-      layer.msg("网络错误，请重试", { icon: 2 });
-    })
-  }
 }
 
 
@@ -1023,9 +621,7 @@ const flowtype = ref([]) as any;
 
 const setflowmode = ref(null) as any;
 const setflowvisible = ref(false);
-const submit = () => {
 
-}
 const tabcurrent = ref("1");
 const flowcurrent = ref("1");
 const setflowbtn = [
@@ -1061,8 +657,7 @@ const flowvisible = ref(false);
 const flowsubmit = () => {
 
 }
-const fieldcolumns= ref([ {title:"字段名称", width:"20%", key:"field"}, {title:"描述", width:"20%", key:"value"},{title:"编辑", width:"10%", customSlot:"eoperator",key:"eoperator" },{title:"只读", width:"10%", customSlot:"doperator",key:"doperator" }]);
-const fieldSource=ref([]) as any;
+
 const flowbtn = [
   {
     text: "确定",

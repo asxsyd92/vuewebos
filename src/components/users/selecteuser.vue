@@ -1,10 +1,10 @@
 <template>
 
     <lay-container>
-        <LayCard>
+        <lay-card>
             <lay-tree ref="selecteuser" :data="data2"  :checkStrictly="true" :showCheckbox="showCheckbox2" v-model:checkedKeys="checkedKeys2">
             </lay-tree>
-        </LayCard>
+        </lay-card>
     </lay-container>
 
 
@@ -16,7 +16,6 @@ export default {
 </script>
 <script lang="ts" setup>
 
-import { LayCard } from '@layui/layui-vue';
 import { ref } from 'vue';
 import { treeToList } from '../../library/treeUtil';
 import http from '../../api/http';
