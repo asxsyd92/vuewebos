@@ -81,7 +81,6 @@ declare module '@vue/runtime-core' {
     LayTooltip: typeof import('@layui/layui-vue')['LayTooltip']
     LayTransfer: typeof import('@layui/layui-vue')['LayTransfer']
     LayTransition: typeof import('@layui/layui-vue')['LayTransition']
-    LayTree: typeof import('@layui/layui-vue')['LayTree']
     LayTreeSelect: typeof import('@layui/layui-vue')['LayTreeSelect']
     LightIcon: typeof import('./src/components/lightIcon.vue')['default']
     NodeItem: typeof import('./src/components/flow/node-item.vue')['default']

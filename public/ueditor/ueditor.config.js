@@ -34,7 +34,7 @@
 
         // 服务器统一请求接口路径
        // , serverUrl: URL + "net/controller.ashx"
-        , serverUrl: "http://asxsyd92.com/api/ueditor/upload?asxsyd92user=" + window.localStorage["userid"] 
+        //, serverUrl: "http://127.0.0.1:89/v1/api/ueditor/upload?asxsyd92user=" + window.localStorage["userid"] 
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的从新定义
         , toolbars: [[
             'fullscreen', 'source', '|', 'undo', 'redo', '|',

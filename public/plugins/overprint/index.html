@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+    <!-- 可以引入外部的 js 脚本 -->
+    <script src="../jquery.js"></script>
+    <!-- 这个是插件 js，基本是必须要引入的 -->
+    <script src="../plugins.js"></script>
+    <!-- 这里的 main.js 就是插件结构里面的 main.js -->
+    <script src="main.js"></script>
+  </head>
+
+  <body>
+    <!-- 这里是 html 区域，H5 的标签都可以在这里使用，设置 id 然后到 main.js 里面绑定事件 -->
+    <!-- 操作 -->
+    <button id="button">按钮</button>
+    <script>
+        (function(window, undefined) {
+  window.Asc.plugin.init = function(initData) {
+    var me = this
+    $('#button').click(function() {
+      // 官方提供的回调函数，所有操作文档的 API 都可以在这里面使用
+      me.callCommand(function() {
+        try {
+          // 获取文档对象
+          var oDocument = Api.GetDocument()
+          // 生成一个新的段落对象
+          var oParagraph = Api.CreateParagraph()
+          // 往段落里面添加一个字符串文本
+          oParagraph.AddText('Hello world')
+          // 最后往文档里面添加一个段落对象
+          oDocument.Push(oParagraph)
+        } catch (error) {
+          console.error(error)
+        }
+      }, false, true, function () {
+        console.log('ok')
+      })
+    })
+
+    // 在插件 iframe 之外释放鼠标按钮时调用的函数
+    window.Asc.plugin.onExternalMouseUp = function() {
+      var event = document.createEvent('MouseEvents')
+      event.initMouseEvent('mouseup', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null)
+      document.dispatchEvent(event)
+    }
+
+    window.Asc.plugin.button = function(id) {
+      // 被中断或关闭窗口
+      if (id === -1) {
+        this.executeCommand('close', '')
+      }
+   }
+  }
+})(window, undefined)
+    </script>
+  </body>
+</html>

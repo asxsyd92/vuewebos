@@ -269,6 +269,11 @@ export default [
         meta: { title: '待办事项' },
       },
       {
+        path: '/oa/office',
+        component: () => import('../../views/oa/office/word.vue'),
+        meta: { title: '待办事项' },
+      },
+      {
         path: '/oa/button',
         component: () => import('../../views/oa/flow/flowbutton.vue'),
         meta: { title: '流程按钮' },

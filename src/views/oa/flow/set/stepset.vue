@@ -222,6 +222,7 @@
             </lay-tab-item>
             <lay-tab-item title="按钮" id="4">
                 <lay-col md="24">
+                    
                     <lay-transfer v-model="btValue" :dataSource="btSource" :showSearch="true">
                         <template #leftTitle> 未选按钮 </template>
                         <template #rightTitle> 已选按钮 </template>

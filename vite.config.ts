@@ -29,8 +29,10 @@ export default defineConfig({
   server: {
     cors: true,
     open: true,
+    host: '0.0.0.0',
+    port: 8991,
     proxy: {
-      '/api': {
+      '/v1/api': {
           target: 'http://127.0.0.1:89',   //代理接口
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, 'api')
