@@ -3,46 +3,77 @@
     <lay-button-group>
       <lay-button type="default" size="lg" @click="methods.flow">流程属性</lay-button>
       <lay-button type="default" size="lg" @click="methods.save('save')">保存</lay-button>
-      <lay-button type="default" size="lg" @click="methods.save('install')">安装</lay-button>
-      <lay-button type="default" size="lg" @click="methods.save('uninstall')">卸载</lay-button>
-      <lay-button type="default" size="lg" @click="methods.save('delete')">卸载</lay-button>
+      <lay-button type="default" size="lg" @click="methods.save('install')"
+        >安装</lay-button
+      >
+      <lay-button type="default" size="lg" @click="methods.save('uninstall')"
+        >卸载</lay-button
+      >
+      <lay-button type="default" size="lg" @click="methods.save('delete')"
+        >卸载</lay-button
+      >
     </lay-button-group>
 
     <div class="flow_region">
-
-
       <div class="nodes-wrap">
-        <div v-for="item in nodeTypeList" :key="item.type" class="node" draggable="true"
-          @dragstart="methods.drag(this, item)">
+        <div
+          v-for="item in nodeTypeList"
+          :key="item.type"
+          class="node"
+          draggable="true"
+          @dragstart="methods.drag(this, item)"
+        >
           <div class="log">
             <!-- <img :src="item.logImg" alt=""> -->
           </div>
           <div class="name">{{ item.typeName }}</div>
         </div>
       </div>
-      <div id="flowWrap" ref="flowWrap" class="flow-wrap" @drop="methods.drop($event)"
-        @dragover="methods.allowDrop($event)">
+      <div
+        id="flowWrap"
+        ref="flowWrap"
+        class="flow-wrap"
+        @drop="methods.drop($event)"
+        @dragover="methods.allowDrop($event)"
+      >
         <div id="flow">
-          <div v-show="auxiliaryLine.isShowXLine" class="auxiliary-line-x"
-            :style="{ width: auxiliaryLinePos.width, top: auxiliaryLinePos.y + 'px', left: auxiliaryLinePos.offsetX + 'px' }">
-          </div>
-          <div v-show="auxiliaryLine.isShowYLine" class="auxiliary-line-y"
-            :style="{ height: auxiliaryLinePos.height, left: auxiliaryLinePos.x + 'px', top: auxiliaryLinePos.offsetY + 'px' }">
-          </div>
-          <flowNode v-for="item in data.steps" :id="item.id" :key="item.id" :nodedata="item" @setname="methods.setname"
-            @deleteNode="methods.deleteNode" @changeLineState="methods.changeLineState" @setflow="methods.setStep">
+          <div
+            v-show="auxiliaryLine.isShowXLine"
+            class="auxiliary-line-x"
+            :style="{
+              width: auxiliaryLinePos.width,
+              top: auxiliaryLinePos.y + 'px',
+              left: auxiliaryLinePos.offsetX + 'px',
+            }"
+          ></div>
+          <div
+            v-show="auxiliaryLine.isShowYLine"
+            class="auxiliary-line-y"
+            :style="{
+              height: auxiliaryLinePos.height,
+              left: auxiliaryLinePos.x + 'px',
+              top: auxiliaryLinePos.offsetY + 'px',
+            }"
+          ></div>
+          <flowNode
+            v-for="item in data.steps"
+            :id="item.id"
+            :key="item.id"
+            :nodedata="item"
+            @setname="methods.setname"
+            @deleteNode="methods.deleteNode"
+            @changeLineState="methods.changeLineState"
+            @setflow="methods.setStep"
+          >
           </flowNode>
         </div>
       </div>
-
-
 
       <!-- 流程属性 -->
       <!-- <lay-layer move="true" :btn="flowbtn" :closeBtn="false" :area="['70%', '85%']" :shadeClose="false"
         @submit="flowsubmit" title="流程属性" v-model="flowvisible">
  
       </lay-layer> -->
-
     </div>
   </div>
 </template>
@@ -50,16 +81,21 @@
 import http from "../../../api/http";
 import { useUserStore } from "../../../store/user";
 
-import { layer } from '@layui/layer-vue';
+import { layer } from "@layui/layer-vue";
 import flowutils from "../../../utils/flowutils";
-import flowNode from "../../../components/flow/node-item.vue"
-import { ref, nextTick, getCurrentInstance,h } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import flowNode from "../../../components/flow/node-item.vue";
+import { ref, nextTick, getCurrentInstance, h } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import panzoom from "panzoom";
-import jsPlumb from 'jsPlumb';
+import jsPlumb from "jsPlumb";
 import utils from "../../../utils/utils";
-import { jsplumbSetting, jsplumbConnectOptions, jsplumbSourceOptions, jsplumbTargetOptions } from '../../../utils/flowconfig'
-import { nodeTypeList } from '../../../utils/flowinit';
+import {
+  jsplumbSetting,
+  jsplumbConnectOptions,
+  jsplumbSourceOptions,
+  jsplumbTargetOptions,
+} from "../../../utils/flowconfig";
+import { nodeTypeList } from "../../../utils/flowinit";
 
 import flowset from "./set/flowset.vue";
 import stepset from "./set/stepset.vue";
@@ -72,88 +108,94 @@ const data = ref({}) as any;
 const flowjson = ref({}) as any;
 const currentInstance = getCurrentInstance() as any;
 const auxiliaryLine = { isShowXLine: false, isShowYLine: false };
-const auxiliaryLinePos = { width: '100%', height: '100%', offsetX: 0, offsetY: 0, x: 20, y: 20 };
+const auxiliaryLinePos = {
+  width: "100%",
+  height: "100%",
+  offsetX: 0,
+  offsetY: 0,
+  x: 20,
+  y: 20,
+};
 const commonGrid = [5, 5] as any;
 const user = useUserStore();
 
 const initNodeTypeObj = () => {
   nodeTypeList.map((v: any) => {
-    nodeTypeObj[v.type] = v
-  })
-}
+    nodeTypeObj[v.type] = v;
+  });
+};
 
 const initflow = () => {
   //新增
-  if(route.query.id==null||route.query.id==undefined||route.query.id==''){
-
-
-      let newjson="{\"databases\":{\"link\":\"\",\"linkName\":\"\",\"primaryKey\":\"\",\"table\":\"\"},\"debug\":\"0\",\"debugUsers\":\"\",\"id\":\"\",\"instanceManager\":\"\",\"lines\":[],\"manager\":\"\",\"name\":\"\",\"note\":\"\",\"removeCompleted\":\"0\",\"steps\":[],\"titleField\":{\"field\":\"\",\"link\":\"\",\"table\":\"\"},\"type\":\"\"}";
-      flowjson.value = JSON.parse(newjson);;
-      flowjson.value.instanceManager = user.userInfo.userid;
-      flowjson.value.debugUsers = user.userInfo.userid;
-      flowjson.value.manager = user.userInfo.userid;
-      let o = new Object() as any;
-      if(flowjson.value.lines==null||flowjson.value.lines==undefined||flowjson.value.lines==''){
-       o.lines=[];
-      }else{
-       o.lines= flowjson.value.lines;
-      }
-     
-      o.steps = flowjson.value.steps;
-      data.value = o;
-      methods.fixNodesPosition();
-      nextTick(() => {
-        methods.init();
-      })
- 
-
-
-  }
-  //编辑
-  else{
-
-  http.post('/api/workflow/GetJSON', { flowid: route.query.id }).then((res) => {
-    console.log(res);
-    if (res.success) {
-
-      flowjson.value = JSON.parse(res.data);;
-
-      let o = new Object() as any;
-      if(flowjson.value.lines==null||flowjson.value.lines==undefined||flowjson.value.lines==''){
-       o.lines=[];
-      }else{
-       o.lines= flowjson.value.lines;
-      }
-     
-      o.steps = flowjson.value.steps;
-      data.value = o;
-      methods.fixNodesPosition();
-      nextTick(() => {
-        methods.init();
-      })
+  if (route.query.id == null || route.query.id == undefined || route.query.id == "") {
+    let newjson =
+      '{"databases":{"link":"","linkName":"","primaryKey":"","table":""},"debug":"0","debugUsers":"","id":"","instanceManager":"","lines":[],"manager":"","name":"","note":"","removeCompleted":"0","steps":[],"titleField":{"field":"","link":"","table":""},"type":""}';
+    flowjson.value = JSON.parse(newjson);
+    flowjson.value.instanceManager = user.userInfo.userid;
+    flowjson.value.debugUsers = user.userInfo.userid;
+    flowjson.value.manager = user.userInfo.userid;
+    let o = new Object() as any;
+    if (
+      flowjson.value.lines == null ||
+      flowjson.value.lines == undefined ||
+      flowjson.value.lines == ""
+    ) {
+      o.lines = [];
     } else {
-      layer.notifiy({
-        title: "温馨提示",
-        content: res.msg
-      })
+      o.lines = flowjson.value.lines;
     }
 
-
-
-
-  }).catch((res) => {
-    layer.notifiy({
-      title: "温馨提示",
-      content: "网络错误"
-    })
-  });
+    o.steps = flowjson.value.steps;
+    data.value = o;
+    methods.fixNodesPosition();
+    nextTick(() => {
+      methods.init();
+    });
   }
-}
+  //编辑
+  else {
+    http
+      .post("/api/workflow/GetJSON", { flowid: route.query.id })
+      .then((res) => {
+        console.log(res);
+        if (res.success) {
+          flowjson.value = JSON.parse(res.data);
+
+          let o = new Object() as any;
+          if (
+            flowjson.value.lines == null ||
+            flowjson.value.lines == undefined ||
+            flowjson.value.lines == ""
+          ) {
+            o.lines = [];
+          } else {
+            o.lines = flowjson.value.lines;
+          }
+
+          o.steps = flowjson.value.steps;
+          data.value = o;
+          methods.fixNodesPosition();
+          nextTick(() => {
+            methods.init();
+          });
+        } else {
+          layer.notifiy({
+            title: "温馨提示",
+            content: res.msg,
+          });
+        }
+      })
+      .catch((res) => {
+        layer.notifiy({
+          title: "温馨提示",
+          content: "网络错误",
+        });
+      });
+  }
+};
 
 const methods = {
   init() {
-
-
     //加载流程分类
     flowutils.adddictionary(flowtype);
     $jsPlumbs.getInstance().ready(() => {
@@ -163,21 +205,21 @@ const methods = {
       //完成连线前的校验
 
       instance.bind("beforeDrop", (evt: any) => {
-        let res = () => { } //此处可以添加是否创建连接的校验， 返回 false 则不添加； 
-        return res
-      })
+        let res = () => {}; //此处可以添加是否创建连接的校验， 返回 false 则不添加；
+        return res;
+      });
       // 连线创建成功后，维护本地数据
       instance.bind("connection", (evt: any) => {
-        methods.addLine(evt)
+        methods.addLine(evt);
       });
       //连线双击删除事件
       instance.bind("dblclick", (conn: any, originalEvent: any) => {
-        methods.confirmDelLine(conn)
-      })
+        methods.confirmDelLine(conn);
+      });
       //断开连线后，维护本地数据
       instance.bind("connectionDetached", (evt: any) => {
-        methods.deleLine(evt)
-      })
+        methods.deleLine(evt);
+      });
 
       methods.loadEasyFlow();
       // 会使整个jsPlumb立即重绘。
@@ -197,7 +239,7 @@ const methods = {
       // // 设置目标点，其他源点拖出的线可以连接该节点
       instance.makeTarget(node.id, jsplumbTargetOptions);
       //instance.draggable(node.id);
-      methods.draggableNode(node.id)
+      methods.draggableNode(node.id);
     }
 
     // 初始化连线
@@ -207,7 +249,7 @@ const methods = {
       instance.connect(
         {
           source: line.from,
-          target: line.to
+          target: line.to,
         },
         jsplumbConnectOptions
       );
@@ -221,47 +263,43 @@ const methods = {
         noaccordMsg: "连线名称",
         id: utils.GenNonDuplicateID(),
         customMethod: "",
-        sql: ""
+        sql: "",
       });
     });
   },
   draggableNode(nodeId: any) {
-
     instance.draggable(nodeId, {
       grid: commonGrid,
       drag: (params: any) => {
-        methods.alignForLine(nodeId, params.pos)
+        methods.alignForLine(nodeId, params.pos);
       },
-      start: () => {
-
-      },
+      start: () => {},
       stop: (params: any) => {
-
-        auxiliaryLine.isShowXLine = false
-        auxiliaryLine.isShowYLine = false
+        auxiliaryLine.isShowXLine = false;
+        auxiliaryLine.isShowYLine = false;
         methods.changeNodePosition(nodeId, params.pos);
-
-      }
-    })
+      },
+    });
   },
   //移动节点时，动态显示对齐线
   alignForLine(nodeId: any, position: any) {
     console.log("alignForLine");
     console.log(data);
-    let showXLine = false, showYLine = false
+    let showXLine = false,
+      showYLine = false;
     data.value.steps.some((el: any) => {
       if (el.id !== nodeId && el.position.x == position[0]) {
         auxiliaryLinePos.x = position[0] + 60;
-        showYLine = true
+        showYLine = true;
       }
       if (el.id !== nodeId && el.position.y == position[1]) {
         auxiliaryLinePos.y = position[1] + 20;
-        showXLine = true
+        showXLine = true;
       }
-    })
+    });
     console.log(data);
-    auxiliaryLine.isShowYLine = showYLine
-    auxiliaryLine.isShowXLine = showXLine
+    auxiliaryLine.isShowYLine = showYLine;
+    auxiliaryLine.isShowXLine = showXLine;
   },
   changeNodePosition(nodeId: any, pos: any) {
     console.log(data);
@@ -270,11 +308,11 @@ const methods = {
       if (nodeId == v.id) {
         v.position.x = pos[0];
         v.position.y = pos[1];
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
-    })
+    });
   },
   drag(ele: any, item: any) {
     currentItem.value = item;
@@ -286,61 +324,62 @@ const methods = {
     let x = (event.pageX - containerRect.left - 60) / scale;
     let y = (event.pageY - containerRect.top - 20) / scale;
     let temp = {
-      "archives": "0",
-      "archivesParams": "",
-      "behavior": {
-        "backModel": "1",
-        "backStep": "",
-        "backType": "0",
-        "copyFor": "",
-        "countersignature": "0",
-        "countersignaturePercentage": "",
-        "defaultHandler": "",
-        "flowType": "1",
-        "handlerStep": "",
-        "handlerType": "0",
-        "hanlderModel": "0",
-        "percentage": "",
-        "runSelect": "1",
-        "selectRange": "",
-        "valueField": ""
+      archives: "0",
+      archivesParams: "",
+      behavior: {
+        backModel: "1",
+        backStep: "",
+        backType: "0",
+        copyFor: "",
+        countersignature: "0",
+        countersignaturePercentage: "",
+        defaultHandler: "",
+        flowType: "1",
+        handlerStep: "",
+        handlerType: "0",
+        hanlderModel: "0",
+        percentage: "",
+        runSelect: "1",
+        selectRange: "",
+        valueField: "",
       },
-      "buttons": [],
-      "countersignature": 0,
-      "event": {
-        "backAfter": "",
-        "backBefore": "",
-        "submitAfter": "",
-        "submitBefore": ""
+      buttons: [],
+      countersignature: 0,
+      event: {
+        backAfter: "",
+        backBefore: "",
+        submitAfter: "",
+        submitBefore: "",
       },
-      "expiredPrompt": "1",
-      "fieldStatus": [{
-        "check": "0",
-        "field": "id",
-        "status": "0"
-      }],
-      "forms": {
-        "id": "",
-        "name": "",
-        "srot": 0,
-        "type": ""
+      expiredPrompt: "1",
+      fieldStatus: [
+        {
+          check: "0",
+          field: "id",
+          status: "0",
+        },
+      ],
+      forms: {
+        id: "",
+        name: "",
+        srot: 0,
+        type: "",
       },
-      "id": utils.GenNonDuplicateID(),
-      "limitTime": "",
-      "name": "新建步骤",
-      "note": "",
-      "opinionDisplay": "1",
-      "otherTime": "",
-      "position": {
-        "height": 50,
-        "width": 108,
-        "x": x,
-        "y": y
+      id: utils.GenNonDuplicateID(),
+      limitTime: "",
+      name: "新建步骤",
+      note: "",
+      opinionDisplay: "1",
+      otherTime: "",
+      position: {
+        height: 50,
+        width: 108,
+        x: x,
+        y: y,
       },
-      "signatureType": "0",
-      "type": "normal",
-      "workTime": ""
-
+      signatureType: "0",
+      type: "normal",
+      workTime: "",
     };
     // var temp = {
     //   ...currentItem.value,
@@ -359,7 +398,7 @@ const methods = {
       customMethod: "",
       sql: "",
       id: utils.GenNonDuplicateID(),
-      noaccordMsg: ""
+      noaccordMsg: "",
     });
   },
   confirmDelLine(line: any) {
@@ -374,9 +413,9 @@ const methods = {
   deleLine(line: any) {
     data.value.lines.forEach((item: any, index: any) => {
       if (item.from === line.sourceId && item.to === line.targetId) {
-        data.value.lines.splice(index, 1)
+        data.value.lines.splice(index, 1);
       }
-    })
+    });
   },
   // dragover默认事件就是不触发drag事件，取消默认事件后，才会触发drag事件
   allowDrop(event: any) {
@@ -400,7 +439,7 @@ const methods = {
     nextTick(() => {
       instance.makeSource(temp.id, jsplumbSourceOptions);
       instance.makeTarget(temp.id, jsplumbTargetOptions);
-      methods.draggableNode(temp.id)
+      methods.draggableNode(temp.id);
     });
   },
 
@@ -418,17 +457,16 @@ const methods = {
         maxZoom: 2,
         //设置滚动缩放的组合键，默认不需要组合键
         beforeWheel: (e) => {
-          console.log(e)
+          console.log(e);
           // let shouldIgnore = !e.ctrlKey
           // return shouldIgnore
         },
         beforeMouseDown: function (e) {
-          console.log("beforeMouseDown")
+          console.log("beforeMouseDown");
           // allow mouse-down panning only if altKey is down. Otherwise - ignore
           var shouldIgnore = e.ctrlKey;
           return shouldIgnore;
-        }
-
+        },
       });
       instance.mainContainerWrap = mainContainerWrap;
       instance.pan = pan;
@@ -437,18 +475,18 @@ const methods = {
         const { x, y, scale } = e.getTransform();
         instance.setZoom(scale);
         //根据缩放比例，缩放对齐辅助线长度和位置
-        auxiliaryLinePos.width = (1 / scale) * 100 + '%'
-        auxiliaryLinePos.height = (1 / scale) * 100 + '%'
-        auxiliaryLinePos.offsetX = -(x / scale)
-        auxiliaryLinePos.offsetY = -(y / scale)
+        auxiliaryLinePos.width = (1 / scale) * 100 + "%";
+        auxiliaryLinePos.height = (1 / scale) * 100 + "%";
+        auxiliaryLinePos.offsetX = -(x / scale);
+        auxiliaryLinePos.offsetY = -(y / scale);
       });
       pan.on("panend", (e: any) => {
         const { x, y, scale } = e.getTransform();
-        auxiliaryLinePos.width = (1 / scale) * 100 + '%'
-        auxiliaryLinePos.height = (1 / scale) * 100 + '%'
-        auxiliaryLinePos.offsetX = -(x / scale)
-        auxiliaryLinePos.offsetY = -(y / scale)
-      })
+        auxiliaryLinePos.width = (1 / scale) * 100 + "%";
+        auxiliaryLinePos.height = (1 / scale) * 100 + "%";
+        auxiliaryLinePos.offsetX = -(x / scale);
+        auxiliaryLinePos.offsetY = -(y / scale);
+      });
 
       // 平移时设置鼠标样式
       mainContainerWrap.style.cursor = "grab";
@@ -457,55 +495,51 @@ const methods = {
 
         mainContainerWrap.addEventListener("mouseout", function wrapMouseout() {
           mainContainerWrap.style.cursor = "grab";
-
         });
       });
       mainContainerWrap.addEventListener("mouseup", function wrapMouseup() {
         mainContainerWrap.style.cursor = "grab";
-
       });
     }
-
   },
 
   setname(nodeId: any, name: any) {
     data.value.steps.some((v: any) => {
       if (v.id === nodeId) {
-        v.name = name
-        return true
+        v.name = name;
+        return true;
       } else {
-        return false
+        return false;
       }
-    })
+    });
   },
 
   //删除节点
   deleteNode(node: any) {
     data.value.steps.some((v: any, index: any) => {
       if (v.id === node.id) {
-
-        data.value.steps.splice(index, 1)
-        instance.remove(v.id)
-        return true
+        data.value.steps.splice(index, 1);
+        instance.remove(v.id);
+        return true;
       } else {
-        return false
+        return false;
       }
-    })
+    });
   },
 
   //更改连线状态
   changeLineState(nodeId: any, val: any) {
-    console.log(val)
-    let lines = instance.getAllConnections()
+    console.log(val);
+    let lines = instance.getAllConnections();
     lines.forEach((line: any) => {
       if (line.targetId === nodeId || line.sourceId === nodeId) {
         if (val) {
-          line.canvas.classList.add('active')
+          line.canvas.classList.add("active");
         } else {
-          line.canvas.classList.remove('active')
+          line.canvas.classList.remove("active");
         }
       }
-    })
+    });
   },
 
   //初始化节点位置  （以便对齐,居中）
@@ -513,132 +547,131 @@ const methods = {
     console.log("fixNodesPosition");
     console.log(data);
     if (data.value.steps && currentInstance.refs.flowWrap) {
-      const nodeWidth = 120
-      const nodeHeight = 40
-      let wrapInfo = currentInstance.refs.flowWrap.getBoundingClientRect()
-      let maxLeft = 0, minLeft = wrapInfo.width, maxTop = 0, minTop = wrapInfo.height;
+      const nodeWidth = 120;
+      const nodeHeight = 40;
+      let wrapInfo = currentInstance.refs.flowWrap.getBoundingClientRect();
+      let maxLeft = 0,
+        minLeft = wrapInfo.width,
+        maxTop = 0,
+        minTop = wrapInfo.height;
       let nodePoint = {
         left: 0,
         right: 0,
         top: 0,
-        bottom: 0
-      }
-      let fixTop = 0, fixLeft = 0;
+        bottom: 0,
+      };
+      let fixTop = 0,
+        fixLeft = 0;
       data.value.steps.forEach((el: any) => {
         let top = el.position.y;
         let left = el.position.x;
-        maxLeft = left > maxLeft ? left : maxLeft
-        minLeft = left < minLeft ? left : minLeft
-        maxTop = top > maxTop ? top : maxTop
-        minTop = top < minTop ? top : minTop
-      })
-      nodePoint.left = minLeft
-      nodePoint.right = wrapInfo.width - maxLeft - nodeWidth
-      nodePoint.top = minTop
+        maxLeft = left > maxLeft ? left : maxLeft;
+        minLeft = left < minLeft ? left : minLeft;
+        maxTop = top > maxTop ? top : maxTop;
+        minTop = top < minTop ? top : minTop;
+      });
+      nodePoint.left = minLeft;
+      nodePoint.right = wrapInfo.width - maxLeft - nodeWidth;
+      nodePoint.top = minTop;
       nodePoint.bottom = wrapInfo.height - maxTop - nodeHeight;
 
-      fixTop = nodePoint.top !== nodePoint.bottom ? (nodePoint.bottom - nodePoint.top) / 2 : 0;
-      fixLeft = nodePoint.left !== nodePoint.right ? (nodePoint.right - nodePoint.left) / 2 : 0;
+      fixTop =
+        nodePoint.top !== nodePoint.bottom ? (nodePoint.bottom - nodePoint.top) / 2 : 0;
+      fixLeft =
+        nodePoint.left !== nodePoint.right ? (nodePoint.right - nodePoint.left) / 2 : 0;
 
       data.value.steps.map((el: any) => {
         let top = el.position.y + fixTop;
         let left = el.position.x + fixLeft;
-        el.position.y = (Math.round(top / 20)) * 20;
-        el.position.x = (Math.round(left / 20)) * 20;
-      })
+        el.position.y = Math.round(top / 20) * 20;
+        el.position.x = Math.round(left / 20) * 20;
+      });
     }
   },
   //设置步骤
 
   //设置流程属性
   flow() {
-    debugger
+    debugger;
     //	flowjson:Object,setflowmode:any,type:number, forms: any, callback: Function
-    var sen = h(flowset, { flowjson:flowjson,forms:forms }) as any;
-        layer.open({
-            title: "流程设置",
-            area: ["60%", "80%"],
-            content: sen,
-            shade: true,
-            anim: 4,
-            shadeClose: false,
-            btn: [
-                {
-                    text: "确认",
-                    callback: (resp: any) => {
-
-                        sen.component.exposed.confirm(resp,layer);
-                    },
-                },
-                {
-                    text: "取消",
-                    callback: (resp: any) => {
-                        layer.close(resp);
-                    },
-                },
-            ]
-        })
-  },
-setStep(nodes:any){
-
-    //	flowjson:Object,setflowmode:any,type:number, forms: any, callback: Function
-    var sen = h(stepset, { nodes:nodes,flowjson:flowjson}) as any;
-        layer.open({
-            title:nodes.value.name +"设置",
-            area: ["80%", "90%"],
-            content: sen,
-            shade: true,
-            anim: 3,
-            shadeClose: false,
-            btn: [
-                {
-                    text: "确认",
-                    callback: (resp: any) => {
-
-                        sen.component.exposed.confirm(resp,layer);
-                    },
-                },
-                {
-                    text: "取消",
-                    callback: (resp: any) => {
-                        layer.close(resp);
-                    },
-                },
-            ]
-        })
-
-},
-  save(op: String) {
-    flowjson.value.lines=data.value.lines;
-    debugger
-    http.post("/api/workflow/Save", { json: JSON.stringify(flowjson.value), op: op }, "正在保存").then(res => {
-      if (res.success) {
-        layer.notifiy({
-          title: "温馨提示",
-          content: res.msg
-        });
-      } else {
-        layer.notifiy({
-          title: "温馨提示",
-          content: res.msg
-        })
-      }
-
+    var sen = h(flowset, { flowjson: flowjson, forms: forms }) as any;
+    layer.open({
+      title: "流程设置",
+      area: ["60%", "80%"],
+      content: sen,
+      shade: true,
+      anim: 4,
+      shadeClose: false,
+      btn: [
+        {
+          text: "确认",
+          callback: (resp: any) => {
+            sen.component.exposed.confirm(resp, layer);
+          },
+        },
+        {
+          text: "取消",
+          callback: (resp: any) => {
+            layer.close(resp);
+          },
+        },
+      ],
     });
   },
-
-
-
-}
-
-
-
+  setStep(nodes: any) {
+    //	flowjson:Object,setflowmode:any,type:number, forms: any, callback: Function
+    var sen = h(stepset, { nodes: nodes, flowjson: flowjson }) as any;
+    layer.open({
+      title: nodes.value.name + "设置",
+      area: ["80%", "90%"],
+      content: sen,
+      shade: true,
+      anim: 3,
+      shadeClose: false,
+      btn: [
+        {
+          text: "确认",
+          callback: (resp: any) => {
+            sen.component.exposed.confirm(resp, layer);
+          },
+        },
+        {
+          text: "取消",
+          callback: (resp: any) => {
+            layer.close(resp);
+          },
+        },
+      ],
+    });
+  },
+  save(op: String) {
+    flowjson.value.lines = data.value.lines;
+    debugger;
+    http
+      .post(
+        "/api/workflow/Save",
+        { json: JSON.stringify(flowjson.value), op: op },
+        "正在保存"
+      )
+      .then((res) => {
+        if (res.success) {
+          layer.notifiy({
+            title: "温馨提示",
+            content: res.msg,
+          });
+        } else {
+          layer.notifiy({
+            title: "温馨提示",
+            content: res.msg,
+          });
+        }
+      });
+  },
+};
 
 //流程设置开始
 const forms = ref([]) as any;
 const flowtype = ref([]) as any;
-
-
 
 const tabcurrent = ref("1");
 const flowcurrent = ref("1");
@@ -662,9 +695,9 @@ const flowcurrent = ref("1");
 //       });
 //       setflowmode.value.buttons=s;
 //       btValue.value=[];
-   
+
 //       }
-   
+
 //       setflowvisible.value = false;
 //     },
 //   },
@@ -672,10 +705,7 @@ const flowcurrent = ref("1");
 //步骤属性
 const flowmode = ref(null) as any;
 
-const flowsubmit = () => {
-
-}
-
+const flowsubmit = () => {};
 
 initflow();
 </script>
@@ -684,7 +714,7 @@ initflow();
 .design {
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.797)
+  background: rgba(255, 255, 255, 0.797);
 }
 
 .flow_region {
@@ -743,13 +773,13 @@ initflow();
 
       .auxiliary-line-x {
         position: absolute;
-        border: .5px dashed #2ab1e8;
+        border: 0.5px dashed #2ab1e8;
         z-index: 9999;
       }
 
       .auxiliary-line-y {
         position: absolute;
-        border: .5px dashed #2ab1e8;
+        border: 0.5px dashed #2ab1e8;
         z-index: 9999;
       }
     }

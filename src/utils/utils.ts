@@ -200,6 +200,41 @@ class Utils {
 
     
   }
+  /**
+ * 动态注入脚本，并监听执行完毕事件
+ * @param {string} src 
+ * @param {() => void} onload 
+ */
+ injectJS(src:string) {
+  console.log(src);
+  return new Promise((resolve, reject) => {
+
+    var loaded = Array.from(document.scripts).some(it => it.getAttribute('src') === src); // Warn：script.src !== script.getAttribute('src')
+if(loaded){
+  resolve(true);
+}
+
+  var script = document.createElement('script');
+    script.src = src;
+   script.setAttribute("type", "text/javascript");
+   script.setAttribute("id", "onlyoffice");
+  //  script.onload = script.onreadystatechange = function(res) {
+  //   if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete" ) {
+  //     console.log(res);
+  //       script.onload = script.onreadystatechange = null;
+  //   }
+// };
+
+
+
+window.document.body.appendChild(script);
+script.onload=()=>{
+  resolve(true);
+}
+  })
+
+
+}
 
 
 }
