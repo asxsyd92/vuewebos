@@ -1,6 +1,6 @@
 <template>
   <ul class="global-setup-theme">
-    <template v-for="(option, index) in options" :key="index">
+    <div v-for="(option, index) in options" :key="index">
       <li class="global-setup-theme-item" @click="handlerChange(option.value)">
       <a href="javascript:;">
         <div>
@@ -15,7 +15,7 @@
         </div>
       </a>
     </li>
-    </template>
+    </div>
   </ul>
 </template>
 

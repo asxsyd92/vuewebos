@@ -145,7 +145,7 @@ export default {
       // 菜单数据 与 权限数据 加载
       
       userInfoStore.loadMenus();
-      userInfoStore.loadPermissions();
+    //  userInfoStore.loadPermissions();
     })
 
     const changeVisible = function () {

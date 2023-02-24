@@ -1,6 +1,6 @@
 <template>
 
-    <div ref="office"  style="    height: 500px;">
+    <div ref="office"  style="height: 100%;">
 
        <div id="office">
 

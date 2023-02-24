@@ -82,7 +82,13 @@ export const editmenu = function (arr: any[]) {
       e.children.forEach((element:any) => {
        
         if (element.tag != "") {
-          element.id = element.tag;
+       
+          if(element.tag.indexOf("?")>-1){
+            element.id = element.tag+"&&appid="+element.id;
+          }else{
+            element.id = element.tag+"?appid="+element.id;
+          }
+         
         }
         a.push(element)
       });

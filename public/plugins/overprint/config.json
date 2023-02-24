@@ -1,69 +1,56 @@
 {
-  "name": "套红",
-  "nameLocale": {
-      "ru": "Синонимы",
-      "fr": "Thésaurus",
-      "es": "Tesauro",
-      "de": "Thesaurus"
-  },
-  "guid": "asc.{c5000037-b1f1-11ed-9b42-00ffb2e81da2}",
-  "version": "1.0.0",
+    "name": "套红",
+    "nameLocale": {
+        "ru": "Переводчик",
+        "fr": "Traducteur",
+        "es": "Traductor",
+        "de": "Übersetzer"
+    },
+    "guid": "asc.{c5000037-b1f1-11ed-9b42-00ffb2e81da2}",
+    "version": "1.0.1",
 
-  "variations": [
-      {
-          "description": "Search for synonyms and antonyms of a word and replace it with the selected one.",
-          "descriptionLocale": {
-              "ru": "Находите синонимы и антонимы для выбранного слова.",
-              "fr": "Recherchez les synonymes et les antonymes d'un mot et remplacez-le par le mot sélectionné.",
-              "es": "Busque sinónimos y antónimos de una palabra y sustitúyala por la seleccionada.",
-              "de": "Finden Sie Synonyme und Antonyme eines Wortes und ersetzen Sie es durch die ausgewählte Variante."
-          },
-          "url": "index.html",
+    "variations": [
+        {
+            "description": "Translate the selected text into other languages with Google Translate.",
+            "descriptionLocale": {
+                "ru": "Переводите слова, предложения и абзацы на другие языки с помощью Google Translate.",
+                "fr": "Traduisez le texte sélectionné dans d'autres langues avec Google Translate.",
+                "es": "Traduzca el texto seleccionado a otros idiomas con el Traductor de Google.",
+                "de": "Übersetzen Sie den ausgewählten Text in andere Sprachen mit Google Translate."
+            },
+            "url": "index.html",
 
-          "icons": [ "resources/light/icon.png", "resources/light/icon@2x.png" ],
-          "icons2": [
-              {
-                  "style" : "light",
-                  
-                  "100%": {
-                      "normal": "resources/light/overprint.png"
-                  },
-                  "125%": {
-                      "normal": "resources/light/overprint.png"
-                  },
-                  "150%": {
-                      "normal": "resources/light/overprint.png"
-                  },
-                  "175%": {
-                      "normal": "resources/light/overprint.png"
-                  },
-                  "200%": {
-                      "normal": "resources/light/overprint.png"
-                  }
-              }
-
-          ],
-          "isViewer": true,
-          "EditorsSupport": [ "word", "cell", "slide" ],
-
-          "isVisual": true,
-          "isModal": false,
-          "isInsideMode": true,
-          "initDataType": "text",
-          "isUpdateOleOnResize": false,
-          "initOnSelectionChanged": true
-        //   "store": {
-        //       "background": {
-        //           "light": "#F44725",
-        //           "dark": "#F44725"
-        //       },
-        //       "screenshots" : ["resources/store/screenshots/screen_1.png"],
-        //       "icons"       : {
-        //           "light" : "resources/store/icons",
-        //           "dark"  : "resources/store/icons"
-        //       },
-        //       "categories": ["specAbilities"]
-        //   }
-      }
-  ]
+            "icons": [ "resources/icon.png", "resources/icon@2x.png" ],
+            "icons2": [
+            {
+                "100%": { "normal": "resources/icon.png" },
+                "125%": { "normal": "resources/icon@1.25x.png" },
+                "150%": { "normal": "resources/icon@1.5x.png" },
+                "175%": { "normal": "resources/icon@1.75x.png" },
+                "200%": { "normal": "resources/icon@2x.png" }
+            }
+            ],
+            "screens": ["resources/icon.png"],
+            "isViewer": true,
+            "EditorsSupport": [ "word", "cell", "slide" ],
+            "isVisual": true,
+            "isModal": false,
+            "isInsideMode": true,
+            "initDataType": "text",
+            "isUpdateOleOnResize": false,
+            "initOnSelectionChanged": true,
+            "store": {
+                "background": {
+                    "light": "#F5F5F5",
+                    "dark": "#444444"
+                },
+                "screenshots" : ["resources/icon.png"],
+                "icons"       : {
+                    "light" : "resources/store/icons",
+                    "dark"  : "resources/store/icons"
+                },
+                "categories": ["specAbilities"]
+            }
+        }
+    ]
 }

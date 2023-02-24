@@ -7,7 +7,7 @@
     @change="change"
     @close="close"
   >
-    <template :key="tab" v-for="tab in appStore.tabs">
+    <div  v-for="(tab,index) in appStore.tabs" :key="index">
       <lay-tab-item
         :id="tab.id"
         :title="tab.title"
@@ -18,7 +18,7 @@
           {{ tab.title }}
         </template>
       </lay-tab-item>
-    </template>
+    </div>
   </lay-tab>
 </template>
 

@@ -9,7 +9,7 @@
       </div>
       <div v-else>  
       <lay-select @change="change" v-model="selected" :items="items" :create="true" @create="createEvent"
-          :multiple="multiple" :showSearch="showSearch">
+          :multiple="multiple" :showSearch="showSearch" :searchMethod="searchMethod">
         </lay-select>
       <lay-input style="display: none;"  v-model="value[data.data.name]" :placeholder="data.data.placeholder"></lay-input>
       </div>
@@ -146,6 +146,27 @@ const createEvent = function () {
   if (data.value.data.type == "local") {
 
   }
+  if (data.value.data.type == "api") {
+    http.post(data.value.data.data, {}).then(resp => {
+      if (resp.success) {
+        items.value = resp.data;
+        if (value.value[data.value.data.name] != "") {
+          if (multiple.value) {
+            selected.value = value.value[data.value.data.name].split(",");
+          }else{
+            selected.value = value.value[data.value.data.name];
+          }
+       
+        }
+     
+      }
+    }).catch(resp => {
+
+
+    })
+  }
+}
+const searchMethod=(text:any, optionProps:any)=>{
   if (data.value.data.type == "api") {
     http.post(data.value.data.data, {}).then(resp => {
       if (resp.success) {

@@ -31,16 +31,16 @@ class ListUtils {
     }
     /**
      * 获取按钮
-     * @param path 路由地址：/sys/log
+     * @param appid 路由地址：菜单id
      * @param config loading配置文件
      * @param buttons 按钮
      */
-    getButton = (path: string, config: any, buttons: any) => {
+    getButton = (appid: any, config: any, buttons: any) => {
         return new Promise((resolve, reject) => {
 
 
 
-            http.post("/api/common/getRoleBuutton", { pathname: path }).then((res: any) => {
+            http.post("/api/common/getRoleBuutton", { appid: appid }).then((res: any) => {
                 config.loading = false
 
                 if (res.success) {

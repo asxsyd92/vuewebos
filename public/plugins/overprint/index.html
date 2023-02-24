@@ -25,11 +25,14 @@
       me.callCommand(function() {
         try {
           // 获取文档对象
-          var oDocument = Api.GetDocument()
+          var oDocument = Api.GetDocument();
+          debugger;
           // 生成一个新的段落对象
-          var oParagraph = Api.CreateParagraph()
+          var oParagraph = Api.CreateParagraph();
+         // oDocument.Document; 
           // 往段落里面添加一个字符串文本
-          oParagraph.AddText('Hello world')
+          oParagraph.AddText('Hello world');
+       ///   oDocument.GetBookmarkRange("chromatography").AddText(oParagraph);//="111"
           // 最后往文档里面添加一个段落对象
           oDocument.Push(oParagraph)
         } catch (error) {

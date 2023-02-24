@@ -42,7 +42,7 @@ const config = ref(
             },
             plugins:{
                  autostart: ["asc.{c5000037-b1f1-11ed-9b42-00ffb2e81da2}"],
-                 pluginsData: ['http://127.0.0.1:4000/plugins/overprint/config.json']
+                 pluginsData: ['http://webos.asxsyd92.com/plugins/overprint/config.json']
             } 
     
 

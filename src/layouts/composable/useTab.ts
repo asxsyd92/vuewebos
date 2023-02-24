@@ -48,9 +48,10 @@ export function useTab() {
       if(route.fullPath!="/login"){
 
         appStore.tabs.push({title:  t, id:u,closable: true   });
+        refresh();
       }
 
-      refresh();
+   
     }
   });
   const refresh = function () {
