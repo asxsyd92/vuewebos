@@ -110,7 +110,7 @@
         ],
     data: []
   });
-  listurils.getButton(route.path, config, listbutton).then((res: any) => {
+  listurils.getButton(route.query.appid, config, listbutton).then((res: any) => {
     //加载完成后刷新列表
   
     if (res.success) {
