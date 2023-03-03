@@ -37,6 +37,7 @@ import { useRouter, useRoute } from 'vue-router';
 import utils from '../../utils/utils';
 import { VxeTableInstance, VxeTableListeners, VXETable } from 'vxe-table'
 import popform from '../form/popform.vue';
+import listurils from '../../utils/listutils';
 const xdTable = ref<VxeTableInstance>();
   const treeExpandRecords =ref([]) as any;
 const router = useRouter();
@@ -54,13 +55,34 @@ const options = reactive({
 
   data: [],
 }) as any;
-utils.finbuuton(route.path,options).then((res:any)=>{
-        if(res.success){
-          area.value=res.area;
-          toolbarbuttons.value=res.toolbarbuttons;
-          rowbuttons.value=res.rowbuttons;
-        }
-  });
+const listbutton = ref({
+  rowbuttons: [] as any,
+  toolbarbuttons: [] as any,
+});
+// utils.finbuuton(route.path,options).then((res:any)=>{
+//         if(res.success){
+//           area.value=res.area;
+//           toolbarbuttons.value=res.toolbarbuttons;
+//           rowbuttons.value=res.rowbuttons;
+//         }
+//   });
+listurils.getButton(route.query.appid, options, listbutton).then((res: any) => {
+  //加载完成后刷新列表
+
+  if (res.success) {
+    //search.value.api = res.data.api;
+
+
+    listurils.searchEvent(config, search, {  page: options.pagerConfig!.currentPage, limit: options.pagerConfig!.pageSize });
+  } else {
+    layer.notifiy({
+      title: "Error",
+      content: res.msg,
+      icon: 2
+    })
+  }
+
+});
 const pageChange = ({ currentPage, pageSize }: any) => {
 
   if (options.page) {

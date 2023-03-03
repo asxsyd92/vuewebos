@@ -11,10 +11,11 @@
 
 
 </div>
-<div v-if="data.type=='textarea'||data.type=='ueditor'"   >
+<div v-if="data.type=='textarea'||data.type=='ueditor'||data.type=='onlyoffice'"   >
   <lay-form-item :placeholder="data.data.placeholder"  class="layui-form-item"  :label="data.data.label">
       <lay-textarea  v-model="data.data.col" disabled="disabled"></lay-textarea>
-    </lay-form-item></div>
+    </lay-form-item>
+  </div>
 </div>
 
 </template>

@@ -38,11 +38,11 @@ export default {
     import { useUserStore } from "../../../store/user";
     import VueUeditorWrap from 'vue-ueditor-wrap/lib/vue-ueditor-wrap/index';
     import con from "../../../config";
-interface ItemradioProps {
+interface IueditorProps {
   data: any;
   value:any;
 }
-const props = withDefaults(defineProps<ItemradioProps>(), {
+const props = withDefaults(defineProps<IueditorProps>(), {
   data:Object, value:Object
 });
 

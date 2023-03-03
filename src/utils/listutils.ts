@@ -232,10 +232,7 @@ class ListUtils {
                 {
                     text: "确认",
                     callback: (resp: any) => {
-
-                        ks.component.exposed.validate(suppdata, resp, layer)
-
-
+                        ks.component.exposed.validate(suppdata, resp, layer);
                     },
                 },
                 {
@@ -243,10 +240,8 @@ class ListUtils {
                     callback: (resp: any) => {
                         layer.close(resp);
                     },
-                },
-            ]
-        })
-
+                } ]
+        });
     }
 
 }

@@ -22,11 +22,11 @@ export default {
 </script>
 <script lang="ts" setup>
 import { ref,reactive ,toRefs   } from "vue";
-interface ItemcolorProps {
+interface IitemiconProps {
   data: any;
   value:any;
 }
-const props = withDefaults(defineProps<ItemcolorProps>(), {
+const props = withDefaults(defineProps<IitemiconProps>(), {
   data:Object, value:Object
 });
 

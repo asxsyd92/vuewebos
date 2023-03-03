@@ -7,7 +7,8 @@ import setueditor from './set/setueditor.vue';
 import setcolor from './set/setcolor.vue';
 import seticon from './set/seticon.vue';
 import setbaiduuplod from './set/setbaiduuplod.vue';
+import setonlyoffice from './set/setonlyoffice.vue';
 export default {
-    setinput, setradio,setselect,setcheckbox,setform,setueditor,setcolor,seticon,setbaiduuplod
+    setinput, setradio,setselect,setcheckbox,setform,setueditor,setcolor,seticon,setbaiduuplod,setonlyoffice
     
 }

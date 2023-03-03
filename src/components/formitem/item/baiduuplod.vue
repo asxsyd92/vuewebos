@@ -49,18 +49,23 @@
 
 </lay-col>
   </template>
-  
+  <script lang="ts">
+import Vue from "vue";
+export default {
+  name: "baiduuplod",
+};
+</script>
   
   <script lang="ts" setup>
-    import { ref, reactive, onMounted } from "vue";
+    import { ref } from "vue";
     import { useUserStore } from "../../../store/user";
     import VueUeditorWrap from 'vue-ueditor-wrap/lib/vue-ueditor-wrap/index';
     import con from "../../../config";
-    interface ItemradioProps {
+    interface IbaiduuplodProps {
       data: any;
       value: any;
     }
-    const props = withDefaults(defineProps < ItemradioProps > (), {
+    const props = withDefaults(defineProps<IbaiduuplodProps>(), {
       data: Object, value: Object
     });
     const active = ref("0");

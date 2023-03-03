@@ -9,7 +9,7 @@
         </lay-side>
         <lay-body>
 
-            <vxe-grid ref="xGrid" v-bind="gridOptions" v-on="gridEvents"
+            <vxe-grid ref="xGrid" v-bind="config" v-on="gridEvents"
                 :column-config="{ isCurrent: true, isHover: true }" :row-config="{ isCurrent: true, isHover: true }">
                 <!--将表单放在工具栏中-->
                 <template #toolbar_buttons>
@@ -21,7 +21,7 @@
                         </vxe-form-item>
                         <vxe-form-item>
                             <template #default>
-                                <lay-button-group v-for="n in toolbarbuttons" :key="n">
+                                <lay-button-group v-for="n in listbutton.toolbarbuttons" :key="n">
                                     <lay-button :size="n.size" :type="n.status" border-style="dashed" @click="Events(n,null)">{{n.name}}</lay-button>
 
                                   </lay-button-group>
@@ -32,7 +32,7 @@
                 </template>
 
                 <template #operate="{ row }">
-                    <span v-for="n in rowbuttons" :key="n">
+                    <span v-for="n in listbutton.rowbuttons" :key="n">
                         <vxe-button :icon="n.icon" :title="n.name" circle @click="Events(n,row)"></vxe-button>
                     </span>
           </template>
@@ -52,7 +52,7 @@ import { layer } from "@layui/layer-vue"
 import { reactive, ref } from 'vue'
 import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
 import utils from '../../utils/utils';
-
+import listurils from '../../utils/listutils';
 const xGrid = ref<VxeGridInstance>()
 
 const formid = ref("");
@@ -68,38 +68,25 @@ const depOptions = reactive({
     loading: false,
     depData: []
 })
-
-utils.finbuuton(route.path,depOptions).then((res:any)=>{
-        if(res.success){
-          area.value=res.area;
-          toolbarbuttons.value=res.toolbarbuttons;
-          rowbuttons.value=res.rowbuttons;
-        }
-  });
-const findDepartmentList = () => {
-    depOptions.loading = true;
-
-
-    http.post("/api/department/getDepartmentById", { id: "" }).then(res => {
-        depOptions.loading = false
-
-        if (res.success) {
-            depOptions.depData = res.data;
-           
-
-        }
-    });
-}
-
-findDepartmentList();
-
-//用户信息
-const search = ref({
-    name: '',
-    type: ""
+const listbutton = ref({
+  area: ['50%', '50%'],
+  rowbuttons: [] as any,
+  toolbarbuttons: [] as any,
 });
+const search = ref({
+  name: '',
+  type: "",
+  api: ""
+});
+// utils.finbuuton(route.query.appid,depOptions).then((res:any)=>{
+//         if(res.success){
+//           area.value=res.area;
+//           toolbarbuttons.value=res.toolbarbuttons;
+//           rowbuttons.value=res.rowbuttons;
+//         }
+//   });
 
-const gridOptions = reactive<VxeGridProps>({
+const config = reactive<VxeGridProps>({
     border: true,
     keepSource: true,
     showOverflow: true,
@@ -156,21 +143,55 @@ const gridOptions = reactive<VxeGridProps>({
     data: []
 })
 
-const findList = () => {
-    gridOptions.loading = true;
-    var page: any, limt: any;
-    if (gridOptions.pagerConfig) {
-        page = gridOptions.pagerConfig.currentPage;
-        limt = gridOptions.pagerConfig.pageSize;
-    }
-    http.post("/api/users/getUsersPage", { type: search.value.type, title: search.value.name, page: page, limit: limt }).then(res => {
-        gridOptions.loading = false
+listurils.getButton(route.query.appid, config, listbutton).then((res: any) => {
+  //加载完成后刷新列表
+
+  if (res.success) {
+    search.value.api = res.data.api;
+            listurils.searchEvent(config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
+  } else {
+    layer.notifiy({
+      title: "Error",
+      content: res.msg,
+      icon: 2
+    })
+  }
+
+});
+const findDepartmentList = () => {
+    depOptions.loading = true;
+
+
+    http.post("/api/department/getDepartmentById", { id: "" }).then(res => {
+        depOptions.loading = false
 
         if (res.success) {
-            gridOptions.data = res.data;
+            depOptions.depData = res.data;
+           
 
-            if (gridOptions.pagerConfig) {
-                gridOptions.pagerConfig.total = res.count
+        }
+    });
+}
+
+findDepartmentList();
+
+
+
+const findList = () => {
+    config.loading = true;
+    var page: any, limt: any;
+    if (config.pagerConfig) {
+        page = config.pagerConfig.currentPage;
+        limt = config.pagerConfig.pageSize;
+    }
+    http.post("/api/users/getUsersPage", { type: search.value.type, title: search.value.name, page: page, limit: limt }).then(res => {
+        config.loading = false
+
+        if (res.success) {
+            config.data = res.data;
+
+            if (config.pagerConfig) {
+                config.pagerConfig.total = res.count
             }
         }
     });
@@ -178,9 +199,9 @@ const findList = () => {
 
 const gridEvents: VxeGridListeners = {
     pageChange({ currentPage, pageSize }) {
-        if (gridOptions.pagerConfig) {
-            gridOptions.pagerConfig.currentPage = currentPage
-            gridOptions.pagerConfig.pageSize = pageSize
+        if (config.pagerConfig) {
+            config.pagerConfig.currentPage = currentPage
+            config.pagerConfig.pageSize = pageSize
         }
         findList()
     }
@@ -203,10 +224,10 @@ const saveRowEvent = async () => {
     const $grid = xGrid.value
     if ($grid) {
         await $grid.clearActived()
-        gridOptions.loading = true
+        config.loading = true
         // 模拟异步保存
         setTimeout(() => {
-            gridOptions.loading = false
+            config.loading = false
             VXETable.modal.message({ content: '保存成功！', status: 'success' })
         }, 300)
     }

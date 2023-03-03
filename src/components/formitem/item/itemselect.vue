@@ -25,7 +25,7 @@ import Vue from "vue";
 import { values } from 'xe-utils';
 import { treeToList } from '../../../library/treeUtil';
 export default {
-  name: "itemcheckbox",
+  name: "itemselect",
 };
 </script>
 <script lang="ts" setup>
@@ -34,11 +34,11 @@ import { useRoute } from "vue-router";
 import http from "../../../api/http";
 import utils from "../../../utils/utils";
 
-interface ItemcolorProps {
+interface IitemselectProps {
   data: any;
   value: any;
 }
-const props = withDefaults(defineProps<ItemcolorProps>(), {
+const props = withDefaults(defineProps<IitemselectProps>(), {
   data: Object, value: Object
 });
 const showtext=ref({}) as any;

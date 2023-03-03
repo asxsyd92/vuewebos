@@ -15,7 +15,7 @@
       <vxe-column field="icon" title="图标"></vxe-column>
       <vxe-column title="操作">
         <template #default="{ row }">
-          <span v-for="n in rowbuttons" :key="n">
+          <span v-for="n in listbutton.rowbuttons" :key="n">
             <vxe-button :icon="n.icon" :title="n.name" circle @click="Events(n,row)"></vxe-button>
         </span>
         </template>
@@ -37,12 +37,11 @@ import { useRouter, useRoute } from 'vue-router';
 import utils from '../../utils/utils';
 import { VxeTableInstance, VxeTableListeners, VXETable } from 'vxe-table'
 import popform from '../form/popform.vue';
+import listurils from '../../utils/listutils';
 const xGrid = ref<VxeTableInstance>();
   const parentlist = ref([]) as any;
 const router = useRouter();
     const route = useRoute();
-    const toolbarbuttons=ref([]) as any;
-  const rowbuttons=ref([]) as any;
   const area=ref(['50%','40%']);
 const options = reactive({
   loading: false,
@@ -54,13 +53,34 @@ const options = reactive({
 
   data: [],
 }) as any;
-utils.finbuuton(route.path,options).then((res:any)=>{
-        if(res.success){
-          area.value=res.area;
-          toolbarbuttons.value=res.toolbarbuttons;
-          rowbuttons.value=res.rowbuttons;
-        }
-  });
+const listbutton = ref({
+  rowbuttons: [] as any,
+  toolbarbuttons: [] as any,
+});
+const search = ref({
+  name: '',
+  type: "",
+  api: ""
+});
+
+//
+listurils.getButton(route.query.appid, options, listbutton).then((res: any) => {
+  //加载完成后刷新列表
+
+  if (res.success) {
+  //  search.value.api = res.data.api;
+
+
+    listurils.searchEvent(options, search, {  page: options.pagerConfig!.currentPage, limit: options.pagerConfig!.pageSize });
+  } else {
+    layer.notifiy({
+      title: "Error",
+      content: res.msg,
+      icon: 2
+    })
+  }
+
+});
 const pageChange = ({ currentPage, pageSize }: any) => {
 
   if (options.page) {

@@ -7,8 +7,6 @@
 <script lang="ts" setup>
 import onlyoffice from '../../../components/formitem/item/onlyoffice.vue';
 import { ref } from 'vue';
-
-
 const config = ref(
     {
         document: {
@@ -22,11 +20,10 @@ const config = ref(
                 copy: true
             },
 
-
             url: "http://asxsyd92.com/asxsyd92upload/new.docx",
       },
         editorConfig: {
-            callbackUrl: "http://asxsyd92.com/v1/api/office/Callback?filename=new.docx&useraddress=asxsyd92.com",
+            callbackUrl: "http://192.168.31.165:89/v1/api/office/Callback?filename=new.docx&useraddress=asxsyd92.com",
             lang: "zh",
             status: 2,
             canAutosave: true,
@@ -40,7 +37,7 @@ const config = ref(
             },
             plugins:{
                  autostart: ["asc.{c5000037-b1f1-11ed-9b42-00ffb2e81da2}"],
-                 pluginsData: ['http://webos.asxsyd92.com/plugins/overprint/config.json']
+                 pluginsData: ['http://service.asxsyd92.com:8090/7.3.2-8/sdkjs-plugins/redchromatography/overprint/config.json']
             } 
     
 
