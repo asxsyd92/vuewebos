@@ -5,7 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-import onlyoffice from '../../../components/formitem/item/onlyoffice.vue';
+  import onlyoffice from 'webos-form-design/src/components/formitem/item/onlyoffice.vue';
+// import onlyoffice from '../../../components/formitem/item/onlyoffice.vue';
 import { ref } from 'vue';
 const config = ref(
     {

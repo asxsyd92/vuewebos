@@ -75,7 +75,7 @@ import CryptoJS from "crypto-js";
 import AES from "crypto-js/aes";
 import moment from 'moment';
 
-import http from '../../api/http';
+import http from 'webosutils/lib/http';
 import config from '../../config';
 
 //   setup() {

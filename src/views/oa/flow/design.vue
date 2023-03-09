@@ -78,7 +78,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import http from "../../../api/http";
+import http from "webosutils/lib/http";
 import { useUserStore } from "../../../store/user";
 
 import { layer } from "@layui/layer-vue";

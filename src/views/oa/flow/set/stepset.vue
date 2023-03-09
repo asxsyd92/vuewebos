@@ -243,7 +243,7 @@ export default {
 }
 </script>
 <script lang="ts" setup>
-import http from "../../../../api/http";
+import http from "webosutils/lib/http";
 import { layer } from '@layui/layer-vue';
 import { ref } from "vue";
 import flowutils from "../../../../utils/flowutils";

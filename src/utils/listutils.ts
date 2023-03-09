@@ -1,7 +1,7 @@
 
 import { layer } from "@layui/layui-vue";
 import utils from '../utils/utils';
-import http from '../api/http';
+import http from 'webosutils/lib/http';
 import { h } from "vue";
 class ListUtils {
 

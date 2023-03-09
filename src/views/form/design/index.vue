@@ -61,10 +61,11 @@
 
 <script lang="ts" setup>
 import draggable from "vuedraggable";
-import subdesign from '../../../components/formdesign/subdesign.vue';
-import sets from '../../../components/formdesign/set.vue';
+import subdesign from "webos-form-design/src/components/formdesign/subdesign.vue"
+// import subdesign from '../../../components/formdesign/subdesign.vue';
+import sets from 'webos-form-design/src/components/formdesign/set.vue';
 import _ from 'lodash';
-import http from "../../../api/http";
+import http from "webosutils/lib/http";
 import {watch,  ref, onMounted } from 'vue';
 import { useRouter, useRoute, RouteMeta } from 'vue-router';
 import toolsdata from '../../../assets/toolsdata';

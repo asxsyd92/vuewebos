@@ -45,7 +45,7 @@
 </template>
 <script lang="ts" setup>
 
-import http from '../../api/http';
+import http from 'webosutils/lib/http';
 import { useRouter, useRoute } from 'vue-router';
 import popform from '../form/popform.vue';
 import { layer } from "@layui/layer-vue"

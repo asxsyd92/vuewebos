@@ -30,7 +30,7 @@ export default {
 
 import { ref } from 'vue';
 
-import http from '../../api/http';
+import http from 'webosutils/lib/http';
 import xzqCode from "../../utils/map/xzqCode";
 
 

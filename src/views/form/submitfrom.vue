@@ -32,9 +32,10 @@ import { ref, onMounted } from 'vue'
 import { layer } from '@layui/layer-vue'
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore } from "../../store/app";
-import http from '../../api/http';
+import http from 'webosutils/lib/http';
 import HelpTabs from "../../utils/HelpTabs"
-import subform from '../../components/formitem/subform.vue';
+import subform from 'webos-form-design/src/components/formitem/subform.vue';
+// import subform from '../../components/formitem/subform.vue';
 export default {
   components: { subform },
   setup() {

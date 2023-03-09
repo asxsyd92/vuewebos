@@ -21,9 +21,9 @@
   import { layer } from '@layui/layer-vue'
   import { useRoute, useRouter } from "vue-router";
   import { useAppStore } from "../../store/app";
-  import http from '../../api/http';
-  import subform from '../../components/formitem/subform.vue';
-
+  import http from 'webosutils/lib/http';
+  // import subform from '../../components/formitem/subform.vue';
+  import subform from 'webos-form-design/src/components/formitem/subform.vue';
   interface IdesignselectProps {
     fromid:any, instanceid: any,callback:Function
 }

@@ -68,8 +68,9 @@ import { ref, onMounted, h } from 'vue'
 import { layer } from '@layui/layer-vue'
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore } from "../../../store/app";
-import http from '../../../api/http';
-import subform from '../../../components/formitem/subform.vue';
+import http from 'webosutils/lib/http';
+import subform from 'webos-form-design/src/components/formitem/subform.vue';
+// import subform from '../../../components/formitem/subform.vue';
 import HelpTabs from "../../../utils/HelpTabs"
 import flowutils from '../../../utils/flowutils';
 import utils from '../../../utils/utils'

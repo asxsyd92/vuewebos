@@ -123,7 +123,7 @@ import GlobalBreadcrumb from "./Global/GlobalBreadcrumb.vue";
 import GlobalTab from "./Global/GlobalTab.vue";
 import GlobalMenu from "./Global/GlobalMenu.vue";
 import { useRouter } from "vue-router";
-import http from "../api/http";
+import http from "webosutils/lib/http";
 export default {
   components: {
     GlobalSetup,

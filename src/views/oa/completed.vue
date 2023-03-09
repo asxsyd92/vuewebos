@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import http from '../../api/http';
+import http from 'webosutils/lib/http';
 import { useRouter, useRoute, RouteMeta } from 'vue-router';
 
 import { defineComponent, reactive, ref } from 'vue'

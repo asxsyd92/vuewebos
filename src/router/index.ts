@@ -4,7 +4,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useUserStore } from "../store/user";
 import { useAppStore } from "../store/app";
-import http from '../api/http';
+import http from 'webosutils/lib/http';
 NProgress.configure({ showSpinner: false })
 
 

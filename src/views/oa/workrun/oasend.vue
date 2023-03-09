@@ -40,7 +40,7 @@ export default {
 <script lang="ts" setup>
 
 import { ref, reactive,h } from 'vue';
-import http from '../../../api/http';
+import http from 'webosutils/lib/http';
 import { layer } from '@layui/layer-vue';
 import { useUserStore } from '../../../store/user';
 import con from '../../../config';

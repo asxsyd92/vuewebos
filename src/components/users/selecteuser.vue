@@ -18,7 +18,7 @@ export default {
 
 import { ref } from 'vue';
 import { treeToList } from '../../library/treeUtil';
-import http from '../../api/http';
+import http from 'webosutils/lib/http';
 interface IselecteuserProps {
     orgid:any,data:any, callback:Function
 }

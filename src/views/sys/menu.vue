@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
-import http from '../../api/http';
+import http from 'webosutils/lib/http';
 import { layer } from '@layui/layer-vue'
 import { useRouter, useRoute } from 'vue-router';
 import utils from '../../utils/utils';

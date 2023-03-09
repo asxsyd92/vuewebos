@@ -1,7 +1,7 @@
 import { layer } from "@layui/layui-vue";
 import { InsideDataZoomComponentOption } from "echarts";
 import {h} from "vue";
-import http from "../api/http";
+import http from "webosutils/lib/http";
 class Utils {
 
 
