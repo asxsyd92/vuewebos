@@ -10,13 +10,13 @@ import 'font-awesome/css/font-awesome.min.css'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 // import { createPinia } from 'pinia'
-
+import Layuid from '@layui/layui-vue'
 import VueUeditorWrap from "vue-ueditor-wrap";
 import print from "print-js";
 // import DataVVue3 from '@kjgl77/datav-vue3'
 function useTable (app: App) {
     app.use(VXETable)
-    localStorage.httpversion="http://172.27.176.1:4000/v1";
+    localStorage.httpversion=" http://localhost:4000/v1";
     localStorage.seourl="http://asxsyd92.com",
     localStorage.onlyoffice="http://service.asxsyd92.com:8090/web-apps/apps/api/documents/api.js",
     localStorage.documenturl="http://asxsyd92.com",//默认配置的文档下载地址适用组件
@@ -35,7 +35,7 @@ app.use(Router);
 app.use(VueUeditorWrap);
 // app.use(DataVVue3);
 app.use(useTable);
-
+app.use(Layuid);
 // app.use(pinia)
 app.directive("permission",permission);
 app.mount('#app');
