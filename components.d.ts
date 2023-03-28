@@ -73,9 +73,11 @@ declare module '@vue/runtime-core' {
     LayTransition: typeof import('@layui/layui-vue')['LayTransition']
     LayTreeSelect: typeof import('@layui/layui-vue')['LayTreeSelect']
     LightIcon: typeof import('./src/components/lightIcon.vue')['default']
+    Mianwait: typeof import('./src/components/mian/mianwait.vue')['default']
     NodeItem: typeof import('./src/components/flow/node-item.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Selecteuser: typeof import('./src/components/users/selecteuser.vue')['default']
+    Wait: typeof import('./src/components/mian/wait.vue')['default']
   }
 }

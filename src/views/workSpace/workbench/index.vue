@@ -4,96 +4,7 @@
       <lay-col md="18" sm="18" xs="24">
         <lay-row :space="10">
           <lay-col :md="24">
-            <lay-card class="project-grids">
-              <template v-slot:title>
-                最近更新
-              </template>
-              <template v-slot:extra>
-                全部更新
-              </template>
-              <template v-slot:body>
-                <lay-row>
-                  <lay-col :md="8">
-                    <div class="project-grid">
-                      <div class="project-grid-title">
-                        <lay-icon type="layui-icon-home"></lay-icon>
-                        <a>upload</a>
-                      </div>
-                      <p class="project-grid-center">修复开启 isLazyimg:true 后, 图片懒加载但是图片不存在的报错问题</p>
-                      <p class="project-grid-footer">
-                        <a>文件上传</a>
-                        <span>7天前</span>
-                      </p>
-                    </div>
-                  </lay-col>
-                  <lay-col :md="8">
-                    <div class="project-grid">
-                      <div class="project-grid-title">
-                        <lay-icon type="layui-icon-home"></lay-icon>
-                        <a>upload</a>
-                      </div>
-                      <p class="project-grid-center">修复开启 isLazyimg:true 后, 图片懒加载但是图片不存在的报错问题</p>
-                      <p class="project-grid-footer">
-                        <a>文件上传</a>
-                        <span>7天前</span>
-                      </p>
-                    </div>
-                  </lay-col>
-                  <lay-col :md="8">
-                    <div class="project-grid">
-                      <div class="project-grid-title">
-                        <lay-icon type="layui-icon-home"></lay-icon>
-                        <a>upload</a>
-                      </div>
-                      <p class="project-grid-center">修复开启 isLazyimg:true 后, 图片懒加载但是图片不存在的报错问题</p>
-                      <p class="project-grid-footer">
-                        <a>文件上传</a>
-                        <span>7天前</span>
-                      </p>
-                    </div>
-                  </lay-col>
-                  <lay-col :md="8">
-                    <div class="project-grid">
-                      <div class="project-grid-title">
-                        <lay-icon type="layui-icon-home"></lay-icon>
-                        <a>upload</a>
-                      </div>
-                      <p class="project-grid-center">修复开启 isLazyimg:true 后, 图片懒加载但是图片不存在的报错问题</p>
-                      <p class="project-grid-footer">
-                        <a>文件上传</a>
-                        <span>7天前</span>
-                      </p>
-                    </div>
-                  </lay-col>
-                  <lay-col :md="8">
-                    <div class="project-grid">
-                      <div class="project-grid-title">
-                        <lay-icon type="layui-icon-home"></lay-icon>
-                        <a>upload</a>
-                      </div>
-                      <p class="project-grid-center">修复开启 isLazyimg:true 后, 图片懒加载但是图片不存在的报错问题</p>
-                      <p class="project-grid-footer">
-                        <a>文件上传</a>
-                        <span>7天前</span>
-                      </p>
-                    </div>
-                  </lay-col>
-                  <lay-col :md="8">
-                    <div class="project-grid">
-                      <div class="project-grid-title">
-                        <lay-icon type="layui-icon-home"></lay-icon>
-                        <a>upload</a>
-                      </div>
-                      <p class="project-grid-center">修复开启 isLazyimg:true 后, 图片懒加载但是图片不存在的报错问题</p>
-                      <p class="project-grid-footer">
-                        <a>文件上传</a>
-                        <span>7天前</span>
-                      </p>
-                    </div>
-                  </lay-col>
-                </lay-row>
-              </template>
-            </lay-card>
+          <mianwait></mianwait>
           </lay-col>
           <lay-col :md="24">
             <lay-card>
@@ -175,62 +86,65 @@
   </lay-container>
 </template>
 <script lang="ts">
-import { defineComponent, nextTick, ref } from "vue";
-import * as echarts from 'echarts';
+export default {
+    name: "workbench"
+}
+</script>
+<script lang="ts" setup>
+import mianwait from '../../../components/mian/mianwait.vue';
 
-export default defineComponent({
-  setup() {
+// import { defineComponent, nextTick, ref } from "vue";
+// import * as echarts from 'echarts';
 
-    nextTick(() => {
-      var chartDom = document.getElementById('main');
-      // @ts-ignore
-      var myChart = echarts.init(chartDom);
-      var option;
+// export default defineComponent({
+//   setup() {
 
-      option = {
-        legend: {
-          data: ['Allocated Budget', 'Actual Spending']
-        },
-        radar: {
-          indicator: [
-            { name: '进攻', max: 6500 },
-            { name: '技巧', max: 16000 },
-            { name: '力量', max: 30000 },
-            { name: '速度', max: 38000 },
-            { name: '体能', max: 52000 },
-            { name: '防守', max: 25000 }
-          ]
-        },
-        series: [
-          {
-            name: 'Budget vs spending',
-            type: 'radar',
-            data: [
-              {
-                value: [4200, 3000, 20000, 35000, 50000, 18000],
-              },
-              {
-                value: [5000, 14000, 28000, 26000, 42000, 21000],
-              }
-            ]
-          }
-        ]
-      };
+//     nextTick(() => {
+//       var chartDom = document.getElementById('main');
+//       // @ts-ignore
+//       var myChart = echarts.init(chartDom);
+//       var option;
 
-      option && myChart.setOption(option);
-    })
+//       option = {
+//         legend: {
+//           data: ['Allocated Budget', 'Actual Spending']
+//         },
+//         radar: {
+//           indicator: [
+//             { name: '进攻', max: 6500 },
+//             { name: '技巧', max: 16000 },
+//             { name: '力量', max: 30000 },
+//             { name: '速度', max: 38000 },
+//             { name: '体能', max: 52000 },
+//             { name: '防守', max: 25000 }
+//           ]
+//         },
+//         series: [
+//           {
+//             name: 'Budget vs spending',
+//             type: 'radar',
+//             data: [
+//               {
+//                 value: [4200, 3000, 20000, 35000, 50000, 18000],
+//               },
+//               {
+//                 value: [5000, 14000, 28000, 26000, 42000, 21000],
+//               }
+//             ]
+//           }
+//         ]
+//       };
 
-    return {};
-  },
-});
+//       option && myChart.setOption(option);
+//     })
+
+//     return {};
+//   },
+// });
 </script>
 
 <style lang="less" scoped>
-.project-grids {
-  :deep(.layui-card-body) {
-    padding: 0;
-  }
-}
+
 
 .project-grid {
   padding: 24px;
