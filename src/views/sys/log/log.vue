@@ -174,3 +174,113 @@ const Events = (ent: any, row: any) => {
 
 }
 </script>
+
+<!-- 
+<template>
+  <lay-layout>
+    <lay-card>
+      <lay-table id="id" :columns="config.columns" 
+    
+      :expand-index="1" :data-source="config.data" :checkbox="checkbox5"
+        :page="config.page" :resize="true" :autoColsWidth="true" @row="rowClick5" @change="change">
+        <template v-slot:toolbar>
+          <lay-button size="sm" type="primary">新增</lay-button>
+          <lay-button size="sm">删除</lay-button>
+        </template>
+        <template v-slot:name="{ row, column, rowIndex, columnIndex }"> {{ row.name }} </template>
+       
+        <template v-slot:operator="{ row }">
+          <lay-button size="xs">修改</lay-button>
+          <lay-button size="xs" type="primary">删除</lay-button>
+        </template>
+      </lay-table>
+    </lay-card>
+  </lay-layout>
+</template>
+<script lang="ts" setup>
+import { ref } from 'vue'
+import popform from '../../form/popform.vue';
+import { layer } from "@layui/layer-vue"
+import { useRoute } from 'vue-router';
+import listurils from '../../../utils/listutils';
+import http from 'webosutils/lib/http';
+const checkbox5 = ref(true);
+const route = useRoute();
+// const defaultToolbar5 = ref(['export', 'print', 'filter'])
+// const maxHeight5 = ref('500px');
+const config = ref(
+  {
+    page: {
+      total: 0,
+      limit: 10,
+      current: 1,
+      limits: [10, 50, 100, 200],
+      showRefresh: true
+    },
+    columns: [{ type: 'checkbox', width: 50 },
+    { key: 'title', title: '标题', },
+    { key: 'type', title: '类型', },
+    { key: 'username', title: '操作人', },
+    { key: 'writetime', title: '发生时间', },
+    { key: 'ipaddress', title: "IP地址" },
+    { key: 'pro', title: "归属省份" },
+    { key: 'city', title: "归属市份" },
+    { key: 'addr', title: "详细地址" },
+    { key: 'citycode', title: "城市编号" },
+    { key: 'contents', title: '详情', },
+    {
+      title: "操作",
+      width: "150px",
+      fixed: "right",
+      customSlot: "operator",
+      key: "operator"
+    }],
+    data: [],
+    search: {
+      name: '',
+      type: "",
+      api: ""
+    }
+  }
+);
+const listbutton = ref({
+  rowbuttons: [],
+  toolbarbuttons: [],
+}) as any;
+listurils.getButton(route.query.appid, config, listbutton).then((res: any) => {
+  //加载完成后刷新列表
+
+  if (res.success) {
+    config.value.search.api = res.data.api;
+    searchEvent();
+  } else {
+    layer.notifiy({
+      title: "Error",
+      content: res.msg,
+      icon: 2
+    })
+  }
+
+});
+
+const change = (p: any) => {
+  config.value.page.current = p.current;
+  config.value.page.limit = p.limit;
+  searchEvent();
+}
+const rowClick5 = (data: any) => {
+  console.log(JSON.stringify(data))
+}
+const searchEvent = () => {
+  listurils.getList(config.value, config.value.search.api, { type: config.value.search.type, title: config.value.search.name, page: config.value.page.current, limit: config.value.page.limit });
+
+}
+const rowDoubleClick5 = (data: any) => {
+  console.log(JSON.stringify(data))
+}
+
+
+
+
+
+</script> -->

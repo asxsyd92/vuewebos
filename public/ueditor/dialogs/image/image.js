@@ -838,7 +838,7 @@
             /* 拉取数据需要使用的值 */
             this.state = 0;
             this.listSize = editor.getOpt('imageManagerListSize');
-            this.listIndex = 0;
+            this.listIndex = 1;
             this.listEnd = false;
 
             /* 第一次拉取数据 */
@@ -870,7 +870,7 @@
                             var json = isJsonp ? r:eval('(' + r.responseText + ')');
                             if (json.state == 'SUCCESS') {
                                 _this.pushData(json.list);
-                                _this.listIndex = parseInt(json.start) + parseInt(json.list.length);
+                                _this.listIndex = parseInt(json.start) + 1;
                                 if(_this.listIndex >= json.total) {
                                     _this.listEnd = true;
                                 }

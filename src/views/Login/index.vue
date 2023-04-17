@@ -1,5 +1,9 @@
 <template>
+  <div>
+    <video class="video"  disablePictureInPicture  controlslist="nodownload"   muted="true" loop="true" src="http://s3.bytecdn.cn/aweme/resource/web/static/image/index/new-tvc_889b57b.mp4" width="100%" height="110%" autoplay="true"
+    ></video>
   <div class="login-wrap">
+   
     <div class="login-root">
       <div class="login-main">
         <img class="login-one-ball"
@@ -60,6 +64,7 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -239,6 +244,13 @@ var heartCheck = {
 </script>
 
 <style scoped>
+.video{
+  position:relative;
+  width:100%;
+  
+  height:100%;
+  overflow:hidden;
+}
 .login-one-ball {
   opacity: 0.4;
   position: absolute;
@@ -267,7 +279,6 @@ var heartCheck = {
   right: 0;
   overflow: auto;
   z-index: 9;
-  background-image: url(https://assets.codehub.cn/micro-frontend/login/f7eeecbeccefe963298c23b54741d473.png);
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 100vh;
@@ -320,7 +331,7 @@ var heartCheck = {
   max-width: calc(100vw - 28px);
   border: 1.5px solid #fff;
   border-radius: 8px;
-  background: hsla(0, 0%, 100%, 0.5);
+  background: hsla(0, 0%, 100%, 0.99);
   backdrop-filter: blur(30px);
 }
 

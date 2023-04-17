@@ -42,6 +42,7 @@ const page = ref({
   limit: 5,
   current: 1,
   showRefresh: true,
+  limits:[5]
 });
 const change = (p: any) => {
   layer.msg("current:" + p.current + " limit:" + p.limit);

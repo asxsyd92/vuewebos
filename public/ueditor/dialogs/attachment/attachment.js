@@ -642,7 +642,7 @@
                             var json = eval('(' + r.responseText + ')');
                             if (json.state == 'SUCCESS') {
                                 _this.pushData(json.list);
-                                _this.listIndex = parseInt(json.start) + parseInt(json.list.length);
+                                _this.listIndex = parseInt(json.start) + 1;
                                 if(_this.listIndex >= json.total) {
                                     _this.listEnd = true;
                                 }

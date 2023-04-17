@@ -44,7 +44,7 @@ class ListUtils {
                 config.loading = false
 
                 if (res.success) {
-          
+          debugger;
                     buttons.value.toolbarbuttons = res.data.filter((item: any) => { return item.type == 1 });
                     buttons.value.rowbuttons = res.data.filter((item: any) => { return item.type == 2 });
                    

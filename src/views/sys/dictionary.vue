@@ -10,12 +10,12 @@
       </template>
       <vxe-column type="checkbox" width="60"></vxe-column>
       <vxe-column field="title" title="标题" tree-node></vxe-column>
-      <vxe-column field="tag" title="访问地址"></vxe-column>
-      <vxe-column field="color" title="颜色"></vxe-column>
+      <vxe-column field="id" title="id"></vxe-column>
+      <vxe-column field="code" title="code"></vxe-column>
       <vxe-column field="icon" title="图标"></vxe-column>
       <vxe-column title="操作">
         <template #default="{ row }">
-          <span v-for="n in rowbuttons" :key="n">
+          <span v-for="n in listbutton.rowbuttons" :key="n">
             <vxe-button :icon="n.icon" :title="n.name" circle @click="Events(n,row)"></vxe-button>
         </span>
         </template>
