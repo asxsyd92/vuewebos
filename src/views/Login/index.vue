@@ -1,6 +1,6 @@
 <template>
   <div>
-    <video class="video"  disablePictureInPicture  controlslist="nodownload"   muted="true" loop="true" src="http://s3.bytecdn.cn/aweme/resource/web/static/image/index/new-tvc_889b57b.mp4" width="100%" height="110%" autoplay="true"
+    <video class="video"  disablePictureInPicture  controlslist="nodownload"   muted="true" loop="true" src="../../assets/video/bg.mp4" width="100%" height="110%" autoplay="true"
     ></video>
   <div class="login-wrap">
    
@@ -245,9 +245,9 @@ var heartCheck = {
 
 <style scoped>
 .video{
-  position:relative;
+  position:absolute;
   width:100%;
-  
+  object-fit: fill;
   height:100%;
   overflow:hidden;
 }
@@ -331,7 +331,7 @@ var heartCheck = {
   max-width: calc(100vw - 28px);
   border: 1.5px solid #fff;
   border-radius: 8px;
-  background: hsla(0, 0%, 100%, 0.99);
+  background: hsla(0, 0%, 100%, 0.8);
   backdrop-filter: blur(30px);
 }
 
