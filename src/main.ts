@@ -15,12 +15,13 @@ import VueUeditorWrap from "vue-ueditor-wrap";
 import print from "print-js";
 // import DataVVue3 from '@kjgl77/datav-vue3'
 function useTable (app: App) {
-    app.use(VXETable)
-    localStorage.httpversion=" http://localhost:4000/v1";
-    localStorage.seourl="http://asxsyd92.com",
+    app.use(VXETable);
+    
+    localStorage.httpversion=location.origin+"/v1";
+    localStorage.seourl=location.origin,
     localStorage.onlyoffice="http://service.asxsyd92.com:8090/web-apps/apps/api/documents/api.js",
     localStorage.documenturl="http://asxsyd92.com",//默认配置的文档下载地址适用组件
-    localStorage.documentcallbackUrl="http://asxsyd92.com/v1" ,//http+域名+接口版本
+    localStorage.documentcallbackUrl=location.origin+"/v1" ,//http+域名+接口版本
     localStorage.docplugins="http://service.asxsyd92.com:8090" //文档插件地址
     // 给 vue 实例挂载内部对象，例如：
     // app.config.globalProperties.$XModal = VXETable.modal

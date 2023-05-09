@@ -24,14 +24,16 @@
                 <img :src="codeimg" @click="getnewcode" />
               </lay-form-item>
               <lay-form-item :label-width="0">
-                <lay-checkbox name="like" v-model="remember" skin="primary" label="1">记住密码</lay-checkbox>
+                <lay-checkbox  v-model="remember" skin="primary" >记住密码</lay-checkbox>
               </lay-form-item>
               <lay-form-item :label-width="0">
-                <lay-button type="primary" fluid="true" @click="loginSubmit">登录</lay-button>
+                <lay-button type="primary"  @click="loginSubmit">登录</lay-button>
               </lay-form-item>
             </lay-tab-item>
             <lay-tab-item title="二维码" id="2">
-              <div class="qrcode"><canvas ref="canvas" /></div>
+              <div class="qrcode">
+                <lay-qrcode :text="text" with="500" height="500"></lay-qrcode>
+              </div>
             </lay-tab-item>
           </lay-tab>
           <lay-line>其他登录方式</lay-line>
@@ -69,9 +71,9 @@
 </template>
 
 <script lang="ts" setup>
-import qrcode from 'qrcode'
+
 import { login } from '../../api/module/user';
-import { defineComponent, reactive, ref } from "vue";
+import {  ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from '../../store/user';
 import { layer } from "@layui/layer-vue";
@@ -92,7 +94,7 @@ const method = ref("1");
 const codeimg = ref("");
 const remember = ref(false);
 const loginForm = ref({ username: "", password: "", code: "" })
-const canvas = ref(null);
+const text = ref("wating");
 
 var win = window as any;
  const url = ref(config.ws+'/websocket.ws/login/getcode');
@@ -198,10 +200,11 @@ const initi = () => {
         router.push('/');
       });
     } else {
-      var options = new Object() as any;
-      options.with = 500;
-      options.height = 500;
-      qrcode.toCanvas(canvas.value, r.data, options);
+      // var options = new Object() as any;
+      // options.with = 500;
+      // options.height = 500;
+      text.value=r.data;
+      //qrcode.toCanvas(canvas.value, , options);
     }
 
   };
