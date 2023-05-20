@@ -33,12 +33,12 @@ export default defineConfig({
     port: 8991,
     proxy: {
       '/v1/api': {
-          target: 'http://asxsyd92.com',   //代理接口
+          target: 'http://127.0.0.1',   //代理接口
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, 'api')
       },
       '/asxsyd92upload': {
-        target: 'http://asxsyd92.com',   //代理接口
+        target: 'http://127.0.0.1',   //代理接口
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, 'api')
     }
