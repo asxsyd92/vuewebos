@@ -39,13 +39,6 @@
 
                 </lay-col>
 
-
-
-
-
-
-
-
             </lay-container>
 
         </div>
@@ -242,59 +235,6 @@ const Back = (snedtitle: string, type: string, model: any) => {
                 },
             ]
         })
-        // http.post("/api/workflowtasks/getBackStepList", { query: JSON.stringify(query.value), type: currentdata.value.behavior.backModel }, "请稍等").then((res: any) => {
-        //     if (res.success) {
-        //         layer.notifiy({
-        //             title: "Success",
-        //             content: res.msg,
-        //             icon: 1
-        //         });
-
-        //         var opts = new Object() as any;
-        //         opts.type = "back";
-        //         opts.steps = [];
-        //         opts.steps.push({ id: res.data.map((c: any) => c.id).join(","), member: "" });
-        //         debugger
-        //         query.value.comment = comment.value;
-        //         http.post("/api/workflowtasks/sendTask", { table: fromdata.value.form.table, data: JSON.stringify(data), query: JSON.stringify(query.value), params1: JSON.stringify(opts) }, "正在处理...").then(resp => {
-
-        //             if (resp.success) {
-        //                 layer.notifiy({
-        //                     title: "温馨提示",
-        //                     content: resp.msg
-        //                 });
-        //                 HelpTabs.close(appStore, route.fullPath, router);
-        //             } else {
-        //                 layer.notifiy({
-        //                     title: "温馨提示",
-        //                     content: resp.msg
-        //                 });
-
-        //             }
-        //         }).catch(resp => {
-        //             layer.notifiy({
-        //                 title: "温馨提示",
-        //                 content: "网络错误"
-        //             });
-
-        //         });
-
-
-        //     } else {
-        //         layer.notifiy({
-        //             title: "Error",
-        //             content: res.msg,
-        //             icon: 2
-        //         });
-        //     }
-        // }).catch((resp: any) => {
-        //     layer.notifiy({
-        //         title: "Error",
-        //         content: "网络错误！",
-        //         icon: 2
-        //     });
-
-        // });
     }
 }
 const Save = (type: any, model: any) => {

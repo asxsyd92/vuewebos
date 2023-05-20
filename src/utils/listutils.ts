@@ -13,18 +13,19 @@ class ListUtils {
      * @param url 请求地址
      * @param data 参数
      */
-    getList = (config: any, url: string, data: Object) => {
-       var i= layer.msg("加载中...", { icon : 16, time: 1000});
- 
-        http.post(url, data).then((res: any) => {
- 
-            layer.close(i);
+    getList = (config: any,data: Object) => {
+       //var i= layer.msg("加载中...", { icon : 16, time: 1000});
+       config.value.loading=true;
+        http.post(config.value.api, data).then((res: any) => {
+            config.value.loading=false;
+            //layer.close(i);
             if (res.success) {
-                config.data = res.data;
+                config.value.data = res.data;
 
-                if (config.pagerConfig) {
-                    config.pagerConfig.total = res.count
+                if (config.value.page) {
+                    config.value.page.total = res.count
                 }
+                
             }
         });
 
@@ -38,10 +39,8 @@ class ListUtils {
     getButton = (appid: any, config: any, buttons: any) => {
         return new Promise((resolve, reject) => {
 
-
-
             http.post("/api/common/getRoleBuutton", { appid: appid }).then((res: any) => {
-                config.loading = false
+                
 
                 if (res.success) {
   
@@ -54,11 +53,13 @@ class ListUtils {
                         o.msg = "你没有查询权限";
                         o.success = false;
                         o.data = null;
+                        config.value.loading=false;
                     } else {
                         if (data.api == '') {
                             o.msg = "请求未配置，请联系管路有";
                             o.success = false;
                             o.data = data;
+                            config.value.loading=false;
                         } else {
                             o.msg = "获取成功";
                             o.success = true;
@@ -74,17 +75,22 @@ class ListUtils {
                     title: "Error",
                     content: "按钮获取失败，请刷新重试！",
                     icon: 2
-                })
+                });
+                config.value!.loading=false;
             });;
         });
     }
 
     //类别查询功能
-    searchEvent = (config: any, search: any,data:Object) => {
-        if (config.pagerConfig) {
+    searchEvent = (config: any) => {
+        debugger;
+        if (config.value.page) {
 
-            this.getList(config, search.value.api, data);
+          let  data={...config.value.search , page: config.value.page.current, limit: config.value.page.limit};
+            this.getList(config, data);
 
+        }else{
+            this.getList(config,{...config.value.search});
         }
     }
 
@@ -136,9 +142,8 @@ class ListUtils {
      * @param row 删除的行
      * @param search 搜索方法
      * @param config 配置
-     * @param searchpara 查询参数
      */
-    removeRowEvent = async (ent: any, row: any, searchfun: Function, config: any,search:any, searchpara: any) => {
+    removeRowEvent = async (ent: any, row: any, searchfun: Function, config: any) => {
 
         layer.confirm("您确定要"+ent.name+"该数据",
             {
@@ -149,7 +154,7 @@ class ListUtils {
                                 http.post(ent.api, { id: row.id }).then((res: any) => {
                                     if (res.success) {
                                         layer.close(id);
-                                        searchfun(config,search,searchpara);
+                                        searchfun(config);
                                         layer.notifiy({ title: "温馨提示", content: res.msg })
 
 

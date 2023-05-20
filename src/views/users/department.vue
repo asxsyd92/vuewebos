@@ -44,7 +44,7 @@
   import { useRoute } from 'vue-router';
   import popform from '../form/popform.vue';
   import { layer } from "@layui/layer-vue"
-  import { VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
+  // import { VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
   import listurils from '../../utils/listutils';
   const roleGrid = ref<VxeGridInstance>();
   const route = useRoute();

@@ -108,3 +108,77 @@
 .layui-timeline-content  img,image{
   width: 90% !important;
 }
+
+.project-grids {
+  width: 99%;
+}
+
+.a-button.type--button.is--circle {
+  padding: 0 0.5em;
+  min-width: 34px;
+  border-radius: 50%;
+}
+
+.a-button.type--button:not(.is--round) {
+  border-radius: 4px;
+}
+
+.a-button.type--button {
+  font-family: inherit;
+  height: 34px;
+  line-height: 1;
+  border: 1px solid #dcdfe6;
+}
+
+.a-button:not(.is--disabled) {
+  color: #606266;
+  cursor: pointer;
+}
+
+.a-button {
+  position: relative;
+  text-align: center;
+  background-color: #fff;
+  outline: 0;
+  font-size: 14px;
+  max-width: 500px;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transition: border .2s ease-in-out;
+}
+
+.a-button.type--button.is--circle {
+  padding: 0 0.5em;
+  min-width: 34px;
+  border-radius: 50%;
+}
+
+.a-button.type--button:not(.is--round) {
+  border-radius: 4px;
+}
+
+.a-button.type--button {
+  font-family: inherit;
+  height: 34px;
+  line-height: 1;
+  border: 1px solid #dcdfe6;
+}
+
+.a-button:not(.is--disabled) {
+  color: #606266;
+  cursor: pointer;
+}
+
+.a-button.type--button.is--circle {
+  padding: 0 0.5em;
+  min-width: 34px;
+  border-radius: 50%;
+}

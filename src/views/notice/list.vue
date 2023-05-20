@@ -1,217 +1,171 @@
 <template>
-  <div>
+  <lay-card>
 
-    <vxe-grid ref="xGrid" v-bind="gridOptions" v-on="gridEvents" :column-config="{ isCurrent: true, isHover: true }"
-      :row-config="{ isCurrent: true, isHover: true }">
-      <!--将表单放在工具栏中-->
-      <template #toolbar_buttons>
-        <vxe-form :data="search" @submit="searchEvent">
-          <vxe-form-item field="name">
-            <template #default>
-              <vxe-input v-model="search.name" type="text" placeholder="请输入名称"></vxe-input>
+    <template v-slot:body>
+      <lay-row>
+        <lay-col>
+          <lay-table :loading="config.loading" :columns="config.columns" :page="config.page" @change="change"
+            :data-source="config.data" class="project-grids">
+
+            <template #toolbar>
+              <lay-input v-model="config.search.name" size="sm" placeholder="搜索" suffix-icon="layui-icon-search"
+                style="width: 20%;"></lay-input>
+
+              <lay-button-group v-for="n in listbutton.toolbarbuttons" :key="n">
+                <lay-button :size="n.size" :type="n.status" border-style="dashed" @click="Events(n, null)"> {{ n.name
+                }}</lay-button>
+              </lay-button-group>
             </template>
-          </vxe-form-item>
-          <vxe-form-item>
-            <template #default>
-              <vxe-button type="a_submit" status="primary"  @click="searchEvent" content="查询"></vxe-button>
-              <vxe-button type="a_add" @click="a_add" status="primary" content="新增"></vxe-button>
-              <vxe-button type="a_reset" content="重置"></vxe-button>
+            <template v-slot:operator="{ row }">
+              <span v-for="n in listbutton.rowbuttons" :key="n">
+                <lay-tooltip :content="n.name" position="bottom" :is-dark="true">
+                  <button class="a-button type--button is--circle" circle @click="Events(n, row)">
+                    <lay-icon :type="n.icon" :color="n.color">
+
+                    </lay-icon>
+                  </button>
+                </lay-tooltip>
+
+              </span>
+
             </template>
-          </vxe-form-item>
-        </vxe-form>
-      </template>
+          </lay-table>
+        </lay-col>
 
-      <template #operate="{ row }">
-        <vxe-button icon="fa fa-eye" title="查看" circle @click="editRowEvent(row)"></vxe-button>
-        <vxe-button icon="fa fa-trash" title="删除" circle @click="removeRowEvent(row)"></vxe-button>
 
-        <vxe-button icon="fa fa-gear" title="设置" circle></vxe-button>
-      </template>
-    </vxe-grid>
-
-  </div>
+      </lay-row>
+    </template>
+  </lay-card>
 </template>
-
 <script lang="ts">
-import http from 'webosutils/lib/http';
-import { useRouter, useRoute, RouteMeta } from 'vue-router';
-import { layer } from '@layui/layer-vue'
-import { defineComponent, reactive, ref } from 'vue'
-import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
-
-export default defineComponent({
-  setup() {
-    const search = ref({
-      name: ''
-    });
-    const xGrid = ref<VxeGridInstance>()
-    const router = useRouter();
-    const route = useRoute();
-    const gridOptions = reactive<VxeGridProps>({
-      border: true,
-      keepSource: true,
-      showOverflow: true,
-
-      loading: false,
-      columnConfig: {
-        resizable: true,
-        isCurrent: true,
-        isHover: true,
-      },
-      pagerConfig: {
-        total: 0,
-        currentPage: 1,
-        pageSize: 10,
-        pageSizes: [10, 20, 50, 100, 200, 500]
-      },
-      editConfig: {
-        trigger: 'manual',
-        mode: 'row',
-        showStatus: true,
-        icon: 'fa fa-file-text-o'
-      },
-      toolbarConfig: {
-        export: true,
-        print: true,
-        custom: true,
-        slots: {
-          buttons: 'toolbar_buttons'
-        }
-      },
-      columns: [
-        // { type: 'seq', width: 60 },
-        { type: 'checkbox', width: 50 },
-        { field: 'title', title: '标题' },
-        { field: 'username', title: '作者', },
-        { field: 'addtime', title: '发表时间', },
-        { title: '操作', fixed: "right", width: 150, slots: { default: 'operate' } }
-      ],
-      data: []
-    })
-
-    const sexList1 = ref([
-      { value: '1', label: '男' },
-      { value: '0', label: '女' }
-    ])
-
-    const findList = () => {
-      gridOptions.loading = true;
-      var page: any, limt: any;
-      if (gridOptions.pagerConfig) {
-        page = gridOptions.pagerConfig.currentPage;
-        limt = gridOptions.pagerConfig.pageSize;
-      }
-      http.post("/api/notice/GetNotecePage", { page: page, title:search.value.name,type: route.query.type, limit: limt }).then(res => {
-        gridOptions.loading = false
-
-        if (res.success) {
-          gridOptions.data = res.data;
-
-          if (gridOptions.pagerConfig) {
-            gridOptions.pagerConfig.total = res.count
-          }
-        }
-      });
-    }
-
-    const gridEvents: VxeGridListeners = {
-      pageChange({ currentPage, pageSize }) {
-        if (gridOptions.pagerConfig) {
-          gridOptions.pagerConfig.currentPage = currentPage
-          gridOptions.pagerConfig.pageSize = pageSize
-        }
-        findList()
-      }
-    }
-
-    const formatSex = (value: any) => {
-      if (value === '1') {
-        return '男'
-      }
-      if (value === '0') {
-        return '女'
-      }
-      return ''
-    }
-
-    const editRowEvent = (row: any) => {
-
-      console.log(row);
-      var query = new Object() as any;
-      query.fromid = route.query.fromid;
-      query.instanceid = row.id;
-    query.tabname =encodeURIComponent( row.title);
-
-      router.push({ path: "/formdesign/submitfrom", query: query, params: { tabname: row.title } })
-
-    }
-
-    const saveRowEvent = async () => {
-      const $grid = xGrid.value
-      if ($grid) {
-        await $grid.clearActived()
-        gridOptions.loading = true
-        // 模拟异步保存
-        setTimeout(() => {
-          gridOptions.loading = false
-          VXETable.modal.message({ content: '保存成功！', status: 'success' })
-        }, 300)
-      }
-    }
-
-    const removeRowEvent = async (row: any) => {
-      const type = await VXETable.modal.confirm('您确定要删除该数据?')
-      const $grid = xGrid.value
-      if ($grid) {
-        if (type === 'confirm') {
-          http.post("/api/notice/DelNotice", { id: row.id }).then((res: any) => {
-            if (res.success) {
-              $grid.remove(row);
-            } else {
-              layer.msg(res.msg, { icon: 2, time: 1000 })
-            }
-
-          }).catch((res: any) => {
-            layer.msg('网络错误', { icon: 2, time: 1000 })
-          })
-
-        }
-      }
-    }
-
-    findList()
-    const searchEvent = () => {
-    findList();
-    }
-
-    const formData = reactive({
-      name: ''
-    });
-    const a_add = () => {
-      var query = new Object() as any;
-      query.fromid = route.query.fromid;
-      query.instanceid = route.query.instanceid;
-      query.zhuanti = route.query.classid;
-       query.tabname =encodeURIComponent("新增"+route.query.tabname);
-     
-      router.push({ path: "/formdesign/submitfrom", query: query, params: { tabname: "新增" + route.query.tabname } })
-    }
-    return {
-      xGrid,
-      sexList1,
-      gridOptions,
-      formatSex,
-      gridEvents,
-      editRowEvent,
-      saveRowEvent,
-      removeRowEvent,
-      formData,
-      searchEvent,
-      a_add,
-      search 
-    }
-  }
-})
-
-
+export default {
+  name: "mianwait"
+}
 </script>
+<script lang="ts" setup>
+import { ref, nextTick } from "vue";
+import { layer } from "@layui/layer-vue";
+import http from 'webosutils/lib/http';
+import { useRoute } from 'vue-router';
+import { ReleaseIcon } from '@layui/icons-vue';
+import { useRouter } from 'vue-router';
+import listurils from '../../utils/listutils';
+import popform from '../form/popform.vue';
+const router = useRouter();
+const route = useRoute();
+const listbutton = ref({
+  rowbuttons: [] as any,
+  toolbarbuttons: [] as any,
+});
+const size = ref("sm");
+const config = ref({
+  loading: true,
+  data: [],
+  page: {
+    total: 0,
+    limit: 10,
+    current: 1,
+    showRefresh: true,
+    limits: [5]
+  },
+  columns: [
+    // { key: 'checkbox', width: 50 },
+    { type: 'checkbox', width: 50 },
+        { key: 'title', title: '标题' },
+        { key: 'username', title: '作者', },
+        { key: 'addtime', title: '发表时间', },
+    {
+      title: "操作",
+
+      fixed: "right",
+      customSlot: "operator",
+      key: "operator"
+    }
+  ],
+  api: "",
+  search: {
+    type: route.query.zhuanti,
+    name: ""
+  }
+});
+
+listurils.getButton(route.query.appid, config, listbutton).then((res: any) => {
+  //加载完成后刷新列表
+
+  if (res.success) {
+    config.value.api = res.data.api;
+    if (listbutton.value.toolbarbuttons.length > 0) {
+      size.value = listbutton.value.toolbarbuttons[0].size;
+    }
+    listurils.searchEvent(config);
+  } else {
+    layer.notifiy({
+      title: "Error",
+      content: res.msg,
+      icon: 2
+    })
+  }
+
+});
+const change = (p: any) => {
+
+  config.value.page.current = p.current;
+  config.value.page.limit = p.limit;
+  listurils.searchEvent(config);
+}
+const Callback=()=>{
+  listurils.searchEvent(config);
+}
+const Events = (ent: any, row: any) => {
+  try {
+
+    switch (ent.events) {
+      case "editEvent":
+        if (ent.ispopup == 0) {
+          var query = new Object() as any;
+          query.fromid = ent.formid;
+          query.instanceid = row.instanceid;
+          query.zhuanti = row.classid;
+          query.tabname = encodeURIComponent(row.title);
+          router.push({ path: "/formdesign/submitfrom", query: query, params: { tabname: row.title } })
+
+
+        } else {
+          listurils.editRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback }, {});
+
+        }
+        break;
+      case "searchEvent":
+        if (config.value.page) {
+          listurils.searchEvent(config);
+        }
+
+        break;
+      case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config);
+        break;
+      case "addEvent":
+        if (ent.ispopup == 0) {
+          var query = new Object() as any;
+          query.fromid = ent.formid;
+          query.instanceid = "";
+          query.zhuanti = route.query.zhuanti;
+          query.tabname = encodeURIComponent(ent.title);
+          router.push({ path: ent.api, query: query })
+
+        } else {
+          listurils.addEvent(popform, ent, { fromid: ent.formid, instanceid: "", callback: Callback }, {});
+
+        }
+        break;
+
+      case "previewEvent": listurils.previewEvent(popform, ent, row);
+        break;
+    }
+  } catch (e) {
+    layer.msg("按钮解析失败", { icon: 3, time: 1000 })
+  }
+
+}
+</script>
+<style scoped></style>
+

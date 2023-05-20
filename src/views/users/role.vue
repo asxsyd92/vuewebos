@@ -1,115 +1,104 @@
 <template>
-  <lay-layout>
-    <!--  -->
+  <lay-card>
 
-    <lay-body>
+    <template v-slot:body>
+      <lay-row>
+        <lay-col>
+          <lay-table :loading="config.loading" :columns="config.columns" :page="config.page" @change="change"
+            :data-source="config.data" class="project-grids">
 
-      <vxe-grid ref="roleGrid" v-bind="config" v-on="gridEvents" :column-config="{ isCurrent: true, isHover: true }"
-        :row-config="{ isCurrent: true, isHover: true }">
-        <!--将表单放在工具栏中-->
-        <template #toolbar_buttons>
-          <vxe-form :data="search">
-            <vxe-form-item field="name">
-              <template #default>
-                <lay-input v-model="search.name" type="text" placeholder="请输入名称"  @keyup.enter="soso()"></lay-input>
-       
-              </template>
-            </vxe-form-item>
-            <vxe-form-item>
-              <template #default>
+            <template #toolbar>
+              <lay-input v-model="config.search.name" size="sm" placeholder="搜索" suffix-icon="layui-icon-search"
+                style="width: 20%;"></lay-input>
 
-                <lay-button-group v-for="n in listbutton.toolbarbuttons" :key="n">
-                  <lay-button :size="n.size" :type="n.status" border-style="dashed" @click="Events(n, null)">{{
-                    n.name
-                  }}</lay-button>
+              <lay-button-group v-for="n in listbutton.toolbarbuttons" :key="n">
+                <lay-button :size="n.size" :type="n.status" border-style="dashed" @click="Events(n, null)"> {{ n.name
+                }}</lay-button>
+              </lay-button-group>
+            </template>
+            <template v-slot:operator="{ row }">
+              <span v-for="n in listbutton.rowbuttons" :key="n">
+                <lay-tooltip :content="n.name" position="bottom" :is-dark="true">
+                  <button class="a-button type--button is--circle" circle @click="Events(n, row)">
+                    <lay-icon :type="n.icon" :color="n.color">
 
-                </lay-button-group>
+                    </lay-icon>
+                  </button>
+                </lay-tooltip>
 
-              </template>
-            </vxe-form-item>
-          </vxe-form>
-        </template>
+              </span>
 
-        <template #operate="{ row }">
-          <span v-for="n in listbutton.rowbuttons" :key="n">
-            <vxe-button :icon="n.icon" :title="n.name" circle @click="Events(n, row)"></vxe-button>
-          </span>
-        </template>
-      </vxe-grid>
-    </lay-body>
-  </lay-layout>
+            </template>
+          </lay-table>
+        </lay-col>
+
+
+      </lay-row>
+    </template>
+  </lay-card>
 </template>
+<script lang="ts">
+export default {
+  name: "mianwait"
+}
+</script>
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { ref, nextTick } from "vue";
+import { layer } from "@layui/layer-vue";
+import http from 'webosutils/lib/http';
 import { useRoute } from 'vue-router';
-import popform from '../form/popform.vue';
-import { layer } from "@layui/layer-vue"
-import { VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
+import { ReleaseIcon } from '@layui/icons-vue';
+import { useRouter } from 'vue-router';
 import listurils from '../../utils/listutils';
-const roleGrid = ref<VxeGridInstance>();
+import popform from '../form/popform.vue';
+const router = useRouter();
 const route = useRoute();
 const listbutton = ref({
-  area: ['50%', '50%'],
   rowbuttons: [] as any,
   toolbarbuttons: [] as any,
 });
-const search = ref({
-  name: '',
-  type: "",
-  api: ""
-});
-
-const config = reactive<VxeGridProps>({
-  border: true,
-  keepSource: true,
-  showOverflow: true,
-
-  loading: false,
-  columnConfig: {
-    resizable: true,
-    isCurrent: true,
-    isHover: true,
-  },
-  pagerConfig: {
+const size = ref("sm");
+const config = ref({
+  loading: true,
+  data: [],
+  page: {
     total: 0,
-    currentPage: 1,
-    pageSize: 10,
-    pageSizes: [10, 20, 50, 100, 200, 500]
+    limit: 10,
+    current: 1,
+    showRefresh: true,
+    limits: [5,10,20,50,100,200]
   },
-  editConfig: {
-    trigger: 'manual',
-    mode: 'row',
-    showStatus: true,
-    icon: 'fa fa-file-text-o'
-  },
-  toolbarConfig: {
-    export: true,
-    print: true,
-    custom: true,
-    slots: {
-      buttons: 'toolbar_buttons'
+  columns: [
+  { type: 'checkbox', width: 50 },
+      { key: 'id', title: '角色id' },
+      { key: 'identifier', title: '角色标识', },
+      { key: 'title', title: '角色名称', },
+
+      { key: 'note', title: '备注', },
+    {
+      title: "操作",
+
+      fixed: "right",
+      customSlot: "operator",
+      key: "operator"
     }
-  },
-  columns:[
-      // { type: 'seq', width: 60 },
-      { type: 'checkbox', width: 50 },
-      { field: 'id', title: '角色id' },
-      { field: 'identifier', title: '角色标识', },
-      { field: 'title', title: '角色名称', },
-
-      { field: 'note', title: '备注', },
-
-
-      { title: '操作', fixed: "right", width: 150, slots: { default: 'operate' } }
   ],
-  data: []
+  api: "",
+  search: {
+    type: route.query.zhuanti,
+    name: ""
+  }
 });
+
 listurils.getButton(route.query.appid, config, listbutton).then((res: any) => {
   //加载完成后刷新列表
 
   if (res.success) {
-    search.value.api = res.data.api;
-            listurils.searchEvent(config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
+    config.value.api = res.data.api;
+    if (listbutton.value.toolbarbuttons.length > 0) {
+      size.value = listbutton.value.toolbarbuttons[0].size;
+    }
+    listurils.searchEvent(config);
   } else {
     layer.notifiy({
       title: "Error",
@@ -119,57 +108,59 @@ listurils.getButton(route.query.appid, config, listbutton).then((res: any) => {
   }
 
 });
+const change = (p: any) => {
 
-//标段保存回调返回结果
-const Callback = (res: any) => {
-  if (res.success) {
-
-            listurils.searchEvent(config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
-  } else {
-    layer.notifiy({ title: "温馨提示", content: res.msg })
-  }
-
+  config.value.page.current = p.current;
+  config.value.page.limit = p.limit;
+  listurils.searchEvent(config);
 }
-
-const gridEvents: VxeGridListeners = {
-  pageChange({ currentPage, pageSize }) {
-    if (config.pagerConfig) {
-      config.pagerConfig.currentPage = currentPage;
-      config.pagerConfig.pageSize = pageSize;
-              listurils.searchEvent(config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
-    }
-
-  }
+const Callback=()=>{
+  listurils.searchEvent(config);
 }
-const soso=()=>{
-  if (config.pagerConfig) {
-          config.pagerConfig.currentPage = 1;
-                  listurils.searchEvent(config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
-        }
-
-}
-
 const Events = (ent: any, row: any) => {
   try {
 
     switch (ent.events) {
+      case "editEvent":
+        if (ent.ispopup == 0) {
+          var query = new Object() as any;
+          query.fromid = ent.formid;
+          query.instanceid = row.instanceid;
+          query.zhuanti = row.classid;
+          query.tabname = encodeURIComponent(row.title);
+          router.push({ path: "/formdesign/submitfrom", query: query, params: { tabname: row.title } })
+
+
+        } else {
+          listurils.editRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback }, {});
+
+        }
+        break;
       case "searchEvent":
-        if (config.pagerConfig) {
-          config.pagerConfig.currentPage = 1;
-                  listurils.searchEvent(config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
+        if (config.value.page) {
+          listurils.searchEvent(config);
         }
 
         break;
-      case "addEvent": listurils.addEvent(popform, ent, { fromid: ent.formid, instanceid: "", callback: Callback }, {});
+      case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config);
+        break;
+      case "addEvent":
+        if (ent.ispopup == 0) {
+          var query = new Object() as any;
+          query.fromid = ent.formid;
+          query.instanceid = "";
+          query.zhuanti = route.query.zhuanti;
+          query.tabname = encodeURIComponent(ent.title);
+          router.push({ path: ent.api, query: query })
+
+        } else {
+          listurils.addEvent(popform, ent, { fromid: ent.formid, instanceid: "", callback: Callback }, {});
+
+        }
         break;
 
-      case "editEvent": listurils.editRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback },  {});
+      case "previewEvent": listurils.previewEvent(popform, ent, row);
         break;
-      case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
-        break;
-      case "cloneEvent": listurils.cloneRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback }, { id: "" });
-        break;
-
     }
   } catch (e) {
     layer.msg("按钮解析失败", { icon: 3, time: 1000 })
@@ -177,3 +168,5 @@ const Events = (ent: any, row: any) => {
 
 }
 </script>
+<style scoped></style>
+

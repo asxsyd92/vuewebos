@@ -1,316 +1,212 @@
 <template>
-    <lay-layout>
-        <!--  -->
-        <lay-side>
-            <vxe-table border :row-config="{ isHover: true, useKey: true }" :column-config="{ resizable: true }"
-                :tree-config="{ children: 'children' }" @cell-click="a_index" :data="depOptions.depData">
-                <vxe-column field="name" title="请选择部门" tree-node></vxe-column>
-            </vxe-table>
-        </lay-side>
-        <lay-body>
-
-            <vxe-grid ref="xGrid" v-bind="config" v-on="gridEvents"
-                :column-config="{ isCurrent: true, isHover: true }" :row-config="{ isCurrent: true, isHover: true }">
-                <!--将表单放在工具栏中-->
-                <template #toolbar_buttons>
-                    <vxe-form :data="search" @submit="searchEvent">
-                        <vxe-form-item field="name">
-                            <template #default>
-                                <vxe-input v-model="search.name" type="text" placeholder="请输入名称"></vxe-input>
-                            </template>
-                        </vxe-form-item>
-                        <vxe-form-item>
-                            <template #default>
-                                <lay-button-group v-for="n in listbutton.toolbarbuttons" :key="n">
-                                    <lay-button :size="n.size" :type="n.status" border-style="dashed" @click="Events(n,null)">{{n.name}}</lay-button>
-
-                                  </lay-button-group>
-
-                            </template>
-                        </vxe-form-item>
-                    </vxe-form>
-                </template>
-
-                <template #operate="{ row }">
-                    <span v-for="n in listbutton.rowbuttons" :key="n">
-                        <vxe-button :icon="n.icon" :title="n.name" circle @click="Events(n,row)"></vxe-button>
-                    </span>
-          </template>
-            </vxe-grid>
-        </lay-body>
-        <!-- <lay-layer title="用户管理" :area="['50%', '80%']"  :btn="menubtn" :shadeClose="false" v-model="uservisible">
-            <popform ref="_popform" :fromid="formid" :instanceid="instanceid" :callback="callback" ></popform>
-        </lay-layer> -->
-    </lay-layout>
-</template>
-<script lang="ts" setup>
-
-import http from 'webosutils/lib/http';
-import { useRouter, useRoute } from 'vue-router';
-import popform from '../form/popform.vue';
-import { layer } from "@layui/layer-vue"
-import { reactive, ref } from 'vue'
-import { VXETable, VxeGridInstance, VxeGridListeners, VxeGridProps } from 'vxe-table'
-import utils from '../../utils/utils';
-import listurils from '../../utils/listutils';
-const xGrid = ref<VxeGridInstance>()
-
-const formid = ref("");
-const instanceid = ref("");
-const toolbarbuttons=ref([]) as any;
-const rowbuttons=ref([]) as any;
-const _popform=ref(null) as any;
-const uservisible=ref(false);
-const router = useRouter();
-    const route = useRoute();
-    const area =ref(["50%","50%"]);
-const depOptions = reactive({
-    loading: false,
-    depData: []
-})
-const listbutton = ref({
-  area: ['50%', '50%'],
-  rowbuttons: [] as any,
-  toolbarbuttons: [] as any,
-});
-const search = ref({
-  name: '',
-  type: "",
-  api: ""
-});
-// utils.finbuuton(route.query.appid,depOptions).then((res:any)=>{
-//         if(res.success){
-//           area.value=res.area;
-//           toolbarbuttons.value=res.toolbarbuttons;
-//           rowbuttons.value=res.rowbuttons;
-//         }
-//   });
-
-const config = reactive<VxeGridProps>({
-    border: true,
-    keepSource: true,
-    showOverflow: true,
-
-    loading: false,
-    columnConfig: {
-        resizable: true,
-        isCurrent: true,
-        isHover: true,
-    },
-    pagerConfig: {
-        total: 0,
-        currentPage: 1,
-        pageSize: 10,
-        pageSizes: [10, 20, 50, 100, 200, 500]
-    },
-    editConfig: {
-        trigger: 'manual',
-        mode: 'row',
-        showStatus: true,
-        icon: 'fa fa-file-text-o'
-    },
-    toolbarConfig: {
-        export: true,
-        print: true,
-        custom: true,
-        slots: {
-            buttons: 'toolbar_buttons'
-        }
+    <lay-card>
+      <lay-row space="10">
+        <lay-col md="6">
+          <lay-tree :data="data" :showLine="showLine" @node-click="getdic"	>
+          </lay-tree>
+  
+        </lay-col>
+        <lay-col md="18">
+  
+            <lay-table :loading="config.loading" :columns="config.columns" :page="config.page" @change="change"
+              :data-source="config.data" class="project-grids">
+  
+              <template #toolbar>
+                <lay-input v-model="config.search.name" size="sm" placeholder="搜索" suffix-icon="layui-icon-search"
+                  style="width: 20%;"></lay-input>
+  
+                <lay-button-group v-for="n in listbutton.toolbarbuttons" :key="n">
+                  <lay-button :size="n.size" :type="n.status" border-style="dashed" @click="Events(n, null)"> {{ n.name
+                  }}</lay-button>
+                </lay-button-group>
+              </template>
+              <template v-slot:operator="{ row }">
+                <span v-for="n in listbutton.rowbuttons" :key="n">
+                  <lay-tooltip :content="n.name" position="bottom" :is-dark="true">
+                    <button class="a-button type--button is--circle" circle @click="Events(n, row)">
+                      <lay-icon :type="n.icon" :color="n.color">
+  
+                      </lay-icon>
+                    </button>
+                  </lay-tooltip>
+  
+                </span>
+  
+              </template>
+            </lay-table>
+      
+  
+        </lay-col>
+  
+      </lay-row>
+    </lay-card>
+  </template>
+  
+  <script lang="ts" setup>
+  import http from 'webosutils/lib/http';
+  import { layer } from '@layui/layer-vue'
+  import { useRouter, useRoute } from 'vue-router';
+  import utils from '../../utils/utils';
+  import popform from '../form/popform.vue';
+  import listurils from '../../utils/listutils';
+  import { ref } from 'vue';
+  const showLine = ref(false);
+  const data = ref([]);
+  const router = useRouter();
+  const route = useRoute();
+  const listbutton = ref({
+    rowbuttons: [] as any,
+    toolbarbuttons: [] as any,
+  });
+  const size = ref("sm");
+  const config = ref({
+    loading: true,
+    data: [],
+    page: {
+      total: 0,
+      limit: 10,
+      current: 1,
+      showRefresh: true,
+      limits: [5,10,20,50,100,200]
     },
     columns: [
-        // { type: 'seq', width: 60 },
-        { type: 'checkbox', width: 50 },
-        { field: 'account', title: '登录账号' },
-        { field: 'name', title: '姓名', },
-        { field: 'rolename', title: '角色名称', },
-
-        { field: 'orgname', title: '所属部门', },
-
-        {
-            field: 'sex', title: '性别',
-            filterMultiple: false,
-            filters: [
-                { label: '男', value: 1 },
-                { label: '女', value: 0 },
-                { label: '外星人', value: 3 },
-            ]
-        },
-        { field: 'status', title: '状态', },
-        { field: 'avatar', title: '头像', },
-        { field: 'addtime', title: '注册时间', },
-        { title: '操作', fixed: "right", width: 150, slots: { default: 'operate' } }
-    ],
-    data: []
-})
-
-listurils.getButton(route.query.appid, config, listbutton).then((res: any) => {
-  //加载完成后刷新列表
-
-  if (res.success) {
-    search.value.api = res.data.api;
-            listurils.searchEvent(config, search,{ type: search.value.type, title: search.value.name, page: config.pagerConfig!.currentPage, limit: config.pagerConfig!.pageSize });
-  } else {
-    layer.notifiy({
-      title: "Error",
-      content: res.msg,
-      icon: 2
-    })
-  }
-
-});
-const findDepartmentList = () => {
-    depOptions.loading = true;
-
-
-    http.post("/api/department/getDepartmentById", { id: "" }).then(res => {
-        depOptions.loading = false
-
-        if (res.success) {
-            depOptions.depData = res.data;
-           
-
-        }
-    });
-}
-
-findDepartmentList();
-
-
-
-const findList = () => {
-    config.loading = true;
-    var page: any, limt: any;
-    if (config.pagerConfig) {
-        page = config.pagerConfig.currentPage;
-        limt = config.pagerConfig.pageSize;
-    }
-    http.post("/api/users/getUsersPage", { type: search.value.type, title: search.value.name, page: page, limit: limt }).then(res => {
-        config.loading = false
-
-        if (res.success) {
-            config.data = res.data;
-
-            if (config.pagerConfig) {
-                config.pagerConfig.total = res.count
-            }
-        }
-    });
-}
-
-const gridEvents: VxeGridListeners = {
-    pageChange({ currentPage, pageSize }) {
-        if (config.pagerConfig) {
-            config.pagerConfig.currentPage = currentPage
-            config.pagerConfig.pageSize = pageSize
-        }
-        findList()
-    }
-}
-const Callback=(res:any)=>{
-        if(res.success){
-        
-            findList();
-        }else{
-            layer.notifiy({  title:"温馨提示", content:res.msg })
-        }
-      
+      // { key: 'checkbox', width: 50 },
+      { key: 'title', title: '标题' },
+      { key: 'id', title: 'id', },
+      { key: 'code', title: '唯一标识', },
+      { key: 'icon', title: '图标', },
+      {
+        title: "操作",
+  
+        fixed: "right",
+        customSlot: "operator",
+        key: "operator"
       }
-const editRowEvent = (ent:any,row: any) => {
-
-    utils.openform(ent.title,ent.animation,popform,{   fromid:ent.formid,instanceid:row.id,callback:Callback },area.value,new Object());
-}
-
-const saveRowEvent = async () => {
-    const $grid = xGrid.value
-    if ($grid) {
-        await $grid.clearActived()
-        config.loading = true
-        // 模拟异步保存
-        setTimeout(() => {
-            config.loading = false
-            VXETable.modal.message({ content: '保存成功！', status: 'success' })
-        }, 300)
+    ],
+    api: "",
+    search: {
+      id: "",
+      name: ""
     }
-}
-
-const removeRowEvent = async (ent:any,row: any) => {
-    const $grid = xGrid.value
-    layer.confirm("您确定要删除该数据", 
-    {btn:
-        [
-            {text:'确认', callback: function(id:any){
-          http.post(ent.api,{id:row.id}).then((res:any)=>{
-            if(res.success){
-                layer.close(id);
-                searchEvent();
-                layer.notifiy({  title:"温馨提示", content:res.msg })
-          
-              
-            }else{
-                layer.notifiy({  title:"温馨提示", content:res.msg })
-                layer.close(id);
-            }
-          }).catch((error:any)=>{
-            layer.notifiy({  title:"温馨提示", content:"网络错误！" })
-            layer.close(id);
-          })
-             
-            }},
-            {text:'取消', callback: function(id:any){layer.close(id);}}
-        ]
-    })
-
-}
-
-const a_index = async (row: any) => {
-    search.value.type = row.row.id;
-
-    findList();
-
-}
-
-findList()
-const searchEvent = () => {
-    findList();
-}
-
-const formData = reactive({
-    name: ''
-});
-const a_add = (ent:any) => {
-    
-
-    if (search.value.type == "") {
-        layer.msg("请先选择组织", { icon: 3, time: 1000 })
+  });
+  
+  listurils.getButton(route.query.appid, config, listbutton).then((res: any) => {
+    //加载完成后刷新列表
+  
+    if (res.success) {
+      config.value.api = res.data.api;
+      if (listbutton.value.toolbarbuttons.length > 0) {
+        size.value = listbutton.value.toolbarbuttons[0].size;
+      }
+      listurils.searchEvent(config);
     } else {
-        var obj= new Object() as any;
-       obj.organizeid=search.value.type;
- 
-  
-        utils.openform(ent.title,ent.animation,popform,{   fromid:ent.formid,callback:Callback },area.value,obj);
- 
+      layer.notifiy({
+        title: "Error",
+        content: res.msg,
+        icon: 2
+      })
     }
-
-}
-
-
-const Events=(ent:any,row:any)=>{
-    try{
- 
-        switch(ent.events){
-            case "searchEvent":searchEvent();
-            break;
-            case "addEvent":a_add(ent);
-            break;
   
-            case "editEvent":editRowEvent(ent,row);
-            break;
-            case "deleteEvent":removeRowEvent(ent,row);
-            break;
-        }
-    }catch(e){
-        layer.msg("按钮解析失败", { icon: 3, time: 1000 })
+  });
+  const getdic=(item:any)=>{
+    config.value.search.id=item.id;
+    listurils.searchEvent(config);
+  }
+  
+  const change = (p: any) => {
+  
+  config.value.page.current = p.current;
+  config.value.page.limit = p.limit;
+  listurils.searchEvent(config);
+  }
+  const findList = () => {
+  
+  var page: any, limt: any;
+  
+  page = config.value.page.current;
+  limt = config.value.page.limit;
+  config.value.loading = true;
+  http.post("/api/department/getDepartmentById", { id: '', page: page, limit: limt }).then(res => {
+    config.value.loading  = false;
+  
+    if (res.success) {
+      data.value = res.data;
+     // config.value.page.tota = res.count
+    //  if(treeExpandRecords.value.length>0){
+    //   setTimeout(()=>{
+    //     const $table = xdTable.value as any;
+    //   $table.setTreeExpand(treeExpandRecords.value,false);
+    //   },1000);
+  
+    //  }
+    }
+  });
+  
+  }
+  
+  findList();
+  
+  //标段保存回调返回结果
+  const Callback=(res:any)=>{
+    if(res.success){
+  
+        findList();
+      
+    }else{
+        layer.notifiy({  title:"温馨提示", content:res.msg })
     }
   
   }
-</script>
+  
+  
+  const Events = (ent: any, row: any) => {
+    try {
+  
+      switch (ent.events) {
+        case "editEvent":
+          if (ent.ispopup == 0) {
+            var query = new Object() as any;
+            query.fromid = ent.formid;
+            query.instanceid = row.instanceid;
+            query.zhuanti = row.classid;
+            query.tabname = encodeURIComponent(row.title);
+            router.push({ path: "/formdesign/submitfrom", query: query, params: { tabname: row.title } })
+  
+  
+          } else {
+            listurils.editRowEvent(popform, ent, row, { fromid: ent.formid, instanceid: row.id, callback: Callback }, {});
+  
+          }
+          break;
+        case "searchEvent":
+          if (config.value.page) {
+            listurils.searchEvent(config);
+          }
+  
+          break;
+        case "deleteEvent": listurils.removeRowEvent(ent, row, listurils.searchEvent, config);
+          break;
+        case "addEvent":
+          if (ent.ispopup == 0) {
+            var query = new Object() as any;
+            query.fromid = ent.formid;
+            query.instanceid = "";
+            query.zhuanti = route.query.zhuanti;
+            query.tabname = encodeURIComponent(ent.title);
+            router.push({ path: ent.api, query: query })
+  
+          } else {
+            listurils.addEvent(popform, ent, { fromid: ent.formid, instanceid: "", callback: Callback }, {});
+  
+          }
+          break;
+  
+        case "previewEvent": listurils.previewEvent(popform, ent, row);
+          break;
+      }
+    } catch (e) {
+      layer.msg("按钮解析失败", { icon: 3, time: 1000 })
+    }
+  
+  }
+  </script>
